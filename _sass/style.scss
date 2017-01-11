@@ -4,7 +4,8 @@
     transition: all 0.2s;
     transition-timing-function: linear;
       } */
-
+@import url('https://fonts.googleapis.com/css?family=Alfa+Slab+One');
+	  
 html, body {
     height: 100%;
 }
@@ -183,6 +184,15 @@ footer {
 /* Footer navigation links */
 .links a {
     margin-right: 1em;
+}
+
+.meta{
+	padding: 8px;
+	padding-top: 3px;
+	padding-bottom: 3px;
+	font-family: 'Alfa Slab One';
+	color:#394b59;
+	border: 1px solid #394b59;
 }
 
 
