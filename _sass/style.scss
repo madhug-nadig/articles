@@ -5,7 +5,8 @@
     transition-timing-function: linear;
       } */
 @import url('https://fonts.googleapis.com/css?family=Alfa+Slab+One');
-	  
+@import url('https://fonts.googleapis.com/css?family=Secular+One');
+
 html, body {
     height: 100%;
 }
@@ -28,8 +29,14 @@ body {
     }
 
 	h1{     
-		font-family: "Alfa Slab One","Lato", "Helvetica Neue", Helvetica, sans-serif;
+		font-family: "Secular One","Lato", "Helvetica Neue", Helvetica, sans-serif;
+		font-weight: 700;
 	}
+	
+	.headline{
+		font-family:"Alfa Slab One","Lato", "Helvetica Neue", Helvetica, sans-serif;
+	}
+	
     h2,h3,h4,h5,h6 {
          font-family: "Lato", "Helvetica Neue", Helvetica, sans-serif;
          font-weight: bold;
