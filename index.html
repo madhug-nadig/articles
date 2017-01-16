@@ -3,5 +3,7 @@ layout: default
 ---
 <h1 class="headline">Nadig Blog</h1>
 {% for post in site.posts %}
-<h3><a href="{{post.url | prepend: site.baseurl}}">{{post.title}}</a></h3>
+<div class = "post_wrapper">
+	<h3><a href="{{post.url | prepend: site.baseurl}}">{{post.title}}</a></h3>
+</div>
 {% endfor %}
