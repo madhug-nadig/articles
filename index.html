@@ -7,6 +7,6 @@ layout: default
 {% for post in site.posts %}
 <div class = "post_wrapper">
 	<h3><a href="{{post.url | prepend: site.baseurl}}">{{post.title}}</a></h3>
-	<h4>Madhu G Nadig</h4>
+	<div class="meta"><span>{{post.date | date: '%B %d, %Y'}}</span></div>
 </div>
 {% endfor %}
