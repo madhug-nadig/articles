@@ -144,12 +144,26 @@ blockquote {
 
 
 .post_wrapper{
+	border: 0.5px solid $brand-color;
+	border-radius: 10px;
 	margin-top:10px;
 	margin-bottom:30px;
-	padding: 10px;
-	padding-left:30px;
-	padding-right:30px;
+	@include media-query($on-laptop) {
+		padding: 10px;
+		padding-left:30px;
+		padding-right:30px;
+	}
+    @include media-query($on-palm) {
+		padding: 5px;
+		padding-left:10px;
+		padding-right:10px;
+		margin-bottom:10px;
+	}  
 
+}
+
+.post_description{
+	font-size:0.75em;
 }
 
 .video {
@@ -205,7 +219,8 @@ footer {
 }
 
 .meta span{
-	padding: 8px;
+	font-size:1em;
+	padding: 5px;
 	padding-top: 3px;
 	padding-bottom: 3px;
 	font-family: 'Alfa Slab One';
