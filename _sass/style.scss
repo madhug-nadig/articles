@@ -221,6 +221,7 @@ footer {
     margin-right: 1em;
 }
 
+
 .meta span{
 	font-size:0.75em;
 	padding: 5px;
@@ -229,5 +230,12 @@ footer {
 	font-family: 'Alfa Slab One';
 	color:#394b59;
 	border: 2px solid #394b59;
+}
+
+#graph{
+	width: 650px;
+	@include media-query($on-palm) {
+        width: 300px;
+    }
 }
 
