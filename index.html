@@ -8,6 +8,6 @@ layout: default
 <div class = "post_wrapper">
 	<h3><a href="{{post.url | prepend: site.baseurl}}">{{post.title}}</a></h3>
 	<div class="meta"><span>{{post.date | date: '%B %d, %Y'}}</span></div>
-	<div><p id = "post_description">{{post.description}}</p></div>
+	<div><p class = "post_description">{{post.description}}</p></div>
 </div>
 {% endfor %}

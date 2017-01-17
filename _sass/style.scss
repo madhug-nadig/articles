@@ -148,6 +148,9 @@ blockquote {
 	border-radius: 10px;
 	margin-top:10px;
 	margin-bottom:30px;
+	padding: 10px;
+	padding-left:30px;
+	padding-right:30px;
 	@include media-query($on-laptop) {
 		padding: 10px;
 		padding-left:30px;
@@ -219,12 +222,12 @@ footer {
 }
 
 .meta span{
-	font-size:1em;
+	font-size:0.75em;
 	padding: 5px;
-	padding-top: 3px;
-	padding-bottom: 3px;
+	padding-top: 1px;
+	padding-bottom: 1px;
 	font-family: 'Alfa Slab One';
 	color:#394b59;
-	border: 3px solid #394b59;
+	border: 2px solid #394b59;
 }
 
