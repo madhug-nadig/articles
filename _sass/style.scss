@@ -90,12 +90,15 @@ code {
         border: none;
     }
 }
+
 pre {
         padding: 1em;
 }
+
 code {
     padding: 0.1em;
 }
+
 blockquote {
     border-left: 2px solid $brand-color;
     padding-left: 1em;
@@ -103,8 +106,6 @@ blockquote {
     font-size: 0.9*$base-font-size;
     font-style: italic;
 }
-
-
 
 .headline {
     font-size: 4em;
@@ -123,7 +124,7 @@ blockquote {
 
 .home {
     height: 20px;
-    width: 70px;
+    width: 33px;
     opacity: 0.9;
     position: fixed;
     top: 50px;
@@ -131,28 +132,27 @@ blockquote {
 	border: 2px solid $brand-color;
 	color: $brand-color;
 	padding:5px;
-	font-size:13px;
+	font-size:11px;
     &:hover{
     opacity: 1;
     }
     @include media-query($on-laptop) {
         top: 90%;
-        left: 90%;
+        left: 80%;
         height: 20px;
-        width: 70px;
+        width: 33px;
         opacity: 0.6;
     }
 }
 
 .home:hover{
 	color: #fff;
-	background-color: $background-color;
+	background-color: #000;
 }
 
 .backhome-wrapper{
 	text-align:center;
 }
-
 
 .backhome{
 	min-width:110px;
@@ -162,7 +162,7 @@ blockquote {
 }
 
 .backhome:hover{
-	color: #fff;
+	color: #fff!important;
 	background-color: #394b59;
 }
 
@@ -179,11 +179,13 @@ blockquote {
 	padding: 10px;
 	padding-left:30px;
 	padding-right:30px;
+
 	@include media-query($on-laptop) {
 		padding: 10px;
 		padding-left:30px;
 		padding-right:30px;
 	}
+
     @include media-query($on-palm) {
 		padding: 5px;
 		padding-left:10px;
@@ -205,7 +207,7 @@ blockquote {
     }
     @include media-query($on-palm) {
         height: 180px;
-    }   
+    }
 }
 
 // Adding 'Contents' headline to the TOC
