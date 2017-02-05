@@ -122,28 +122,37 @@ blockquote {
 
 
 .home {
-    height: 40px;
+    height: 20px;
     width: 40px;
     opacity: 0.9;
     position: fixed;
     top: 50px;
-    left: 50px;
+    left: 60px;
+	border: 2px solid $brand-color;
+	color: $brand-color;
+	font-size:1em;
     &:hover{
     opacity: 1;
     }
     @include media-query($on-laptop) {
         top: 90%;
         left: 90%;
-        height: 30px;
-        width: 30px;
+        height: 20px;
+        width: 40px;
         opacity: 0.6;
     }
 }
 
 .backhome{
+	min-width:40px;
+	width:15%;
 	text-align:center;
-	color:#394b59;
 	border: 2px solid #394b59;
+}
+
+.backhome a{
+	test-transform:uppercase;
+	color:#394b59;
 }
 
 .post_wrapper{
