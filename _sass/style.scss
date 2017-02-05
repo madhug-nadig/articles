@@ -123,14 +123,15 @@ blockquote {
 
 .home {
     height: 20px;
-    width: 40px;
+    width: 70px;
     opacity: 0.9;
     position: fixed;
     top: 50px;
     left: 60px;
 	border: 2px solid $brand-color;
 	color: $brand-color;
-	font-size:1em;
+	padding:5px;
+	font-size:13px;
     &:hover{
     opacity: 1;
     }
@@ -138,20 +139,35 @@ blockquote {
         top: 90%;
         left: 90%;
         height: 20px;
-        width: 40px;
+        width: 70px;
         opacity: 0.6;
     }
 }
 
+.home:hover{
+	color: #fff;
+	background-color: $background-color;
+}
+
+.backhome-wrapper{
+	text-align:center;
+}
+
+
 .backhome{
-	min-width:40px;
+	min-width:110px;
 	width:15%;
 	text-align:center;
 	border: 2px solid #394b59;
 }
 
+.backhome:hover{
+	color: #fff;
+	background-color: #394b59;
+}
+
 .backhome a{
-	test-transform:uppercase;
+	text-transform:uppercase;
 	color:#394b59;
 }
 
