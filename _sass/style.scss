@@ -122,8 +122,6 @@ blockquote {
 
 
 .home {
-    background-image: url(../images/left-arrow.svg);
-    background-repeat: no-repeat;
     height: 40px;
     width: 40px;
     opacity: 0.9;
@@ -142,6 +140,11 @@ blockquote {
     }
 }
 
+.backhome{
+	text-align:center;
+	color:#394b59;
+	border: 2px solid #394b59;
+}
 
 .post_wrapper{
 	border: 0.5px solid $brand-color;
