@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Parallel Programming in Python with ease"
-date:   2017-01-19 02:34:56 +0530
+date:   2017-01-26 02:34:56 +0530
 description:   Parallel programming in Python is a bit tricky as compared to languages such as C/C++ and Java. Python is restricted to a single OS thread; therefore, it cannot make use of the multiple cores and processors available on modern hardware. In this post I will use the `multiprocessing` library to easily create and coordinate multiple Python processes and run code in parallel.
 categories: Parallel Processing
 

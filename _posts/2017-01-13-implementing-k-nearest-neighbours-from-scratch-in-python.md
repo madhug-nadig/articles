@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Implementing K Nearest Neighbours from Scratch - in Python"
-date:   2017-01-11 17:34:56 +0530
+date:   2017-01-13 17:34:56 +0530
 description:   k -Nearest Neighbors algorithm (or k-NN  for short) is a  non-parametric method used for  classification and  regression. K Nearest Neighbours is one of the most commonly implemented Machine Learning classification algorithms. In this post I will implement the algorithm from scratch in Python.
 categories: Machine Learning
 

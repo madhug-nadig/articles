@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Implementing K Nearest Neighbours in Parallel from scratch"
-date:   2017-02-01 03:34:56 +0530
+date:   2017-02-11 03:34:56 +0530
 description: 
 categories: Machine Learning, Parallel Processing
 
