@@ -6,7 +6,7 @@ description: Hey there! This is my first post. This post contains some random qu
 categories: Random
 ---
 
-![sample post]({{site.baseurl}}/images/b.png)
+![sample post]({{site.baseurl}}/images/b.jpg)
 
 
 Some random quotes:
@@ -17,7 +17,7 @@ Some random quotes:
 > It's not the size of the dog in the fight, it's the size of the fight in the dog.  
 - Mark Twain
 
-![sample post]({{site.baseurl}}/images/b.png)
+![sample post]({{site.baseurl}}/images/a.jpg)
 
 > All warfare is based on deception. Hence, when we are able to attack, we must seem unable; when using our forces, we must appear inactive; when we are near, we must make the enemy believe we are far away; when far away, we must make him believe we are near.  
 - Sun Tzu.
