@@ -2,12 +2,12 @@
 layout: post
 title:  "Implementing K Nearest Neighbours in Parallel from scratch"
 date:   2017-02-11 03:34:56 +0530
-description:   One of the prime drawbacks of k-NN is it's efficiency. Fortunately, the brute force version of k-NN that was written previously is highly parallelizable. This is due to the fact the computation of the distances between the data points is completely _independent_ of one another. Furthermore, if there are _n_ points in the test set, all of the computation regarding the classification of these _n_ points is independent of one another and can be easily accomplished in parallel. In this post I will implement the algorithm from scratch in Python in parallel.
-categories: Machine-Learning, Parallel-Processing
+description:   One of the prime drawbacks of k-NN is its efficiency. Fortunately, the brute force version of k-NN that was written previously is highly parallelizable. The computation of the distances between the data points is completely independent of one another. Also, if there are n points in the test set, all of the computation regarding the classification of these n points is independent of one another and can be easily accomplished in parallel. In this post I will implement the algorithm from scratch in Python in parallel.
+categories: Machine-Learning Parallel-Processing
 
 ---
 
-K Nearest Neighbours is one of the most commonly implemented Machine Learning classification algorithms. In in previous blog post, [I had implemented the algorithm from scratch in Python](/). If you are not very familiar with the algorithm or it's implementation, do check my previous post.
+K Nearest Neighbours is one of the most commonly implemented Machine Learning classification algorithms. In my previous blog post, [I had implemented the algorithm from scratch in Python](/). If you are not very familiar with the algorithm or it's implementation, do check my previous post.
 
 One of the prime drawbacks of the k-NN algorithm is it's efficiency. Being a supervised **[lazy learning](https://en.wikipedia.org/wiki/Lazy_learning)** algorithm, the k-NN waits till the end to compute. On top of this, due to its [non-parametric](https://en.wikipedia.org/wiki/Non-parametric_statistics) 'nature', the k-NN considers the entire dataset as it's model. 
 
@@ -39,11 +39,11 @@ As a result, I am using the invaluable **[multiprocessing](http://docs.python.or
 
 ### Parallelizable regions
 
-As stated before, there are two options that could be implemented whilst parallizing brute force k-NN. The first is to parallelize the distance finding part within _each_ incoming datapoint, the second is to divide the test data and process on it in parallel. I going to go ahead and implement the latter for the following reasons:
+As stated before, there are two options that could be implemented whilst parallelizing brute force k-NN. The first is to parallelize the distance finding part within _each_ incoming datapoint, the second is to divide the test data and process on it in parallel. I going to go ahead and implement the latter for the following reasons:
 
-1. The distance finding function will be called the most number of times. From as theorotical standpoint, parallelizing this should yield the maximum benefit of parallel prcessing. However, for all practical purposes we cannot ignore the overheads. The overhead of *process* creation for *each and every distance calculation* will definately slow down the program.
+1. The distance finding function will be called the most number of times. From as theorotical standpoint, parallelizing this should yield the maximum benefit of parallel prcessing. However, for all practical purposes we cannot ignore the overheads. The overhead of *process* creation for *each and every distance calculation* will surpass any benefit of parallelization, definately slowing down the program. There are less overheads when the data itself divided and fed into different processes.
 
-2. The code is much easier to write and is less cluttered.
+2. The code is much easier to write and is less cluttered for data parallelism.
 
 The implementation revolves around applying data parallelism to the distance finding part of the algorithm. In the parallelizable part, if there are _n_ data points on whom the distance algorithm is to be applied, we will divide the data intp _p_ datasets of size _n/p_ and then let each processor work _independently_ on a data of size _n/p_. In the serial part of the algorithm, we will be dividing the dataset, setting up the code to run in parallel, collect the output from the paralleized region and then continue with the k-NN algorithm.
 
