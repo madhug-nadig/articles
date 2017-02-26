@@ -2,12 +2,12 @@
 layout: post
 title:  "Implementing K Nearest Neighbours in Parallel from scratch"
 date:   2017-02-11 03:34:56 +0530
-description:   One of the prime drawbacks of k-NN is its efficiency. Fortunately, the brute force version of k-NN that was written previously is highly parallelizable. The computation of the distances between the data points is completely independent of one another. Also, if there are n points in the test set, all of the computation regarding the classification of these n points is independent of one another and can be easily accomplished in parallel. In this post I will implement the algorithm from scratch in Python in parallel.
+description:   One of the prime drawbacks of k-NN is its efficiency. The brute force version of k-NN that was written previously is highly parallelizable. The computation of distances between the attributes is independent of one another. Also, the classification of incoming data points is independent of one another and can be easily accomplished in parallel. In this post I will implement the algorithm from scratch in Python in parallel.
 categories: Machine-Learning Parallel-Processing
 
 ---
 
-K Nearest Neighbours is one of the most commonly implemented Machine Learning classification algorithms. In my previous blog post, [I had implemented the algorithm from scratch in Python](/). If you are not very familiar with the algorithm or it's implementation, do check my previous post.
+K Nearest Neighbours is one of the most commonly implemented Machine Learning classification algorithms. In my previous blog post, [I had implemented the algorithm from scratch in Python](/machine-learning/2017/01/13/implementing-k-nearest-neighbours-from-scratch-in-python.html). If you are not very familiar with the algorithm or it's implementation, do check my previous post.
 
 One of the prime drawbacks of the k-NN algorithm is it's efficiency. Being a supervised **[lazy learning](https://en.wikipedia.org/wiki/Lazy_learning)** algorithm, the k-NN waits till the end to compute. On top of this, due to its [non-parametric](https://en.wikipedia.org/wiki/Non-parametric_statistics) 'nature', the k-NN considers the entire dataset as it's model. 
 
@@ -23,7 +23,7 @@ That is, the brute force k-NN has high potential to work faster under [data para
 
 > Data parallelism is a form of parallelization across multiple processors in parallel computing environments. It focuses on distributing the data across different nodes, which operate on the data in parallel.
 
-The idea is to split the data amongst different processor and then combine them later for procuring final results. The ideal scenario is the case where the processors do not interact with each other, this is the case with brute-force k-NN.
+The idea is to split the data amongst different processors and then combine them later for procuring final results. The ideal scenario is the case where the processors do not  have to interact with each other, this is the case with brute-force k-NN.
 
 ## Implementation
 
@@ -35,19 +35,19 @@ Parallel programming in Python isn't as straight foward as it is in mainstream l
 
 Python is restricted to a single OS thread; therefore, it cannot make use of the multiple cores and processors available on modern hardware. Hence, using threads for parallel processing will _not_ work.
 
-As a result, I am using the invaluable **[multiprocessing](http://docs.python.org/3/library/multiprocessing.html?highlight=multiprocessing#multiprocessing)** module in Python for parallel processing. [I have previously written about working with the multiprocessing library](), do have a look if you are unsure on the working of the module.
+As a result, I am using the invaluable **[multiprocessing](http://docs.python.org/3/library/multiprocessing.html?highlight=multiprocessing#multiprocessing)** module in Python for parallel processing. [I have previously written about working with the multiprocessing library](/parallel-processing/2017/01/25/parallel-programming-in-python-with-ease.html), do have a look if you are unsure on the working of the module.
 
 ### Parallelizable regions
 
-As stated before, there are two options that could be implemented whilst parallelizing brute force k-NN. The first is to parallelize the distance finding part within _each_ incoming datapoint, the second is to divide the test data and process on it in parallel. I going to go ahead and implement the latter for the following reasons:
+As stated before, there are two options that could be implemented whilst parallelizing brute force k-NN. The first is to parallelize the distance finding part within _each_ incoming datapoint, the second is to divide the test data and process on it in parallel. I am going to go ahead and implement the latter for the following reasons:
 
-1. The distance finding function will be called the most number of times. From as theorotical standpoint, parallelizing this should yield the maximum benefit of parallel prcessing. However, for all practical purposes we cannot ignore the overheads. The overhead of *process* creation for *each and every distance calculation* will surpass any benefit of parallelization, definately slowing down the program. There are less overheads when the data itself divided and fed into different processes.
+1. The distance finding function will be called the most number of times. From as theorotical standpoint, parallelizing this should yield the maximum benefit of parallel prcessing. However, for all practical purposes, we cannot ignore the overheads. The overheads of *process* creation for *each and every distance calculation* will surpass any benefit of parallelization, definately slowing down the program. There are less overheads when the data itself is divided and fed into different sub-processes.
 
 2. The code is much easier to write and is less cluttered for data parallelism.
 
 The implementation revolves around applying data parallelism to the distance finding part of the algorithm. In the parallelizable part, if there are _n_ data points on whom the distance algorithm is to be applied, we will divide the data intp _p_ datasets of size _n/p_ and then let each processor work _independently_ on a data of size _n/p_. In the serial part of the algorithm, we will be dividing the dataset, setting up the code to run in parallel, collect the output from the paralleized region and then continue with the k-NN algorithm.
 
-	for group in test_set:
+		for group in test_set:
 			for data in test_set[group]:
 				predicted_class,confidence = self.predict(training_set, data, k =3)
 				if predicted_class == group:
@@ -143,13 +143,13 @@ After numerous parallel runs of the algorithm, the best value of accuracy that i
 
 compared to 91.25 from serial: __close enough.__
 
-The average parallel accuracy is also very close to the average serial accuracy with values of 88.4 and 88.6
+The average parallel accuracy is also very close to the average serial accuracy with values of 88.4 and 88.6 respectively.
 
-After running the code on the same dataset *without* shuffling the data, both the programs produce the same results indicating that the parallel program was equivalent to the serial implementation.
+After running the code on the same dataset *without* shuffling the data, both the programs produce the same results indicating that the parallel program is equivalent to the serial implementation.
 
 ## Speedup
 
-Once the parallelization of a task is complete, it is important to evaluate the speed and efficiency of the new program.
+Once the parallelization of a task is complete, it is important to evaluate the speed and efficiency of the new program, for parallelism is pointless without faster execution.
 
 > Speedup (Sp) is defined as the ratio of runtime for a sequential algorithm (T1) to runtime for a parallel algorithm with p processors (Tp). That is, Sp = T1 / Tp. Ideal speedup results when Sp = p. Speedup is formally derived from Amdahl’s law, which considers the portion of a program that is serial vs. the portion that is parallel when calculating speedup.
 
@@ -160,11 +160,11 @@ Here are the results for serial and parallel after many runs:
 
 	| Number of Data points | Serial      | Parallel    | Speedup|
 	|-----------------------|-------------|-------------|--------|
-	| 400   	        | 1.250104   | 2.7561666   | 0.453  |
-	| 800  	        | 3.664904  | 2.808934   | 1.304  |
-	| 1600 	        | 15.434006 | 6.263597  | 2.464  |
-	| 3200	        | 66.626987 | 18.958429 | 3.5143 |
-	| 6400   	        | 244.1179921| 64.78382 | 3.768   |
+	| 400   	        | 1.250104    | 2.7561666   | 0.453  |
+	| 800  	            | 3.664904    | 2.808934   | 1.304  |
+	| 1600 	            | 15.434006   | 6.263597  | 2.464  |
+	| 3200	            | 66.626987   | 18.958429 | 3.5143 |
+	| 6400   	        | 244.1179921 | 64.78382 | 3.768   |
 
 
 The advantages of parallel processing are apparent just as the data size increases a little bit to 800 data points; with a speed up of 1.3 (30% faster exec time). The speed up of __3.768__ is perhaps the best that we achieve since the program ran on a quad-core processor, for which the upper limit for speed up is 4 (ignoring the overheads).
@@ -320,7 +320,7 @@ function type(d) {
 </script>
 
 
-You can find the entire sample code related to the parallel implementation, [here](https://github.com/madhug-nadig/Parallel-Processing-Nadig/blob/master/K%20Nearest%20Neighbours%20-%20In%20Parallel.py). Serial implementation can be found [here](https://github.com/madhug-nadig/Machine-Learning-Algorithms-from-Scratch/blob/master/K%20Nearest%20Neighbours.py).
+You can find the entire code related to the parallel implementation, [here](https://github.com/madhug-nadig/Parallel-Processing-Nadig/blob/master/K%20Nearest%20Neighbours%20-%20In%20Parallel.py). Serial implementation can be found [here](https://github.com/madhug-nadig/Machine-Learning-Algorithms-from-Scratch/blob/master/K%20Nearest%20Neighbours.py).
 
 That's it for now, if you have any comments, please leave them below.
 
