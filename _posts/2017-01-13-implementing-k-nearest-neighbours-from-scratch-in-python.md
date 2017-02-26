@@ -321,3 +321,5 @@ However, in most runs, the accuracy hovered around the value of `81.25%`. I was 
 You can find the entire code on GitHub, [here](https://github.com/madhug-nadig/Machine-Learning-Algorithms-from-Scratch/blob/master/K%20Nearest%20Neighbours.py).
 
 That's it for now. If you have any comments, please leave them below.
+
+<br /><br />

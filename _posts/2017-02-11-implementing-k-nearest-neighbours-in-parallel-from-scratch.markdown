@@ -148,3 +148,180 @@ The average parallel accuracy is also very close to the average serial accuracy 
 After running the code on the same dataset *without* shuffling the data, both the programs produce the same results indicating that the parallel program was equivalent to the serial implementation.
 
 ## Speedup
+
+Once the parallelization of a task is complete, it is important to evaluate the speed and efficiency of the new program.
+
+> Speedup (Sp) is defined as the ratio of runtime for a sequential algorithm (T1) to runtime for a parallel algorithm with p processors (Tp). That is, Sp = T1 / Tp. Ideal speedup results when Sp = p. Speedup is formally derived from Amdahl’s law, which considers the portion of a program that is serial vs. the portion that is parallel when calculating speedup.
+
+The size of the input corresponds to the number of data points in the input file. Each data point is represented in *m* dimensional space, where *m* is the number of attributes in each data points. So, for *N* data points, the acual size of the input is N * m.
+
+
+Here are the results for serial and parallel after many runs:
+
+	| Number of Data points | Serial      | Parallel    | Speedup|
+	|-----------------------|-------------|-------------|--------|
+	| 400   	        | 1.250104   | 2.7561666   | 0.453  |
+	| 800  	        | 3.664904  | 2.808934   | 1.304  |
+	| 1600 	        | 15.434006 | 6.263597  | 2.464  |
+	| 3200	        | 66.626987 | 18.958429 | 3.5143 |
+	| 6400   	        | 244.1179921| 64.78382 | 3.768   |
+
+
+The advantages of parallel processing are apparent just as the data size increases a little bit to 800 data points; with a speed up of 1.3 (30% faster exec time). The speed up of __3.768__ is perhaps the best that we achieve since the program ran on a quad-core processor, for which the upper limit for speed up is 4 (ignoring the overheads).
+
+The graph representing the speedup:
+
+
+<style>
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.bar {
+  fill: #E34B48;
+}
+
+.bar:hover {
+  fill: #270738 ;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.d3-tip {
+  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}
+</style>
+
+
+<div id = "graph" class = "graph">
+
+</div>
+
+
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+<script>
+
+data = [
+	{"letter":"400","frequency":0.453},
+	{"letter":"800","frequency":1.304},
+	{"letter":"1600","frequency":2.646},
+	{"letter":"3200","frequency":3.5143},
+	{"letter":"6400","frequency":3.768}
+];
+
+ww = document.getElementById("graph").offsetWidth;
+hh = document.body.clientHeight/1.333; 
+
+console.log(ww);
+
+var margin = {top: 40, right: 20, bottom: 30, left: 40},
+    width = ww - margin.left - margin.right,
+    height = hh - margin.top - margin.bottom;
+
+
+var x = d3.scale.ordinal()
+    .rangeRoundBands([0, width], .1);
+
+var y = d3.scale.linear()
+    .range([height, 0]);
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom");
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left");
+
+var tip = d3.tip()
+  .attr('class', 'd3-tip')
+  .offset([-10, 0])
+  .html(function(d) {
+    return "<strong>Speedup:</strong> <span style='color:red'>" + d.frequency + "</span>";
+  });
+
+var svg = d3.select("#graph").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+svg.call(tip);
+
+
+  x.domain(data.map(function(d) { return d.letter; }));
+  y.domain([0, d3.max(data, function(d) { return d.frequency; })]);
+
+  svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis);
+
+  svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+    .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text("Speedup");
+
+  svg.selectAll(".bar")
+      .data(data)
+    .enter().append("rect")
+      .attr("class", "bar")
+      .attr("x", function(d) { return x(d.letter); })
+      .attr("width", x.rangeBand())
+      .attr("y", function(d) { return y(d.frequency); })
+      .attr("height", function(d) { return height - y(d.frequency); })
+      .on('mouseover', tip.show)
+      .on('mouseout', tip.hide);
+
+
+
+function type(d) {
+  d.frequency = +d.frequency;
+  return d;
+}
+
+</script>
+
+
+You can find the entire sample code related to the parallel implementation, [here](https://github.com/madhug-nadig/Parallel-Processing-Nadig/blob/master/K%20Nearest%20Neighbours%20-%20In%20Parallel.py). Serial implementation can be found [here](https://github.com/madhug-nadig/Machine-Learning-Algorithms-from-Scratch/blob/master/K%20Nearest%20Neighbours.py).
+
+That's it for now, if you have any comments, please leave them below.
+
+<br /><br />
