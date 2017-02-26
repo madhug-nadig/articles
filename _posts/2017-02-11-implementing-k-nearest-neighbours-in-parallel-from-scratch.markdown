@@ -7,7 +7,7 @@ categories: Machine-Learning Parallel-Processing
 
 ---
 
-K Nearest Neighbours is one of the most commonly implemented Machine Learning classification algorithms. In my previous blog post, [I had implemented the algorithm from scratch in Python](/machine-learning/2017/01/13/implementing-k-nearest-neighbours-from-scratch-in-python.html). If you are not very familiar with the algorithm or it's implementation, do check my previous post.
+K Nearest Neighbours is one of the most commonly implemented Machine Learning classification algorithms. In my previous blog post, [I had implemented the algorithm from scratch in Python](/articles/machine-learning/2017/01/13/implementing-k-nearest-neighbours-from-scratch-in-python.html). If you are not very familiar with the algorithm or it's implementation, do check my previous post.
 
 One of the prime drawbacks of the k-NN algorithm is it's efficiency. Being a supervised **[lazy learning](https://en.wikipedia.org/wiki/Lazy_learning)** algorithm, the k-NN waits till the end to compute. On top of this, due to its [non-parametric](https://en.wikipedia.org/wiki/Non-parametric_statistics) 'nature', the k-NN considers the entire dataset as it's model. 
 
@@ -35,7 +35,7 @@ Parallel programming in Python isn't as straight foward as it is in mainstream l
 
 Python is restricted to a single OS thread; therefore, it cannot make use of the multiple cores and processors available on modern hardware. Hence, using threads for parallel processing will _not_ work.
 
-As a result, I am using the invaluable **[multiprocessing](http://docs.python.org/3/library/multiprocessing.html?highlight=multiprocessing#multiprocessing)** module in Python for parallel processing. [I have previously written about working with the multiprocessing library](/parallel-processing/2017/01/25/parallel-programming-in-python-with-ease.html), do have a look if you are unsure on the working of the module.
+As a result, I am using the invaluable **[multiprocessing](http://docs.python.org/3/library/multiprocessing.html?highlight=multiprocessing#multiprocessing)** module in Python for parallel processing. [I have previously written about working with the multiprocessing library](/articles/parallel-processing/2017/01/25/parallel-programming-in-python-with-ease.html), do have a look if you are unsure on the working of the module.
 
 ### Parallelizable regions
 
@@ -161,10 +161,10 @@ Here are the results for serial and parallel after many runs:
 	| Number of Data points | Serial      | Parallel    | Speedup|
 	|-----------------------|-------------|-------------|--------|
 	| 400   	        | 1.250104    | 2.7561666   | 0.453  |
-	| 800  	            | 3.664904    | 2.808934   | 1.304  |
-	| 1600 	            | 15.434006   | 6.263597  | 2.464  |
-	| 3200	            | 66.626987   | 18.958429 | 3.5143 |
-	| 6400   	        | 244.1179921 | 64.78382 | 3.768   |
+	| 800  	               | 3.664904    | 2.808934   | 1.304  |
+	| 1600 	               | 15.434006   | 6.263597   | 2.464  |
+	| 3200	               | 66.626987   | 18.958429  | 3.5143 |
+	| 6400   	        | 244.1179921 | 64.78382    | 3.768  |
 
 
 The advantages of parallel processing are apparent just as the data size increases a little bit to 800 data points; with a speed up of 1.3 (30% faster exec time). The speed up of __3.768__ is perhaps the best that we achieve since the program ran on a quad-core processor, for which the upper limit for speed up is 4 (ignoring the overheads).
