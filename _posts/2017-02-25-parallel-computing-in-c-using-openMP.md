@@ -8,7 +8,7 @@ categories: Parallel-Processing
 
 ---
 
-## Introduction
+# Introduction
 
 OpenMP is one of the most popular solutions to parallel computation in C/C++. OpenMP is a mature API and has been around two decades, the first OpenMP API spec came out for Fortran(Yes, FORTRAN). OpenMP provides a high level of abstraction and allows compiler directives to be embedded in the source code. 
 
