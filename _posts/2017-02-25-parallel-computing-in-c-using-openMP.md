@@ -114,7 +114,7 @@ The above snippet will keep on scanning the the input till the end regardless of
 	}
 	return foundat;
 
-**It is as simple as this**, all that had to be done was adding the comipler directive and it gets taken care of, **completely**. The implementation hadn't have to be changed much. We didn't have to worry about the actual implementation, scheduling, data split and other details. There's a high level of abstraction. Also, the code will run in serial after the OpenMP directives have been removed, albeit with the modification.
+**It is as simple as this**, all that had to be done was adding the comipler directive and it gets taken care of, **completely**. The implementation didn't have to be changed much. We didn't have to worry about the actual implementation, scheduling, data split and other details. There's a high level of abstraction. Also, the code will run in serial after the OpenMP directives have been removed, albeit with the modification.
 
 It is noteworthy to mention that with the parallel implementation, each and every element will be checked regardless of a match, though, parallely. This is due to the fact that no thread can directly return after finding the element. So, our parallel implementation will be *slower* than the serial implementation if the element to be found is present in the range [0, (n/p)-1] where *n* is the length of the array and *p* is the number of parallel threads/sub-processes. 
 
