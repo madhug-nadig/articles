@@ -131,7 +131,7 @@ Now, let's look at our second example - Selection Sort.
 
 In selection sort, the list is divided into two parts, the sorted part at the left end and the unsorted part at the right end. Initially, the sorted part is empty and the unsorted part is the entire list.
 
-The smallest element is selected from the unsorted array and swapped with the leftmost element, and that element becomes a part of the sorted array. This process continues moving unsorted array boundary by one element to the right.
+The smallest/largest element is selected from the unsorted array and swapped with the leftmost element, and that element becomes a part of the sorted array. This process continues moving unsorted array boundary by one element to the right.
 
 Selection Sort has the time complexity of **O(n<sup>2</sup>)**, making it unsuitable for large lists. 
 
@@ -243,3 +243,142 @@ After running the new sort implementation with the *verify* function for 100000 
 So, the parallel implementation is equivalent to the serial implementation and produces the required output. 
 
 You can find the complete code of Parallel Selection sort [here](https://github.com/madhug-nadig/Parallel-Processing-Nadig/blob/master/Parallel%20Programming%20in%20C%20-%20Selection%20Sort.c).
+
+
+## Mergesort
+
+Mergesort is one of the most popular sorting techniques. It is the typical example for demonstrating the divide-and-conquer paradigm. 
+
+> Merge sort (also commonly spelled mergesort) is an efficient, general-purpose, comparison-based sorting algorithm.
+
+Mergesort has the worst case serial growth as **O(nlogn)**. 
+
+Sorting an array: A[p .. r] using mergesort involves three steps.
+
+> 1. Divide Step
+> 
+> If a given array A has zero or one element, simply return; it is already sorted. Otherwise, split A[p .. r] into two subarrays A[p .. q] and A[q + 1 .. r], each containing about half of the elements of A[p .. r]. That is, q is the halfway point of A[p .. r].
+> 
+> 2. Conquer Step
+> 
+> Conquer by recursively sorting the two subarrays A[p .. q] and A[q + 1 .. r].
+> 
+> 3. Combine Step
+> 
+> Combine the elements back in A[p .. r] by merging the two sorted subarrays A[p .. q] and A[q + 1 .. r] into a sorted sequence. To accomplish this step, we will define a procedure MERGE (A, p, q, r).
+
+We can parallelize the "conquer" step where the array is recursively sorted amongst the left and right subarrays. We can 'parallely' sort the left and the right subarrays.
+
+Here's  the serial implementation:
+	
+	#include <stdio.h>
+	#include <stdlib.h>
+	
+	void mergesort(int a[],int i,int j);
+	void merge(int a[],int i1,int j1,int i2,int j2);
+	
+	int main()
+	{
+	    int *a, num, i;
+	    scanf("%d",&num);
+	
+	   a = (int *)malloc(sizeof(int) * num);
+	    for(i=0;i<num;i++)
+	        scanf("%d",&a[i]);
+	        
+	    mergesort(a, 0, num-1);
+	    
+	    printf("\nSorted array :\n");
+	    for(i=0;i<num;i++)
+	        printf("%d ",a[i]);
+	        
+	    return 0;
+	}
+	 
+	void mergesort(int a[],int i,int j)
+	{
+	    int mid;
+	        
+	    if(i<j)
+	    {
+	        mid=(i+j)/2;
+	        mergesort(a,i,mid);        //left recursion
+	 		mergesort(a,mid+1,j);    //right recursion
+	        merge(a,i,mid,mid+1,j);    //merging of two sorted sub-arrays
+	    }
+	}
+	 
+	void merge(int a[],int i1,int j1,int i2,int j2)
+	{
+	    int temp[1000];    //array used for merging
+	    int i,j,k;
+	    i=i1;    //beginning of the first list
+	    j=i2;    //beginning of the second list
+	    k=0;
+	    
+	    while(i<=j1 && j<=j2)    //while elements in both lists
+	    {
+	        if(a[i]<a[j])
+	            temp[k++]=a[i++];
+	        else
+	            temp[k++]=a[j++];
+	    }
+	    
+	    while(i<=j1)    //copy remaining elements of the first list
+	        temp[k++]=a[i++];
+	        
+	    while(j<=j2)    //copy remaining elements of the second list
+	        temp[k++]=a[j++];
+	        
+	    //Transfer elements from temp[] back to a[]
+	    for(i=i1,j=0;i<=j2;i++,j++)
+	        a[i]=temp[j];
+	}
+
+### Parallelizing Merge Sort through OpenMP
+
+As stated before, the parallelizable region is the "conquer" part. We need to make sure that the left and the right sub-arrays are sorted simuntaneously. We need to implement both left and right *sections* in parallel.
+
+This can be done in OpenMP using directive:
+
+	#pragma omp parallel sections
+
+And each section that has to be parallelized should be enclosed with the directive:
+
+	#pragma omp section
+
+Now, let's work on parallelizing the both sections through OpenMP
+
+	if(i<j)
+	    {
+	        mid=(i+j)/2;
+	        
+	        #pragma omp parallel sections 
+	        {
+	
+	            #pragma omp section
+	            {
+	                mergesort(a,i,mid);        //left recursion
+	            }
+	
+	            #pragma omp section
+	            {
+	                mergesort(a,mid+1,j);    //right recursion
+	            }
+	        }
+	
+	        merge(a,i,mid,mid+1,j);    //merging of two sorted sub-arrays
+	    }
+
+The above will parallleize both left and right recursion.
+
+### "Correctness"
+
+Now that we've parallelized our serial mergesort implementation, let's see if the program produces the required output. For that, we can use the verify function that we used for our selection sort example.
+
+	>>> Fail count: 0
+
+Great, so the parallel implementation works. You can find the parallel implementation [here](https://github.com/madhug-nadig/Parallel-Processing-Nadig/blob/master/Parallel%20Programming%20in%20C%20-%20Merge%20Sort.c)
+
+That's it for now, if you have any comments please leave them below.
+<br /> <br />
