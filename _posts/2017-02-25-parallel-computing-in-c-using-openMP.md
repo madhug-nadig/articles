@@ -204,7 +204,7 @@ Reduction can be declared by using:
 
 	#pragma omp declare reduction (reduction-identifier : typename-list : combiner) [initializer-clause]
 
-The declare reduction clause receives a struct. So, our custom maximum index reduction will look something like this:
+The declared reduction clause receives a struct. So, our custom maximum index reduction will look something like this:
 
 	struct Compare { int val; int index; };
 	#pragma omp declare reduction(maximum : struct Compare : omp_out = omp_in.val > omp_out.val ? omp_in : omp_out)
