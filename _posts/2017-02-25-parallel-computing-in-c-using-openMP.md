@@ -121,7 +121,7 @@ It is noteworthy to mention that with the parallel implementation, each and ever
 Further, if there are more than one instances of the required element present in the array, there is no guarantee that the parallel linear search will return the first match. The order of threads running and termination is non-deterministic. There is no way of which which thread will return first or last. To preserve the order of the matched results, another attribute(index) has to be added to the results.
 
 
-You can find the complete code of Parallel Selection sort [here](https://github.com/madhug-nadig/Parallel-Processing-Nadig/blob/master/Parallel%20Programming%20in%20C%20-%20Linear%20Search.c)
+You can find the complete code of Parallel Linear Search [here](https://github.com/madhug-nadig/Parallel-Processing-Nadig/blob/master/Parallel%20Programming%20in%20C%20-%20Linear%20Search.c)
 
 ## Selection Sort
 
