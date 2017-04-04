@@ -28,7 +28,8 @@ The k-means algorithm takes a dataset of '_n_' points as input, together with an
 The math:
 
 ![K Means Math]({{site.baseurl}}/images/kmeansmath.png)
-Image courtesy: DSlab
+
+<span style = "color: #dfdfdf; font-size:0.6em">Image courtesy: DSlab</span>
 
 In the beginning, the algorithm chooses _k_ centroids in the dataset. Then it calculates the distance of each point to each centroid. Each centroid represents a cluster and the points closest to the centroid are assigned to the cluster. At the end of the first iteration, the centroid values are recalculated, usually taking the arithmetic mean of all points in the cluster. 
 
@@ -36,22 +37,23 @@ After the new values of centroid are found, the algorithm performs the same set 
 
 K Means in action
 
-![K Means Math]({{site.baseurl}}/images/kmeans.gif)
+![K Means Math]({{site.baseurl}}/images/k-means.gif)
 
-### Predict the presence of Chronic Kidney disease:
+### Clustering the cricket players based on stats:
 
-I've used the "Chronic Kidney Diseases" dataset from the UCI ML repository. We will be predicting the presence of chronic kidney disease based on many input parameters. The _predict class_ is binary: **"chronic"** or **"not chronic"**.
+I've used the IPL stats dataset that I compiled from inline sources. We will be clustering the cricket players based on their batting and bowling performance. I am using a normalized dataset and hence, I will not be normalizing it in my code.
 
-The dataset will be divided into _'test'_ and _'training'_ samples for **[cross validation](https://en.wikipedia.org/wiki/Cross-validation_(statistics))**. The training set will be used to 'teach' the algorithm about the dataset, ie. to build a model; which, in the case of k-NN algorithm happens during active runtime during prediction. The test set will be used for evaluation of the results.
+I shall visualize the algorithm using the mathplotlib module for python.
 
-## Implementing k-NN:
+## Implementing k-Means:
 
 The implementation can be divided into the following:
 
 1. Handle Data: Clean the file, normalize the parameters, given numeric values to non-numeric attributes. Read data from the file and split the data for cross validation.
-2. Distance Calculation: Finding the distance between two data points. This distance metric is used to find the '_k_' points.
-3. Prediction: Find the '_k_' points and make predictions on the incoming data.
-4. Testing/Evaluation: Test the data using the testing set. Find the accuracy.
+2. Find Initial Centroids: Choose _k_ centroids in random.
+3. Distance Calculation: Finding the distance between each of the datapoints with each of the centroids. This distance metric is used to find the which cluster the points belong to.
+4. Re-calculating the centroids: Find the new values for centroid. 
+5. Stop the iteration: Stop the algorithm when the difference between the old and the new centroids in negligible.
 
 ### Setting up the class:
 
