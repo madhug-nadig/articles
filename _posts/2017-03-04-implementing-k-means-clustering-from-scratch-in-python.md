@@ -53,7 +53,7 @@ The implementation can be divided into the following:
 2. Find Initial Centroids: Choose _k_ centroids in random.
 3. Distance Calculation: Finding the distance between each of the datapoints with each of the centroids. This distance metric is used to find the which cluster the points belong to.
 4. Re-calculating the centroids: Find the new values for centroid. 
-5. Stop the iteration: Stop the algorithm when the difference between the old and the new centroids in negligible.
+5. Stop the iteration: Stop the algorithm when the difference between the old and the new centroids is negligible.
 
 ### Setting up the class:
 
@@ -70,9 +70,8 @@ In the constructor, I have set the default number of cluster, ie. the value of _
 
 ## Handling Data:
 
-I've modified the original data set and have added the header lines. You can find the modified dataset [here](https://github.com/madhug-nadig/Machine-Learning-Algorithms-from-Scratch/blob/master/data/chronic_kidney_disease.csv).
+I'm using the normalized data set and have added the header lines. You can find the dataset [here](https://github.com/madhug-nadig/Machine-Learning-Algorithms-from-Scratch/blob/master/data/chronic_kidney_disease.csv).
 
-The original dataset has the data description and other related metadata. You can find the original dataset from the UCI ML repo [here](https://archive.ics.uci.edu/ml/datasets/Chronic_Kidney_Disease).
 
 The first thing to do is to read the csv file. To deal with the csv data data, let's import Pandas first. Pandas is a powerful library that gives Python R like syntax and functioning.
 
@@ -80,101 +79,22 @@ The first thing to do is to read the csv file. To deal with the csv data data, l
 
 Now, loading the data file:
 
-    df = pd.read_csv(r".\data\chronic_kidney_disease.csv") #Reading from the data file
-
-The first thing is to convert the non-numerical data elements into numerical formats. In this dataset, all the non-numerical elements are of Boolean type. This makes it easy to convert them to numbers. I've assigned the numbers '4' and '2' to positive and negative Boolean attributes respectively.
-
-    def mod_data(df):
-
-        df.replace('?', -999999, inplace = True)
-
-        df.replace('yes', 4, inplace = True)
-
-        df.replace('no', 2, inplace = True)
-
-        df.replace('notpresent', 4, inplace = True)
-
-        df.replace('present', 2, inplace = True)
-
-        df.replace('abnormal', 4, inplace = True)
-
-        df.replace('normal', 2, inplace = True)
-
-        df.replace('poor', 4, inplace = True)
-
-        df.replace('good', 2, inplace = True)
-
-        df.replace('ckd', 4, inplace = True)
-
-        df.replace('notckd', 2, inplace = True)
-
+	df = pd.read_csv(r".\data\ipl_bowlers_norm.csv")
+    
 In `main.py`:
 
-        mod_data(df)
+	df = df[['one', 'two']]
+	dataset = df.astype(float).values.tolist()
 
-        dataset = df.astype(float).values.tolist()
-
-        #Shuffle the dataset
-
-        random.shuffle(dataset) #import random for this
-
-Next, we have split the data into test and train. In this case, I will be taking 25% of the dataset as the test set:
-
-        #25% of the available data will be used for testing
-
-        test_size = 0.25
-
-        #The keys of the dict are the classes that the data is classfied into
-
-        training_set = {2: [], 4:[]}
-
-        test_set = {2: [], 4:[]}
-
-Now, split the data into test and training; insert them into test and training dictionaries:
-
-        #Split data into training and test for cross validation
-
-        training_data = dataset[:-int(test_size \* len(dataset))]
-
-        test_data = dataset[-int(test_size \* len(dataset)):]
-
-        #Insert data into the training set
-
-        for record in training_data:
-				#Append the list in the dict will all the elements of the record except the class
-                training_set[record[-1]].append(record[:-1]) 
-
-        #Insert data into the test set
-
-        for record in training_data:
-				# Append the list in the dict will all the elements of the record except the class
-                test_set[record[-1]].append(record[:-1]) 
+	X = df.values #returns a numpy array
 
 
 
 ## Distance Calculation:
 
-### Normalizing Dataset:
-
-Before calculating distance, it is very important to **Normalize** the dataset - to perform **[feature scaling](https://en.wikipedia.org/wiki/Feature_scaling)**. Since the distance measure is directly dependent on the _magnitude_ of the parameters, the features with higher average values will get more preference whilst decision making; for example, in the dataset in our case, the feature '_age_' might get more preference since its values are higher than that of other features. Not normalizing the data prior to distance calculation may reduce the accuracy.
-
-I will be using sci-kit learn's `preprocessing` to scale the data.
-
-	from sklearn import preprocessing
-
-        #Normalize the data
-
-        x = df.values #returns a numpy array
-
-        min_max_scaler = preprocessing.MinMaxScaler()
-
-        x_scaled = min_max_scaler.fit_transform(x)
-
-        df = pd.DataFrame(x_scaled) #Replace df with normalized values
-
 ### Distance Metric:
 
-The k-NN algorithm relies heavy on the idea of _similarity_ of data points. This similarity is computed is using the **distance metric**. Now, the decision regarding the decision measure is _very, very imperative_ in k-NN. A given incoming point can be predicted by the algorithm to belong one class or many depending on the distance metric used. From the previous sentence, it should be apparent that different distance measures may result in different answers.
+The k-means algorithm, like the k-NN algorithm, relies heavy on the idea of _distance_ between the data points and the centroid. This distance is computed is using the **distance metric**. Now, the decision regarding the decision measure is _very, very imperative_ in k-Means. A given incoming point can be predicted by the algorithm to belong one cluster or many depending on the distance metric used. From the previous sentence, it should be apparent that different distance measures may result in different answers.
 
 There is no sure-shot way of choosing a distance metric, the results mainly depend on the dataset itself. The only way of surely knowing the right distance metric is to apply different distance measures to the same dataset and choose the one which is most accurate.
 
@@ -208,130 +128,60 @@ The above code can be extended to _n_ number of features. In this example, howev
 
 
 
-## Prediction:
+## Clustering:
 
-After figuring out the distances between the points, we will use the distances to find the '_k_' nearest neighbours of the given point and then, based on the classes of these 'neighbours', make the prediction on the class of the incoming data. 
+After figuring out the distances between the points, we will use the distances to find which cluster amongst the _k_ clusters a given data point belongs to.  
 
-This is quite straight-forward: First calculate the distance between the incoming point and all the points in the training set. Then select a subset of size _k_ from those points and find the probability of the incoming point being in each class. The class with the most probability will be selected as the predicted class.
+First, let's initialize the centroids randomly:
 
-We get to choose the value '_k_'. There are many rules of thumb to do this, but most often the value of '_k_' is chosen after trail and error. In this case, I am setting the default value of _k_ to 3.
+	#initialize the centroids, the first 'k' elements in the dataset will be our initial centroids
+	for i in range(self.k):
+		self.centroids[i] = data[i]
 
-In `CustomKNN` class:
+Now, let's enter the main loop. 
 
-	def predict(self, training_data, to_predict, k = 3):
+	for i in range(self.max_iterations):
+			self.classes = {}
+			for i in range(self.k):
+				self.classes[i] = []
 
-                if len(training_data) >= k:
+			#find the distance between the point and cluster; choose the nearest centroid
+			for features in data:
+				distances = [np.linalg.norm(features - self.centroids[centroid]) for centroid in self.centroids]
+				classification = distances.index(min(distances))
+				self.classes[classification].append(features)
 
-                        print("K cannot be smaller than the total voting groups(ie. number of training data points)")
+The main loop executes `max_iterations` number of times at most. We are defining the  each cluster in the `classes` list. Then we iterate through the features in data and find the distance between the features of the data point and the features of the centroid. After finding the cluster nearest to the datapoint, we append the cluster list within `classes` with the data point's feature vector.
 
-                        return
+Now, let's re-calculate the cluster centroids.
 
-                distributions = []
+	previous = dict(self.centroids)
 
-                for group in training_data:
+	#average the cluster datapoints to re-calculate the centroids
+	for classification in self.classes:
+		self.centroids[classification] = np.average(self.classes[classification], axis = 0)
 
-                        for features in training_data[group]:
+The dictionary `previous` stores the value of centroids that the previous iteration returned, we performed the clustering in this iteration based on these centroids. Then we iterate though the `classes` list and find the average of all the datapoints in the given cluster. This is, perhaps, the _machine learning_ part of k-means. The algorithm recomputes the centroids as long as it's optimal(or if there have been far too many interations in  attempting doing so). 
 
-                                euclidean_distance = np.linalg.norm(np.array(features)- np.array(to_predict))
+Time to see if our algorithm has reached the optimal values of centroids. For this, let's have a flag `isOptimal`.
 
-                                distributions.append([euclidean_distance, group])
+	isOptimal = True
 
-                        results = [i[1] for i in sorted(distributions)[:k]]
+Let's iterate though the new centroids and compare it with the older centroid values and see if it's converged.
 
-                        result = Counter(results).most_common(1)[0][0]
+	for centroid in self.centroids:
 
-                        confidence = Counter(results).most_common(1)[0][1]/k
+		original_centroid = previous[centroid]
+		curr = self.centroids[centroid]
 
-                return result, confidence
+		if np.sum((curr - original_centroid)/original_centroid * 100.0) > self.tolerance:
+			isOptimal = False
 
-## Testing/Evaluation :
+		#break out of the main loop if the results are optimal, ie. the centroids don't change their positions much(more than our tolerance)
+		
+	if isOptimal:
+			break
 
-Now that we have finished up the algorithm, it's time to test how well it performs. Since, for this dataset, k-NN is a bindary classifier, I will be using [classification accuracy](https://en.wikipedia.org/wiki/Accuracy_and_precision#In_binary_classification) to evaluate the algorithm. 
-
->The accuracy is the proportion of true results (both true positives and true negatives) among the total number of cases examined.
-
-In the class `CustomKNN`:
-
-	def test(self, test_set, training_set):
-		for group in test_set:
-			for data in test_set[group]:
-				
-				#Making the predictions
-
-				predicted_class,confidence = self.predict(training_set, data, k =3)
-				
-				if predicted_class == group: #Got it right
-					self.accurate_predictions += 1
-				else:
-					print("Wrong classification with confidence " + str(confidence * 100) + " and class " + str(predicted_class))
-				
-				self.total_predictions += 1
-
-		self.accuracy = 100*(self.accurate_predictions/self.total_predictions)
-		print("	nAcurracy :", str(self.accuracy) + "%")
-
-Along with the classification accuracy, above function will also print out the wrongly classified elements with the probablities.
-
-After a few runs, the best value for accuracy that I got:
-
-	>>>Accuracy: 91.25%
-
-## Comparing accuracy of Custom k-NN with sci-kit k-NN:
-
-Now, let's compare our implmentation with the sci-kit learn implementation. This is just for demonstration purposes only. If I was using k-NN algorithm in a production environment, I would _definitely_ use the library function and so should you. 
-
-Here is the code with the sci-kit learn k-NN for the same dataset:
-
-	from sklearn import preprocessing, cross_validation, neighbors
-	import pandas as pd
-	import numpy as np
-
-
-	def mod_data(df):
-			
-		df.replace('?', -999999, inplace = True)
-			
-		df.replace('yes', 4, inplace = True)
-		df.replace('no', 2, inplace = True)
-
-		df.replace('notpresent', 4, inplace = True)
-		df.replace('present', 2, inplace = True)
-			
-		df.replace('abnormal', 4, inplace = True)
-		df.replace('normal', 2, inplace = True)
-			
-		df.replace('poor', 4, inplace = True)
-		df.replace('good', 2, inplace = True)
-			
-		df.replace('ckd', 4, inplace = True)
-		df.replace('notckd', 2, inplace = True)
-
-
-
-	df = pd.read_csv(r".\data\chronic_kidney_disease.csv") #Reading from the data file
-	mod_data(df)
-
-	X = np.array(df.drop(['class'], 1))
-	y = np.array(df['class'])
-
-	#Use 25% of the data as test
-	X_train, X_test, y_train, y_test = cross_validation.train_test_split(X, y, test_size = 0.25)
-
-	clf = neighbors.KNeighborsClassifier()
-	clf.fit(X_train, y_train)
-
-	accuracy = clf.score(X_test, y_test)
-
-	print("Accuracy: " + str(accuracy*100) + "%") 
-
-After many runs, the best accuracy that came out of the library algorithm:
-	
-	>>>Accuracy: 88.75%
-
-However, in most runs, the accuracy hovered around the value of `81.25%`. I was quite surprised at the result myself. I am not fully sure as to why the custom implementation out-performed the sci-kit learn implementation. This probably has something to do with the fact that I have used sci-kit k-NN as it is - without any customization whatsoever. The _k_ value and _distance metric_ themselves play an important role in accuracy. It is also possible that sci-kit implementation refrains from going through the entire dataset to improve the running time.
-
-You can find the entire code on GitHub, [here](https://github.com/madhug-nadig/Machine-Learning-Algorithms-from-Scratch/blob/master/K%20Nearest%20Neighbours.py).
-
-That's it for now. If you have any comments, please leave them below.
+We find the situation to be optimal if the percentage change in the centroid values is lower than our accepted value of tolerance. We break out of the main loop if we find that the algorithm has reached the optimal stage, ie. the changes in the values of centroids, if the algorithm continued to execute, is negligible.
 
 <br /><br />
