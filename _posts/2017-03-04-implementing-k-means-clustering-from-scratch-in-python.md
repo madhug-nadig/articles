@@ -59,17 +59,14 @@ The implementation can be divided into the following:
 
 Before we move forward, let's create a class for the algorithm.
 
-    class CustomKNN:
+    class K_Means:
 
-        #constructor
+		def __init__(self, k =3, tolerance = 0.0001, max_iterations = 500):
+			self.k = k
+			self.tolerance = tolerance
+			self.max_iterations = max_iterations
 
-        def __init__(self):
-
-                self.accurate_predictions = 0
-
-                self.total_predictions = 0
-
-                self.accuracy = 0.0
+In the constructor, I have set the default number of cluster, ie. the value of _k_ as 3. So, by default the implementation will form 3 clusters out of the dataset. I've set teh _tolerance_ value as `0.0001`. When the difference between the old and new centroids is less than the _tolerance_ value, we stop the iterations. The final argument is the `max_iterations` which specifies the maximum number of times the algorithm can iterate trying to optimize the centroid values, the default value is set to 500 iterations. So, by default, teh algorithm stops when the difference between the old and the new centroids is less than 0.0001x or when the number of iterations has crossed 500.
 
 ## Handling Data:
 

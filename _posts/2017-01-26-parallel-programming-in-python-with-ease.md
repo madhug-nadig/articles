@@ -18,6 +18,8 @@ Parallel programming in Python is a bit _tricky_ as compared to languages such a
 
 **Python is restricted to a single OS thread**; therefore, it cannot make use of the multiple cores and processors available on modern hardware. So _throwing some threads_ into the program will not result in faster performance, since the threads essentially run in serial. The actual overhead of thread creation, synchronization and termination will actually slow down the program. This problem exists only in CPython, not in Jython or IronPython.
 
+If you interested to know more about Cpython's GIL, you should read this [article](https://bhargav2017.wordpress.com/2017/04/03/the-python-gil/).
+
  
 ## The **[multiprocessing](http://docs.python.org/3/library/multiprocessing.html?highlight=multiprocessing#multiprocessing)** library
 
