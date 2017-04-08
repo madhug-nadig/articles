@@ -241,7 +241,7 @@ n0tusBn4UyVhuA/7ZYIv5g+pE3ail25hN/qdmzCfpsJVjKKCZesDBwtzrAqGOMQj6vhCDRsY4ALH
 mOVObltR/xeG/jph6OD2r+Fv5lZBWEhMx58AAAAASUVORK5CYII=
 " width="16" height="16" x="32" y="16"></image></g></svg></svg></div></div>
 
-Here we have our scatter plot with clustering done on it using K Means clustering algorithm. The three clusters can be thought of as _Batsmen_ (<span style = "color:red">Red</span>), _Bowlers_(<span style = "color:green") and _Allrounders_(<span style = "color:blue").
+Here we have our scatter plot with clustering done on it using K Means clustering algorithm. The three clusters can be thought of as _Batsmen_ (<span style = "color:red">Red</span>), _Bowlers_(<span style = "color:green">Green</span>) and _Allrounders_(<span style = "color:blue">Blue</span>).
 
 That's it for now; if you have any comments, please leave them below.
 
