@@ -70,7 +70,7 @@ In the constructor, I have set the default number of cluster, ie. the value of _
 
 ## Handling Data:
 
-I'm using the normalized data set and have added the header lines. You can find the dataset [here](https://github.com/madhug-nadig/Machine-Learning-Algorithms-from-Scratch/blob/master/data/chronic_kidney_disease.csv).
+I'm using the normalized data set and have added the header lines. You can find the dataset [here](https://github.com/madhug-nadig/Machine-Learning-Algorithms-from-Scratch/blob/master/data/ipl.csv).
 
 
 The first thing to do is to read the csv file. To deal with the csv data data, let's import Pandas first. Pandas is a powerful library that gives Python R like syntax and functioning.
@@ -161,7 +161,7 @@ Now, let's re-calculate the cluster centroids.
 	for classification in self.classes:
 		self.centroids[classification] = np.average(self.classes[classification], axis = 0)
 
-The dictionary `previous` stores the value of centroids that the previous iteration returned, we performed the clustering in this iteration based on these centroids. Then we iterate though the `classes` list and find the average of all the datapoints in the given cluster. This is, perhaps, the _machine learning_ part of k-means. The algorithm recomputes the centroids as long as it's optimal(or if there have been far too many interations in  attempting doing so). 
+The dictionary `previous` stores the value of centroids that the previous iteration returned, we performed the clustering in this iteration based on these centroids. Then we iterate though the `classes` list and find the average of all the datapoints in the given cluster. This is, perhaps, the _machine learning_ part of k-means. The algorithm recomputes the centroids as long as it's optimal(or if there have been far too many interations in  attempting to do so). 
 
 Time to see if our algorithm has reached the optimal values of centroids. For this, let's have a flag `isOptimal`.
 
@@ -186,7 +186,7 @@ We find the situation to be optimal if the percentage change in the centroid val
 
 ## Visualizing the clusters
 
-Now that we are done with clustering, let us visualize the datasets to see where these clusters stand at. I will be using python [matplotlib]() module to visualize the dataset and then color the different clusters for visual identification.
+Now that we are done with clustering, let us visualize the datasets to see where these clusters stand at. I will be using python [matplotlib](http://matplotlib.org/) module to visualize the dataset and then color the different clusters for visual identification.
 
 In main:
 
