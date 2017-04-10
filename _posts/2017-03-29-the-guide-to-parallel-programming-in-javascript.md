@@ -80,6 +80,7 @@ Let's start with the worker. The worker can have a handler to the `onmessage` ev
 	  console.log('Posting message back to main script');
 	  postMessage(result);
 	}
+
 I will implement the [three-hump camel function](https://www.sfu.ca/~ssurjano/camel3.html) in the background using web workers and send over the result using the postMessage API. 
 
 The function:
