@@ -31,7 +31,7 @@ JavaScript is no longer confined to the browser. It runs everywhere and on anyth
 
 # The JavaScript event Loop
 
-Perhaps the most solid obstacle to parallel programming in JS was it's event based paradigm. 
+Perhaps the most solid obstacle to parallel programming in JS was its event based paradigm. 
 
 >JavaScript has a concurrency model based on an "event loop" where almost all I/O is non-blocking. When the operation has been completed, a message is enqueued along with the provided callback function. At some point in the future, the message is dequeued and the callback fired.
 
@@ -49,7 +49,7 @@ Thanks to web workers, we now have a better way to achieve this.
 
 # Enter Web Workers
 
-Parallel computing in JavaScript can be achieved through web workers, which were introduced with the HTML5 specification. 
+Parallel computing in JavaScript can be achieved through [Web Workers API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API), which were introduced with the HTML5 specification. 
 
 > A web worker, as defined by the World Wide Web Consortium (W3C) and the Web Hypertext Application Technology Working Group (WHATWG), is a JavaScript script executed from an HTML page that runs in the background, independently of other user-interface scripts that may also have been executed from the same HTML page. Web workers are often able to utilize multi-core CPUs more effectively. Web workers are relatively heavy-weight. They are expected to be long-lived, have a high start-up performance cost, and a high per-instance memory cost.
 
@@ -57,10 +57,81 @@ Web workers allow the user to run JavaScript in parallel without interfering the
 
 With web workers, it is now possbile to have multiple JS threads running in parallel. It allows the browser to have a normal operation with the event loop based execution of the single main thread on the user side, while making room for multiple threads in the background. Each web worker has a separate message queue, event loop, and memory space independent from the original thread that instantiated it. 
 
-Web workers communicate with the main document/ the main thread via message passing technique. The message passing is done using the [postMessage]() API.
+Web workers communicate with the main document/ the main thread via message passing technique. The message passing is done using the [postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage) API.
 
 ![K Means Math]({{site.baseurl}}/images/web-workers.png)
 
+
+According to the scpecification, there are two types of web workers: [shared web workers](https://html.spec.whatwg.org/multipage/workers.html#dedicated-workers-and-the-worker-interface) and [dedicated web workers](https://html.spec.whatwg.org/multipage/workers.html#sharedworker).
+
+The default web worker is the dedicated web worker.
+
+> A dedicated worker is only accessible from the script that first spawned it, whereas shared workers can be accessed from multiple scripts.
+
+The shared web worker needs a different constructor: `SharedWorker`
+
+> A shared worker is accessible by multiple scripts — even if they are being accessed by different windows, iframes or even workers.
+
+Let's start with the worker. The worker can have a handler to the `onmessage` event and it communicates with the main thread using postMessage API.
+
+	onmessage = function(e) {
+	  console.log('Message received from main script');
+	  //CPU intensive computations
+	  console.log('Posting message back to main script');
+	  postMessage(result);
+	}
+I will implement the [three-hump camel function](https://www.sfu.ca/~ssurjano/camel3.html) in the background using web workers and send over the result using the postMessage API. 
+
+The function:
+
+![Three-hump Camel Function]({{site.baseurl}}/images/threehumpfn.png)
+<br />
+![Three-hump Camel]({{site.baseurl}}/images/threehumpcamel.png)
+
+In our task.js:
+
+	onmessage = function(e) {
+		console.log("Message received from main script.");
+	
+		// Implementing three hump camel function
+	
+		var x = e.data[0];
+		var y = e.data[1];
+	
+		var result = (2*x*x) - (1.05*x*x*x*x) + (Math.pow(x,6)/6) + (x*y) + (y*y);
+	
+		var workerResult = "Result: " + result;
+		console.log("Posting message back to main script.");
+		postMessage(workerResult);
+	}
+
+On the event of the main thread sending the message the `onmessage` and the function executes. The worker computes the function in the background and put the message in the message queue through the `postMessage` function.
+
+Now, coming to our main thread: 
+
+	function compute(){
+		if (window.Worker) { // Check if the Browser supports the Worker api.
+			// Requires script name as input
+			var worker = new Worker("task.js");
+
+			worker.postMessage([0.554,2]); // Sending message as an array to the worker
+			console.log('Message posted to worker');
+
+			worker.onmessage = function(e) {
+				console.log(e.data);
+				document.getElementById("result").innerHTML = e.data;
+				console.log('Message received from worker');
+			};
+		}
+	}
+
+We have one function compute that executes on a button onclick. We first check if the browser supports web worker API. Then we create a worker using the `Worker()` constructor. After which we post the data to the worker using the `postMessage()` function. This will run the worker script in the background, since the worker script is waiting for our message event. 
+
+We then wait for the message event from the worker. We handle that event with our callback and update the result.
+
+The result for the given parameters:
+
+![Web Worker result]({{site.baseurl}}/images/ww_output.png)
 
 That's it for now; if you have any comments, please leave them below.
 
