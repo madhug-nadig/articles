@@ -84,9 +84,9 @@ I will implement the [three-hump camel function](https://www.sfu.ca/~ssurjano/ca
 
 The function:
 
-![Three-hump Camel Function]({{site.baseurl}}/images/threehumpfn.png)
+![Three-hump Camel Function]({{site.baseurl}}/images/threehumpfn.svg)
 <br />
-![Three-hump Camel]({{site.baseurl}}/images/threehumpcamel.png)
+![Three-hump Camel]({{site.baseurl}}/images/threehumpcamel.jpg)
 
 In our task.js:
 
@@ -131,7 +131,7 @@ We then wait for the message event from the worker. We handle that event with ou
 
 The result for the given parameters:
 
-![Web Worker result]({{site.baseurl}}/images/ww_output.png)
+![Web Worker result]({{site.baseurl}}/images/ww_output.PNG)
 
 That's it for now; if you have any comments, please leave them below.
 
