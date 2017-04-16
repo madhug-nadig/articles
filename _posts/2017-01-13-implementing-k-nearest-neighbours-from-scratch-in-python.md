@@ -134,7 +134,7 @@ Now, split the data into test and training; insert them into test and training d
 
         #Insert data into the test set
 
-        for record in training_data:
+        for record in test_data:
 				# Append the list in the dict will all the elements of the record except the class
                 test_set[record[-1]].append(record[:-1]) 
 
@@ -262,7 +262,7 @@ Along with the classification accuracy, above function will also print out the w
 
 After a few runs, the best value for accuracy that I got:
 
-	>>>Accuracy: 91.25%
+	>>>Accuracy: 88.75%
 
 ## Comparing accuracy of Custom k-NN with sci-kit k-NN:
 
@@ -314,9 +314,9 @@ Here is the code with the sci-kit learn k-NN for the same dataset:
 
 After many runs, the best accuracy that came out of the library algorithm:
 	
-	>>>Accuracy: 88.75%
+	>>>Accuracy: 86.75%
 
-However, in most runs, the accuracy hovered around the value of `81.25%`. I was quite surprised at the result myself. I am not fully sure as to why the custom implementation out-performed the sci-kit learn implementation. This probably has something to do with the fact that I have used sci-kit k-NN as it is - without any customization whatsoever. The _k_ value and _distance metric_ themselves play an important role in accuracy. It is also possible that sci-kit implementation refrains from going through the entire dataset to improve the running time.
+However, in most runs, the accuracy hovered around the value of `81.25%`. I was quite surprised at the result myself. I am not fully sure as to why the custom implementation  _**slightly**_ out-performed the sci-kit learn implementation. This probably has something to do with the fact that I have used sci-kit k-NN as it is - without any customization whatsoever. The _k_ value and _distance metric_ themselves play an important role in accuracy. It is also possible that sci-kit implementation refrains from going through the entire dataset to improve the running time.
 
 You can find the entire code on GitHub, [here](https://github.com/madhug-nadig/Machine-Learning-Algorithms-from-Scratch/blob/master/K%20Nearest%20Neighbours.py).
 
