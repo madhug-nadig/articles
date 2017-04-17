@@ -134,6 +134,352 @@ The result for the given parameters:
 
 ![Web Worker result]({{site.baseurl}}/images/ww_output.PNG)
 
+## Task Parallelism Through Web workers
+
+Web workers are very good at task parallelism. One can create many background workers and run multiple tasks independently in parallel. In this example, I will go ahead and implement quicksort and mergesort to run in parallel to each other.
+
+First, the serial code
+
+Quicksort:
+
+
+
+	function swap(items, firstIndex, secondIndex){
+	    var temp = items[firstIndex];
+	    items[firstIndex] = items[secondIndex];
+	    items[secondIndex] = temp;
+	}
+
+	function partition(items, left, right) {
+
+	    var pivot   = items[Math.floor((right + left) / 2)],
+	        i       = left,
+	        j       = right;
+
+
+	    while (i <= j) {
+
+	        while (items[i] < pivot) {
+	            i++;
+	        }
+
+	        while (items[j] > pivot) {
+	            j--;
+	        }
+
+	        if (i <= j) {
+	            swap(items, i, j);
+	            i++;
+	            j--;
+	        }
+	    }
+
+	    return i;
+	}
+
+	function quickSort(items, left, right) {
+
+	    var index;
+
+	    if (items.length > 1) {
+
+	        index = partition(items, left, right);
+
+	        if (left < index - 1) {
+	            quickSort(items, left, index - 1);
+	        }
+
+	        if (index < right) {
+	            quickSort(items, index, right);
+	        }
+
+	    }
+
+	    return items;
+	}
+
+Mergesort:
+
+
+	function mergeSort(arr){
+
+	    if (arr.length < 2)
+	        return arr;
+	 
+	    var middle = parseInt(arr.length / 2);
+	    var left   = arr.slice(0, middle);
+	    var right  = arr.slice(middle, arr.length);
+	 
+	    return merge(mergeSort(left), mergeSort(right));
+	}
+	 
+	function merge(left, right){
+	    var result = [];
+	 
+	    while (left.length && right.length) {
+	        if (left[0] <= right[0]) {
+	            result.push(left.shift());
+	        } else {
+	            result.push(right.shift());
+	        }
+	    }
+	 
+	    while (left.length)
+	        result.push(left.shift());
+	 
+	    while (right.length)
+	        result.push(right.shift());
+	 
+	    return result;
+	}
+	 
+
+Now, in order for these tasks to run in parallel, we need to create a worker process for each of these:
+
+[quicksort.js](https://github.com/madhug-nadig/Parallel-Processing-Nadig/blob/master/quicksort.js):
+
+	onmessage = function(e) {
+		console.log("Message received from main script.");
+
+		// Implementing three hump camel function
+
+		var arr = e.data;
+		console.log(arr);
+		result = quickSort(arr, 0, arr.length - 1);
+		postMessage(result);
+	}
+
+[mergesort.js](https://github.com/madhug-nadig/Parallel-Processing-Nadig/blob/master/mergesort.js):
+
+	onmessage = function(e) {
+		console.log("Message received from main script.");
+
+		// Implementing three hump camel function
+
+		var arr = e.data;
+		console.log(arr);
+		result = mergeSort(arr);
+		postMessage(result);
+	}
+
+In our main.js, we need to create and call both the woekers.
+
+	
+	function bothsort(){
+		if (window.Worker) { // Check if the Browser supports the Worker api.
+			// Requires script name as input
+			var worker = new Worker("mergesort.js");
+			var worker_2 = new Worker("quicksort.js");
+
+			array= []
+			for(i =1000; i > 0; i--){
+				array.push(Math.round(Math.random()*1000));
+			}
+			worker.postMessage(array); // Sending message as an array to the worker
+			worker_2.postMessage(array); // Sending message as an array to the worker
+
+			worker.onmessage = function(e) {
+				console.log(e.data);
+				document.getElementById("result").innerHTML = e.data;
+				console.log('MergeSort Message received from worker');
+			};
+			worker_2.onmessage = function(e) {
+				console.log(e.data);
+				document.getElementById("result_2").innerHTML = e.data;
+				console.log('QUickSort Message received from worker');
+			};
+		}
+	}
+
+Now, let's time both serial and parallel tasks through `window.performance.now`:
+
+
+	a = performance.now();
+	bothsort();
+	b = performance.now();
+	console.log(b-a);
+
+	a = performance.now();
+	mergeSort(array);
+	quickSort(array, 0, array.length-1);
+	b = performance.now();
+	console.log(b-a);
+
+
+## Speedup
+
+
+Once the parallelization of a task is complete, it is important to evaluate the speed and efficiency of the new program, for parallelism is pointless without faster execution.
+
+> Speedup (Sp) is defined as the ratio of runtime for a sequential algorithm (T1) to runtime for a parallel algorithm with p processors (Tp). That is, Sp = T1 / Tp. Ideal speedup results when Sp = p. Speedup is formally derived from Amdahl’s law, which considers the portion of a program that is serial vs. the portion that is parallel when calculating speedup.
+
+Here are the results for serial and parallel after many runs:
+	
+	| Number of Data points | Serial      | Parallel    | Speedup |
+	|-----------------------|-------------|-------------|---------|
+	| 400   	        	| 9.165000    | 1.855000    | 4.9407  |
+	| 800  	           		| 11.10500    | 1.225000    | 9.0653  |
+	| 1600 	            	| 20.099999   | 3.545000    | 5.6699  |
+	| 3200	            	| 45.905000   | 4.929999    | 9.3113  |
+	| 6400   	        	| 93.797550   | 5.265000    | 17.8153 |
+	| 12800   	        	| 288.005	  | 9.44499     | 30.4298 |
+
+The advantages of parallel processing are apparent; with a speed up of 4.9407 (4.9x faster exec time). We can also observe the performance going off the charts for 12800 elements to sort, with the speed-up reaching the massive value of 30.4298.
+
+
+The graph representing the speedup:
+
+
+<style>
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.bar {
+  fill: #E34B48;
+}
+
+.bar:hover {
+  fill: #270738 ;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.d3-tip {
+  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+}
+
+/* Creates a small triangle extender for the tooltip */
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+/* Style northward tooltips differently */
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}
+</style>
+
+
+<div id = "graph" class = "graph">
+
+</div>
+
+
+<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="http://labratrevenge.com/d3-tip/javascripts/d3.tip.v0.6.3.js"></script>
+<script>
+
+data = [
+	{"letter":"400","frequency":4.9407},
+	{"letter":"800","frequency":9.06530},
+	{"letter":"1600","frequency":5.6699},
+	{"letter":"3200","frequency":9.3113 },
+	{"letter":"6400","frequency":17.8153},
+	{"letter":"12800","frequency":30.4298}
+];
+
+ww = document.getElementById("graph").offsetWidth;
+hh = document.body.clientHeight/1.333; 
+
+console.log(ww);
+
+var margin = {top: 40, right: 20, bottom: 30, left: 40},
+    width = ww - margin.left - margin.right,
+    height = hh - margin.top - margin.bottom;
+
+
+var x = d3.scale.ordinal()
+    .rangeRoundBands([0, width], .1);
+
+var y = d3.scale.linear()
+    .range([height, 0]);
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom");
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left");
+
+var tip = d3.tip()
+  .attr('class', 'd3-tip')
+  .offset([-10, 0])
+  .html(function(d) {
+    return "<strong>Speedup:</strong> <span style='color:red'>" + d.frequency + "</span>";
+  });
+
+var svg = d3.select("#graph").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+svg.call(tip);
+
+
+  x.domain(data.map(function(d) { return d.letter; }));
+  y.domain([0, d3.max(data, function(d) { return d.frequency; })]);
+
+  svg.append("g")
+      .attr("class", "x axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(xAxis);
+
+  svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+    .append("text")
+      .attr("transform", "rotate(-90)")
+      .attr("y", 6)
+      .attr("dy", ".71em")
+      .style("text-anchor", "end")
+      .text("Speedup");
+
+  svg.selectAll(".bar")
+      .data(data)
+    .enter().append("rect")
+      .attr("class", "bar")
+      .attr("x", function(d) { return x(d.letter); })
+      .attr("width", x.rangeBand())
+      .attr("y", function(d) { return y(d.frequency); })
+      .attr("height", function(d) { return height - y(d.frequency); })
+      .on('mouseover', tip.show)
+      .on('mouseout', tip.hide);
+
+
+
+function type(d) {
+  d.frequency = +d.frequency;
+  return d;
+}
+
+</script>
+
+
+
 That's it for now; if you have any comments, please leave them below.
 
 
