@@ -322,7 +322,7 @@ Here are the results for serial and parallel after many runs:
 	| 1600 	            	| 20.099999   | 3.545000    | 5.6699  |
 	| 3200	            	| 45.905000   | 4.929999    | 9.3113  |
 	| 6400   	        | 93.797550   | 5.265000    | 17.8153 |
-	| 12800   	        | 288.005   | 9.44499     | 30.4298 |
+	| 12800   	        | 288.005    | 9.44499     | 30.4298 |
 
 The advantages of parallel processing are apparent; with a speed up of 4.9407 (4.9x faster exec time). We can also observe the performance going off the charts for 12800 elements to sort, with the speed-up reaching the massive value of 30.4298.
 
