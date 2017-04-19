@@ -2,7 +2,7 @@
 layout: post
 title:  "Parallel Computing in JavaScript : The Guide"
 date:   2017-03-29 18:34:56 +0530
-description: Parallel programming in JavaScript is not as straight-forward as it is in languages such as C/C++ and Java or even Python due to its event based paradigm. JavaScript, while traditionally being used for performing small computations, is being increasingly used for heavy-wight applications. In this post I will focussing on parallel computation in JavaScript through Web Workers and the `parallel.js` library.
+description: Parallel programming in JavaScript is not as straight-forward as it is in languages such as C/C++ and Java or even Python due to its event based paradigm. JavaScript, while traditionally being used for performing small computations, is being increasingly used for heavy-wight applications. In this post I will focussing on parallel computation in JavaScript through Web Workers API.
 categories: Parallel-Processing
 
 ---
@@ -59,7 +59,7 @@ With web workers, it is now possbile to have multiple JS threads running in para
 
 Web workers communicate with the main document/ the main thread via message passing technique. The message passing is done using the [postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage) API.
 
-![K Means Math]({{site.baseurl}}/images/web-workers.png)
+![Web workers]({{site.baseurl}}/images/web-workers.png)
 
 
 According to the scpecification, there are two types of web workers: [shared web workers](https://html.spec.whatwg.org/multipage/workers.html#dedicated-workers-and-the-worker-interface) and [dedicated web workers](https://html.spec.whatwg.org/multipage/workers.html#sharedworker).
@@ -478,7 +478,172 @@ function type(d) {
 
 </script>
 
+# Practical Application: Runtime Image Processing Through Pixel Manipulation
 
+One of the heaviest tasks on the client side is image processing. In this section, I will try to include web workers in the opensource source javascript image manipulation library **[pixelify.js](https://github.com/noeldelgado/Pixelify)** - the library converts any image into a pixelated one in run time.
+
+## Parallelizable Regions
+
+As discussed before, the **web workers have no access to the DOM elements**, hence, any part of code that needs to access the DOM is inherently non-parallelizable. The work around for this is to send messages to the main thread with some sort of coding that tells the main thread what action to take in the DOM, this has a lot of overhead if the workers have to interactive with the DOM on a regular basis. In addition, web workers cannot listen to the any user generated events (such as `onclick`), so any client-side interaction will have to be in single threaded main loop (which then, ofcourse, can call the worker).
+
+Furthermore, web workers use the `postMessage` API for communicating with the main thread, which is essentially reserved for messaging through strings. The browsers use the [Structured clone algorithm](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API/Structured_clone_algorithm) to pass along Complex Objects, Files and Blobs. However, this doesn't mean that the algorithm provides an all powerful mechanism. There are restraints(and rightfully so). The structured clone algorithm does not work with many structures:
+
+>Error and Function objects cannot be duplicated by the structured clone algorithm; attempting to do so will throw a DATA_CLONE_ERR exception.
+Attempting to clone DOM nodes will likewise throw a DATA_CLONE_ERR exception.
+Certain parameters of objects are not preserved
+
+
+Pixelify.js uses the `canvas` element from HTML5 to make the image manipulations. This means that the web workers cannot access the canvas if it is part of the DOM. In case the `canvas` element isn't part of the DOM, we still cannot pass the `canvas` object from the main thread to the worker because of the restrictions of the `postMessage` API, which won't allow objects with function to be passed along. This inhibits any parallelism when the `canvas` object is involved. Actual procedures/manipulations done of the `canvas` must remain in the main thread.
+
+### Object oriented code
+
+One of the shortcomings of the `postMessage` is parallelization of object oriented code. You cannot pass function object to the worker, hence you just cannot pass objects the context `this` from your object oriented code.
+
+I had to use a work around to deal with this issue. First, I seperated out the context `this` into the consituent parts that would be needed by this worker. Then after processing I got back the parameters into the main thread and then applied to results in the main thread, this will be much clear once we look at the code.
+
+From Pixelify.js code, the parallelizable region from the code is the calculation of the canvas parameters:
+
+    for (y = 0; y <= this.h + hs; y += this.pixel) {
+    	yy = y;
+        if (yy >= this.h) yy = this.h - this.pixel + hs;
+
+        for (x = 0; x <= this.w + hs; x += this.pixel) {
+        	xx = x;
+            if (xx >= this.w) xx = this.w - this.pixel + hs;
+
+            image_index = (yy * (this.w * 4)) + (xx * 4);
+
+            r = data[image_index];
+            g = data[image_index + 1];
+            b = data[image_index + 2];
+            a = (this.alpha * data[image_index + 3]) / 255;
+
+            rgba = 'rgba(' + r +','+ g +','+ b +','+ a + ')';
+
+            this[this.clean ? '_contextClean' : '_context'].fillStyle = rgba;
+            this[this.clean ? '_contextClean' : '_context']
+                        .fillRect( (this.x + x) - hs, (this.y + y) - hs, this.pixel, this.pixel )
+        }	
+	}
+
+From the looks of it, this isn't much of a CPU intensive task. This might not bode well with the web workers. Well, there's only one way to find out for sure. So, let's jump right into the code.
+
+## Implementation
+
+Initially, I will use a single web worker and then add multiple of them if the results seem encouraging.
+
+In our main library file [pixelify - parallel.js](), let's set up a web worker and send over the required parameters through a message - inside the `pixelate` function. This is workaround since directly passing `this` context will result in a `DATA_CLONE_ERR`.
+
+    var worker = new Worker("pix.js");
+	// Sending message as an array to the worker
+    worker.postMessage([this.h , this.pixel, this.w, this.x, this.y, hs, data, this.alpha]); 
+	// storing the current context in a variable.
+    var pxo = this;
+
+Now, let's listen to the message from the worker. In our worker, we will send over the message once we have computed our values.
+
+    worker.onmessage = function(e) {
+		console.log(e.data);            
+    	pxo.replace();
+		// More to come soon
+	}
+
+In in our worker file, [pix.js]() we will listen to the `onmessage` event and re-assemble the split parameters sent from the main thread.
+	
+	onmessage = function(e){
+	    this.h = e.data[0];
+	    this.pixel = e.data[1];
+	    this.w = e.data[2];
+	    this.x = e.data[3];
+	    this.y = e.data[4];
+	    hs = e.data[5];
+	    data = e.data[6];
+	    this.alpha = e.data[7];
+
+Then we will initialize the result object, there is where the result will be stored and send back to the main thread. 
+
+	result = {rgbas: [], rect: []};
+
+Now, the actual computation
+
+	for (y = 0; y <= this.h + hs; y += this.pixel) {
+        yy = y;
+        result.rgbas.push([])
+        result.rect.push([])
+        if (yy >= this.h) yy = this.h - this.pixel + hs;
+
+        for (x = 0; x <= this.w + hs; x += this.pixel) {
+            xx = x;
+            if (xx >= this.w) xx = this.w - this.pixel + hs;
+
+            image_index = (yy * (this.w * 4)) + (xx * 4);
+
+            r = data[image_index];
+            g = data[image_index + 1];
+            b = data[image_index + 2];
+            a = (this.alpha * data[image_index + 3]) / 255;
+
+            rgba = 'rgba(' + r +','+ g +','+ b +','+ a + ')';
+            result.rgbas[y/this.pixel].push(rgba);
+            result.rect[y/this.pixel].push([(this.x + x) - hs, (this.y + y) - hs, this.pixel, this.pixel]);
+        }
+    }
+
+    postMessage(result);
+
+Back in our main pixelity.js file, we now have to apply the results to the DOM element. Unfortunately, we will have to have *another nested for loop* just to apply the results to the canvas object.
+
+	worker.onmessage = function(e) {
+                console.log(pxo._context)
+
+                for (y = 0; y <= pxo.h + hs; y += pxo.pixel) {
+                    for (x = 0; x <= pxo.w + hs; x += pxo.pixel) {
+                        pxo[this.clean ? '_contextClean' : '_context'].fillStyle = e.data.rgbas[y/10][x/10];
+                        pxo[this.clean ? '_contextClean' : '_context']
+                            .fillRect( (pxo.x + x) - hs, (pxo.y + y) - hs, pxo.pixel, pxo.pixel )
+                    }
+                }
+                pxo.replace();
+            };
+
+The rest of the code essentially remains the same.
+
+## Results
+
+I have with me an image of Konrad Zuse(The unsung pioneer of Computer Science) with the replica of his creation, the Z1.
+
+![Konrad Zuse]({{site.baseurl}}/images/Z1.jpg)
+
+After pixellation:
+
+![Konrad Zuse Pixellated]({{site.baseurl}}/images/pixellated.png)
+
+
+## Speedup
+
+The speed-up is abysmal. In fact the parallel code is much much slower than the serial implmentation. For image sized ranging from 100 * 100 to 1024 * 768, the parallel implementation is around 5 to 10x slower than the serial implementation.
+
+### Reasons for bad parallel performance
+
+1. **Task not CPU intensive** 
+	- As noted before, our parallelization region was not CPU intensive. The Web Workers were made for CPu intensive tasks, hence, not having a CPU intensive task made web workers less effective.
+2. **Workarounds**
+	- We had to use a lot of workarounds for the library to work in parallel. First, the `this` context was broken down and then reassembled by the worker.
+	- Then, the results were calcuated and stored in an object. The object was relayed to the main thread which then applied to results to the `canvas` object - this added an additional nested loop in the main thread - a proper obstacle to performance.
+3. **Data movement**
+	- Lot of data moved between the main thread and the worker process - adding to the overheads. The result object itself was pretty huge. 
+	- On top of the that, image binary data was also sent over as it is through postMessage. 
+
+
+# Concluding Remarks
+
+Web workers bring about an exciting prospect of parallism in JavaScript. Bringing parallelism towards the JavaScript programmer is a big win. 
+
+**Web workers are for CPU intensive tasks**, from our example of task parallelism we have seen that web workers do well with CPU intensive tasks, with the above example reaching the speed-up of **30x** with just two web workers. Web workers are not suitable when the task in hand is not CPU intensive as seen from the above image manipulation example.
+
+The inability of working with the DOM is a one of the stark disadvantages as we have seen from the example above. Adding workarounds will hinder the performance.
+
+All in all, web workers are an amazing for CPU intensive parallelism. Though not very suitable for tasks which require DOM interaction, they are a very valuable asset when javascript isn't running on the browser. 
 
 That's it for now; if you have any comments, please leave them below.
 
