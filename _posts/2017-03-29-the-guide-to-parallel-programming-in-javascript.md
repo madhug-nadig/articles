@@ -621,7 +621,7 @@ After pixellation:
 
 ## Speedup
 
-The speed-up is abysmal. In fact the parallel code is much much slower than the serial implmentation. For image sized ranging from 100 * 100 to 1024 * 768, the parallel implementation is around 5 to 10x slower than the serial implementation.
+The speed-up is abysmal. In fact the parallel code is much much slower than the serial implmentation. For image sized ranging from 100 * 100 to 1024 * 768, the parallel implementation is around 5 to 10x slower than the serial implementation. Even if I have multiple web workers, it would be very hard to each catch up to serial performance, let alone surpass it.
 
 ### Reasons for bad parallel performance
 
