@@ -497,7 +497,7 @@ Pixelify.js uses the `canvas` element from HTML5 to make the image manipulations
 
 ### Object oriented code
 
-One of the shortcomings of the `postMessage` is parallelization of object oriented code. You cannot pass function object to the worker, hence you just cannot pass objects the context `this` from your object oriented code.
+One of the shortcomings of the `postMessage` is parallelization of object oriented code. You cannot pass function object to the worker, hence you just cannot pass context object - `this` - from your object oriented code.
 
 I had to use a work around to deal with this issue. First, I seperated out the context `this` into the consituent parts that would be needed by this worker. Then after processing I got back the parameters into the main thread and then applied to results in the main thread, this will be much clear once we look at the code.
 
@@ -532,7 +532,7 @@ From the looks of it, this isn't much of a CPU intensive task. This might not bo
 
 Initially, I will use a single web worker and then add multiple of them if the results seem encouraging.
 
-In our main library file [pixelify - parallel.js](), let's set up a web worker and send over the required parameters through a message - inside the `pixelate` function. This is workaround since directly passing `this` context will result in a `DATA_CLONE_ERR`.
+In our main library file [pixelify - parallel.js](https://github.com/madhug-nadig/Parallel-Processing-Nadig/blob/master/pixelify%20-%20Parallel.js), let's set up a web worker and send over the required parameters through a message - inside the `pixelate` function. This is workaround since directly passing `this` context will result in a `DATA_CLONE_ERR`.
 
     var worker = new Worker("pix.js");
 	// Sending message as an array to the worker
@@ -548,7 +548,7 @@ Now, let's listen to the message from the worker. In our worker, we will send ov
 		// More to come soon
 	}
 
-In in our worker file, [pix.js]() we will listen to the `onmessage` event and re-assemble the split parameters sent from the main thread.
+In in our worker file, [pix.js](https://github.com/madhug-nadig/Parallel-Processing-Nadig/blob/master/pix.js) we will listen to the `onmessage` event and re-assemble the split parameters sent from the main thread.
 	
 	onmessage = function(e){
 	    this.h = e.data[0];
