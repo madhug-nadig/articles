@@ -1,4 +1,4 @@
-continuous---
+---
 layout: post
 title:  "Implementing Decision Trees From Scratch - in Python"
 date:   2017-05-01 10:34:56 +0530
