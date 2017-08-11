@@ -1,6 +1,6 @@
----
+continuous---
 layout: post
-title:  "Implementing Decision Trees - in Python"
+title:  "Implementing Decision Trees From Scratch - in Python"
 date:   2017-05-01 10:34:56 +0530
 description:   Decision Tree learning is one of the most widely used and practical methods for inductive inference. Decision Trees are easily understood by human and can be developed/used without much pain. In this post I will walk through the basics and the working of decision trees In this post I will implement decision trees from scratch in Python.
 categories: Machine-Learning
@@ -242,6 +242,101 @@ The whole funtion:
         return bestFeature
 
 ## Implementing the `createTree` function:
+
+Here is where we get into the meat of the implementation. We will now build the `createTree` function that will recursively build our tree model. We will be using the previously implemented functions for the modeling. First let add some guard code, for the cases where our classes are empty (ie. we have reach the leaf nodes) and for the case when all the the labels are the same.
+
+    classList = [example[-1] for example in dataSet]
+    if len(classList) is 0:
+        return
+
+    if classList.count(classList[0]) == len(classList):
+        return classList[0]
+
+We get the list of feature vector list and then calculate the best feature to split using the `chooseBestFeatureToSplit` function. This is where we start building our model.
+
+      featureVectorList = [row[:len(row)-1] for row in dataSet]
+      bestFeat = self.chooseBestFeatureToSplit(featureVectorList, labels)
+      bestFeatLabel = labels[bestFeat]
+      myTree = {bestFeatLabel: {}}
+      # Get rid of the label, ie. this feature is take care of in this iteration
+      del(labels[bestFeat])
+
+Once we have the best feature to split the data set into, we will find the unique values in that feature and build our tree using them. Please bear in mind, _this process will only work for discrete features._ Features like `pclass` and `sex` are discrete by default. If you had a continous feature, for example, say something like `age`, you would have to convert that feature into a discrete feature first. You can use a method like [Discrete binning](https://en.wikipedia.org/wiki/Data_binning) for the same.
+
+
+      featValues = [example[bestFeat] for example in dataSet]
+      uniqueVals = set(featValues)
+      for value in uniqueVals:
+          subLabels = labels[:]
+          myTree[bestFeatLabel][value] = self.createTree(
+              self.splitDataSet(dataSet, bestFeat, value), subLabels)
+      return myTree
+
+For each unique value of the feature, we will recursively split the dataset and call create tree for the subset of the data. We will continue this process until we hit the leaf of the decision tree - the point where the subset of the data is empty or if all the lables are of the same type. This condition is handled in the first two if statements of the `createTree` function.
+
+We end up with the function:
+
+    # function to build tree recursively
+     def createTree(self, dataSet, labels):
+         classList = [example[-1] for example in dataSet]
+         if len(classList) is 0:
+             return
+         if classList.count(classList[0]) == len(classList):
+             return classList[0]
+
+         featureVectorList = [row[:len(row)-1] for row in dataSet]
+         bestFeat = self.chooseBestFeatureToSplit(featureVectorList, labels)
+         bestFeatLabel = labels[bestFeat]
+         myTree = {bestFeatLabel: {}}
+         del(labels[bestFeat])
+         featValues = [example[bestFeat] for example in dataSet]
+         uniqueVals = set(featValues)
+         for value in uniqueVals:
+             subLabels = labels[:]
+             myTree[bestFeatLabel][value] = self.createTree(
+                 self.splitDataSet(dataSet, bestFeat, value), subLabels)
+         return myTree
+
+## Wrapping Up
+
+Let's build our decision tree model, by initializing the class and calling `createTree` method with our dataset from the main function.
+
+
+    custom_DTree = CustomDecisionTree()
+    print(custom_DTree.createTree(dataset, labels))
+
+We come up with a tree which look something like this, for our contrived dataset:
+
+      {
+         "sex":{
+            0.0:{
+               "pclass":{
+                  1.0:{
+                     "embarked":{
+                        0.0:1.0,
+                        1.0:0.0
+                     }
+                  },
+                  2.0:0.0
+               }
+            },
+            1.0:{
+               "pclass":{
+                  1.0:1.0,
+                  2.0:{
+                     "embarked":{
+                        0.0:1.0,
+                        1.0:0.0
+                     }
+                  }
+               }
+            }
+         }
+      }
+
+Once we have this model, we can start making predictions for any incoming data points or your test dataset. The implementation of the predict function is left as an exercise for the reader.
+
+That's it for now, if you have any comments, please leave then below.
 
 
 <br /><br />
