@@ -182,22 +182,22 @@ Now, lets apply the formula for calculating Shannon Entropy:
 
 The `chooseBestFeatureToSplit` function, as the name suggests, will find the best feature to split the tree for an given set of feature vectors. The function will use the information gain metric to decide which feature most optimally will split the dataset. The information gain is calculated by using Shannon Entropy. We first calulate the `baseEntropy` for the whole dataset and then calculate the entropy of without each subsequent feature. In order to split the dataset, we will first implement the `splitDataSet` function.
 
-  def splitDataSet(self, dataSet, axis, value):
-    retDataSet = []
-    for featVec in dataSet:
-        if featVec[axis] == value:
-            reducedFeatVec = featVec[:axis]
-            reducedFeatVec.extend(featVec[axis+1:])
-            retDataSet.append(reducedFeatVec)
-    return retDataSet
+      def splitDataSet(self, dataSet, axis, value):
+        retDataSet = []
+        for featVec in dataSet:
+            if featVec[axis] == value:
+                reducedFeatVec = featVec[:axis]
+                reducedFeatVec.extend(featVec[axis+1:])
+                retDataSet.append(reducedFeatVec)
+        return retDataSet
 
 Now let's get started on the `chooseBestFeatureToSplit` function, let's initialize some important params:
 
-  def chooseBestFeatureToSplit(self, dataSet, labels):
-    numFeatures = len(dataSet[0]) - 1
-    baseEntropy = self.calcShannonEnt(dataSet)
-    bestInfoGain = -1
-    bestFeature = 0
+      def chooseBestFeatureToSplit(self, dataSet, labels):
+        numFeatures = len(dataSet[0]) - 1
+        baseEntropy = self.calcShannonEnt(dataSet)
+        bestInfoGain = -1
+        bestFeature = 0
 
 We've initialized the `bestInfoGain` to `-1` and chosen the first feature as the best by default. We've also calculated the base entropy of the entire dataset at this point. Next, we will calculate the `infoGain` for each feature.
 
@@ -258,7 +258,7 @@ We get the list of feature vector list and then calculate the best feature to sp
       bestFeat = self.chooseBestFeatureToSplit(featureVectorList, labels)
       bestFeatLabel = labels[bestFeat]
       myTree = {bestFeatLabel: {}}
-      # Get rid of the label, ie. this feature is take care of in this iteration
+      # Get rid of the label, ie. this feature is taken care of in this iteration
       del(labels[bestFeat])
 
 Once we have the best feature to split the data set into, we will find the unique values in that feature and build our tree using them. Please bear in mind, _this process will only work for discrete features._ Features like `pclass` and `sex` are discrete by default. If you had a continous feature, for example, say something like `age`, you would have to convert that feature into a discrete feature first. You can use a method like [Discrete binning](https://en.wikipedia.org/wiki/Data_binning) for the same.
