@@ -1,7 +1,7 @@
 ---
 layout: post
 title:  "Implementing K Nearest Neighbours in Parallel from scratch"
-date:   2017-02-11 03:34:56 +0530
+date:   2017-02-10 03:34:56 +0530
 description:   One of the prime drawbacks of k-NN is its efficiency. The brute force version of k-NN that was written previously is highly parallelizable. The computation of distances between the attributes is independent of one another. Also, the classification of incoming data points is independent of one another and can be easily accomplished in parallel. In this post I will implement the algorithm from scratch in Python in parallel.
 categories: Machine-Learning Parallel-Processing
 

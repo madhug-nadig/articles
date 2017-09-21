@@ -1,13 +1,13 @@
 ---
 layout: post
-title:  "Parallel Computing in JavaScript : The Guide"
-date:   2017-03-29 18:34:56 +0530
-description: Parallel programming in JavaScript is not as straight-forward as it is in languages such as C/C++ and Java or even Python due to its event based paradigm. JavaScript, while traditionally being used for performing small computations, is being increasingly used for heavy-wight applications. In this post I will focussing on parallel computation in JavaScript through Web Workers API.
-categories: Parallel-Processing
+title:  "Understanding Decision Tree Learning: A Primer"
+date:   2017-03-23 11:34:56 +0530
+description: Decision Tree learning is one of the most widely used and practical methods for inductive inference. Decision Trees are easily understood by human and can be developed/used without much pain. In this post I will walk through the basics and the working of decision trees.
+categories: Machine-Learning
 
 ---
 
-Back when JavaScript was developed as _Mocha_ at Netscape Communications Corporation by Brendan Eich in 1995, the language was meant for adding _programmability_ on the web - making the web more interactive for the user. Over the years, JavaScript has gained massive prominence and has become one of the most important languages of the day. The rise of the web has taken JavaScript places it was never conceived to be. 
+Decision tree learning are one of the most common machine learning algorithms out there. One of the advantages of decision trees are that there are quite staright forward, easily understandable by humans. Decision trees provide a way to approximate discrete valued functions and are robust to noisy data. Decision trees can be represented using the typical [Tree](https://en.wikipedia.org/wiki/Tree_(data_structure)) Data Structure. 
 
 Anyone who has written considerable amount of code in JavaScript will not be surprised to know that JavaScript [was written in 10 days](https://www.computer.org/csdl/mags/co/2012/02/mco2012020007.pdf). As lovable as it may be, JavaScript has subtle bug friendly features and [lot of other things that programmers would rather not have](https://whydoesitsuck.com/why-does-javascript-suck/). But it is one of the essential programming(scripting?) languages in today's web driven world. Hence, it is imperative to implement the best of software programming techniques and technologies in JavaScript.
 
