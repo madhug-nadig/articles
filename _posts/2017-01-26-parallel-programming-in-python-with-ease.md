@@ -20,6 +20,18 @@ Parallel programming in Python is a bit _tricky_ as compared to languages such a
 
 If you interested to know more about Cpython's GIL, you should read this [article](https://bhargav2017.wordpress.com/2017/04/03/the-python-gil/).
 
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-3120660330925914"
+     data-ad-slot="1624596889"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
  
 ## The **[multiprocessing](http://docs.python.org/3/library/multiprocessing.html?highlight=multiprocessing#multiprocessing)** library
 
@@ -120,6 +132,18 @@ The output in exact order:
     Process id:23964
 
 From the above output, it is apparent that 7 subprocesses were spawned by the same parent process, through multiprocessing. You can find the entire sample code related to the above program, [here](https://github.com/madhug-nadig/Parallel-Processing-Nadig/blob/master/Python%20multiprocessing%20example-%20Process.py)
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-3120660330925914"
+     data-ad-slot="1624596889"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
 
 ### Pool
 

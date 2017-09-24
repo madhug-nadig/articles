@@ -16,6 +16,15 @@ Ease of use and flexibility are the amongst the main advantages of OpenMP. In Op
 
 Another important advantage of OpenMP is that, it is very easy to convert a serial implementation into a parallel one. In many cases, serial code can be made to run in parallel without having to change the source code at all. This makes OpenMP a great option whilst converting a pre-written serial program into a parallel one. Further, it is still possible to run the program in serial, all the programmer has to do is to remove the OpenMP directives.
 
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Image AD -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-3120660330925914"
+     data-ad-slot="4462066103"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
 
 ### Understanding OpenMP
 
@@ -185,6 +194,19 @@ Here's the serial implementation:
 		*a = *b;
 		*b = temp;
 	}
+
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-3120660330925914"
+     data-ad-slot="1624596889"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
 
 ### Parallelizing Selection Sort through OpenMP
 

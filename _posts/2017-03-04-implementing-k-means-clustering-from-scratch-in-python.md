@@ -19,14 +19,13 @@ The algorithm has a loose relationship to the [k-nearest neighbor classifier](ht
 > One can apply the 1-nearest neighbor classifier on the cluster centers obtained by k-means to classify new data into the existing clusters.
 
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Image AD -->
 <ins class="adsbygoogle"
-     style="display:block; text-align:center;"
-     data-ad-layout="in-article"
-     data-ad-format="fluid"
+     style="display:inline-block;width:728px;height:90px"
      data-ad-client="ca-pub-3120660330925914"
-     data-ad-slot="1624596889"></ins>
+     data-ad-slot="4462066103"></ins>
 <script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
+(adsbygoogle = window.adsbygoogle || []).push({});
 </script>
 
 ### How k-Means Clustering works:
@@ -64,6 +63,19 @@ The implementation can be divided into the following:
 3. Distance Calculation: Finding the distance between each of the datapoints with each of the centroids. This distance metric is used to find the which cluster the points belong to.
 4. Re-calculating the centroids: Find the new values for centroid. 
 5. Stop the iteration: Stop the algorithm when the difference between the old and the new centroids is negligible.
+
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-3120660330925914"
+     data-ad-slot="1624596889"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
 
 ### Setting up the class:
 

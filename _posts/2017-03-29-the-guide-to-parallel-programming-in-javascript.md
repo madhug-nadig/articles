@@ -14,6 +14,19 @@ Anyone who has written considerable amount of code in JavaScript will not be sur
 As JavaScript grew out of its bounds, lots and lots of features were added on the go which weren't thought of initially. The addition of all these unanticipated features, from functional programming to OOP, were pretty much work arounds of existing language features.
 One of the cool features added to JS in the recent years was the ability to parallel compute JavaScript and this will the focus of the following article.
 
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-3120660330925914"
+     data-ad-slot="1624596889"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+
 # Why parallel processing in JS
 
 ## More and More JS on the browser
@@ -46,6 +59,18 @@ Now, if we were to parallelize JavaScript by having multiple threads, then by de
 > Normally in order to achieve any sort of parallel computation using JavaScript you would need to break your jobs up into tiny chunks and split their execution apart using timers. This is both slow and unimpressive.
 
 Thanks to web workers, we now have a better way to achieve this.
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-3120660330925914"
+     data-ad-slot="1624596889"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
 
 # Enter Web Workers
 

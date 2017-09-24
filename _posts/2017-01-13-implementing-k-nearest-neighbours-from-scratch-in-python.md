@@ -19,6 +19,16 @@ This is what Wikipedia says about k-NN:
 The k-NN algorithm derives much of its power from the fact that it's _non-parametric_; this means that the algorithm has **no prior bias or a functional form**. It does not make any assumptions about the dataset in hand.
 
 
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-3120660330925914"
+     data-ad-slot="1624596889"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
 ### How k-NN works:
 
 k-NN algorithm uses the entire training dataset as its model. For a new prediction to come out of k-NN, the algorithm will scour the entire training data to find '_k_' points nearest to the incoming data. Then, depending on the class of these '_k_' points, the probable class of the incoming data is predicted.
@@ -55,6 +65,18 @@ Before we move forward, let's create a class for the algorithm.
                 self.total_predictions = 0
 
                 self.accuracy = 0.0
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-3120660330925914"
+     data-ad-slot="1624596889"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
 
 ## Handling Data:
 

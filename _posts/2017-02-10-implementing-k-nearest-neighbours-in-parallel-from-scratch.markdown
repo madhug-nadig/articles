@@ -15,6 +15,16 @@ So, the algorithms works on the _entire_ dataset at the _very end_ for _each pre
 
 Now, let's see if we can speed up our [previous serial implementation](https://github.com/madhug-nadig/Machine-Learning-Algorithms-from-Scratch/blob/master/K%20Nearest%20Neighbours.py) by applying the concepts of parallel programming.
 
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<!-- Image AD -->
+<ins class="adsbygoogle"
+     style="display:inline-block;width:728px;height:90px"
+     data-ad-client="ca-pub-3120660330925914"
+     data-ad-slot="4462066103"></ins>
+<script>
+(adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
 ## Proposal
 
 The brute force version of k-NN that was written previously is [highly parallelizable](http://web.cs.ucdavis.edu/~amenta/pubs/bfknn.pdf). This is due to the fact the computation of the distances between the data points is completely _independent_ of one another. Furthermore, if there are _n_ points in the test set, all of the computation regarding the classification of these _n_ points is independent of one another and can be easily accomplished in parallel. This allows for partitioning the computation work with least synchronization effort. The distance computations can be calculated seperately and then brought together or the dataset itself can be split up into multiple factions to be run in parallel. 
@@ -57,6 +67,19 @@ The implementation revolves around applying data parallelism to the distance fin
 				self.total_predictions += 1
 
 The above for loop is the bottleneck of the k-NN algorithm. We need to parallelize the above for loop. Since we are going to be applying data parallelism, we needn't worry about the actual functions used; we will uilize the same functions again. Applying data parallelism will not affect the actual results in any way. 
+
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-3120660330925914"
+     data-ad-slot="1624596889"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
 
 ### Parallelizing the code
 
