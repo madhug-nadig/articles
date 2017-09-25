@@ -15,144 +15,37 @@ Decision tree learning are one of the most commonly known machine learning algor
 
 In decision tree learning, a decision tree can be used to visually and explicitly represent decisions and decision making. Though, it is common to use a tree-like model for decisions, learned trees can also be represented as sets of `if-else-then` rules. 
 
+Though decision trees can be utilized for both classification and regression, it's primarily used for classification.
 
 ## Representating a Decision Tree
 
 Decision trees perform classification after sorting the instances in a top-down approach - from the root to the leaf. Each non-leaf node _splits_ the set of instances based on a test of an attribute. Each branch emanting from a node corresponds to one of the possible values of the said attribute in the node. The leaves of the decision tree specifies the label or the class in which a given instance belongs to. 
 
-Here's an example:
+Here's an example of a classification tree (Titanic Dataset):
 
-  <style>
-	
-	.node {
-		cursor: pointer;
-	}
+![D Tree]({{site.baseurl}}/images/CART_tree_titanic_survivors.png)
 
-	.node circle {
-	  fill: #fff;
-	  stroke: steelblue;
-	  stroke-width: 3px;
-	}
+<span style = "color: #dfdfdf; font-size:0.6em">Image courtesy: Wikipedia</span>
 
-	.node text {
-	  font: 12px sans-serif;
-	}
+The above model uses three attributes namely : _Gender, age and number of spouses/children_. As can be seen from the example, the internal nodes have an attribute test associated with them. This test splits the data set based on the value of the said attribute of the incoming instance. The branches correspond to the values of the attribute in question. At the end, the leaf node represent the class of the instance - in this case the fate of the titanic passengers.  
 
-	.link {
-	  fill: none;
-	  stroke: #ccc;
-	  stroke-width: 2px;
-	}
-	
-    </style>
+> Decision Trees represent a disjunction of conjunctions of constraints on attributes values of instances. 
 
-<!-- load the d3.js library -->	
-<script src="http://d3js.org/d3.v3.min.js"></script>
-	
-<script>
-var width = 400,
-    height = 300;
+That is, Decision Trees represent a bunch of `AND` 'statements' chained by `OR` statements. For example, let's look at the titanic example above. The given tree can be represented by a disjunction of conjuections as:
 
-var tree = d3.layout.tree()
-    .size([height, width - 160]);
+	( female ) OR
+	( male AND less than 9.5 years of age AND more than 2.5 siblings)
 
-var diagonal = d3.svg.diagonal()
-    .projection(function (d) {
-        return [d.y, d.x];
-    });
+## When should you use a decision tree?
 
-var svg = d3.select("body").append("svg")
-    .attr("width", width)
-    .attr("height", height)
-    .append("g")
-    .attr("transform", "translate(40,0)");
+ - When it is imperative for the humans to understand and communicate the model.
+ - When you'd like to make minimalistic assumptions from the dataset.
+ - When you don't want to normalize the data.
+ - When the dataset contains ample amount of noise (but not too much).
+ - Presence of Skewed variables in the dataset.
+ - When there are many missing attribute values in the dataset.
+ - When _disjunctive_ descriptions are required
 
-var root = getData(),
-    nodes = tree.nodes(root),
-    links = tree.links(nodes);
 
-var link = svg.selectAll(".link")
-    .data(links)
-    .enter()
-    .append("g")
-    .attr("class", "link");
-
-link.append("path")
-    .attr("fill", "none")
-    .attr("stroke", "#ff8888")
-    .attr("stroke-width", "1.5px")
-    .attr("d", diagonal);
-
-link.append("text")
-    .attr("font-family", "Arial, Helvetica, sans-serif")
-    .attr("fill", "Black")
-    .style("font", "normal 12px Arial")
-    .attr("transform", function(d) {
-        return "translate(" +
-            ((d.source.y + d.target.y)/2) + "," + 
-            ((d.source.x + d.target.x)/2) + ")";
-    })   
-    .attr("dy", ".35em")
-    .attr("text-anchor", "middle")
-    .text(function(d) {
-        console.log(d.target.rule);
-         return d.target.rule;
-    });
-
-var node = svg.selectAll(".node")
-    .data(nodes)
-    .enter()
-    .append("g")
-    .attr("class", "node")
-    .attr("transform", function (d) {
-        return "translate(" + d.y + "," + d.x + ")";
-    });
-
-node.append("circle")
-    .attr("r", 4.5);
-
-node.append("text")
-    .attr("dx", function (d) {
-        return d.children ? -8 : 8;
-    })
-    .attr("dy", 3)
-    .style("text-anchor", function (d) {
-        return d.children ? "end" : "start";
-    })
-    .text(function (d) {
-        return d.name;
-    });
-
-function getData() {
-    return {
-        "name": "0",
-        "rule": "null",
-            "children": [{
-            "name": "2",
-            "rule": "sunny",
-                "children": [{
-                "name": "no(3/100%)",
-                "rule": "high"
-            }, {
-                "name": "yes(2/100%)",
-                "rule": "normal"
-            }]
-        }, {
-            "name": "yes(4/100%)",
-            "rule": "overcast"
-        }, {
-            "name": "3",
-            "rule": "rainy",
-                "children": [{
-                "name": "no(2/100%)",
-                "rule": "TRUE"
-            }, {
-                "name": "yes(3/100%)",
-                "rule": "FALSE"
-            }]
-        }]
-    };
-};
-</script>
 
 <br /><br />
