@@ -1,7 +1,7 @@
 ---
 layout: post
-title:  "Understanding Decision Tree Learning: A Primer"
-date:   2017-03-23 11:34:56 +0530
+title:  "Machine Learning: Understanding Decision Tree Learning"
+date:   2017-04-23 11:34:56 +0530
 description: Decision Tree learning is one of the most widely used and practical methods for inductive inference. Decision Trees are easily understood by human and can be developed/used without much pain. In this post I will walk through the basics and the working of decision trees.
 categories: Machine-Learning
 
@@ -9,11 +9,11 @@ categories: Machine-Learning
 
 # What is decision tree learning?
 
-Decision tree learning are one of the most commonly known machine learning algorithms out there. One of the advantages of decision trees are that there are quite staright forward, easily understandable by humans. Decision trees provide a way to approximate discrete valued functions and are robust to noisy data. Decision trees can be represented using the typical [Tree](https://en.wikipedia.org/wiki/Tree_(data_structure)) Data Structure. 
+Decision tree learning is one of the most commonly known machine learning algorithms out there. One of the advantages of decision trees are that there are quite staright forward, easily understandable by humans. Decision trees provide a way to approximate discrete valued functions and are robust to noisy data. Decision trees can be represented using the typical [Tree](https://en.wikipedia.org/wiki/Tree_(data_structure)) Data Structure. 
 
 >Decision tree learning uses a decision tree (as a predictive model) to go from observations about an item (represented in the branches) to conclusions about the item's target value (represented in the leaves). It is one of the predictive modelling approaches used in statistics, data mining and machine learning.
 
-In decision tree learning, a decision tree can be used to visually and explicitly represent decisions and decision making. Though, it is common to use a tree-like model for decisions, learned trees can also be represented as sets of `if-else-then` rules. 
+In decision tree learning, a decision tree - now known by the umbrella term [CART (Classification and Regression Tree)](https://en.wikipedia.org/wiki/Predictive_analytics#Classification_and_regression_trees_.28CART.29) - can be used to visually and explicitly represent decisions and decision making. Though, it is common to use a tree-like model for decisions, learned trees can also be represented as sets of `if-else-then` rules. 
 
 Though decision trees can be utilized for both classification and regression, it's primarily used for classification.
 
@@ -31,8 +31,7 @@ The above model uses three attributes namely : _Gender, age and number of spouse
 
 > Decision Trees represent a disjunction of conjunctions of constraints on attributes values of instances. 
 
-That is, Decision Trees represent a bunch of `AND` 'statements' chained by `OR` statements. For example, let's look at the titanic example above. The given tree can be represented by a disjunction of conjuections as:
-
+That is, Decision Trees represent a bunch of `AND` 'statements' chained by `OR` statements. For example, let's look at the titanic example above. The given tree can be represented by a disjunction of conjuctions as:
 	( female ) OR
 	( male AND less than 9.5 years of age AND more than 2.5 siblings)
 
@@ -45,7 +44,25 @@ That is, Decision Trees represent a bunch of `AND` 'statements' chained by `OR` 
  - Presence of Skewed variables in the dataset.
  - When there are many missing attribute values in the dataset.
  - When _disjunctive_ descriptions are required
+ - When you need to build and test fast
+ - When the dataset is small is size
 
+# How a decision tree is built?
+
+Before we start classifying, we first need to build the tree from the available dataset. 
+
+> Most algorithms that have been developed for learning decision trees are variations of the core algorithm that employs a __top down__, __greedy__ search through the possible space of decision trees.
+
+In this article, I will be focussing on the [Iterative Dichotomiser 3](https://en.wikipedia.org/wiki/ID3_algorithm), commonly know as the ID3 algorithm. Variants/Extensions of the ID3 algorithm, such as C4.5, are very much in practical use today. 
+
+The ID3 algorithm builds the tree top-down, starting from the root by meticulously choosing which attribute that will be tested at each given node. Each attribute is evaluated through statistical means as to see __which attribute splits the dataset the best.__ The best attribute is made the root, with it's attribute values branching out. The process continues with the rest of the attributes. Once an attribute is selected, it is not possible to _backtrack_. 
+
+
+## Choosing the attribute
+
+### Entropy
+
+Entropy is a statistical metric that measures that **impurity** 
 
 
 <br /><br />
