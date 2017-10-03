@@ -62,7 +62,9 @@ The ID3 algorithm builds the tree top-down, starting from the root by meticulous
 
 ### Entropy
 
-Entropy is a statistical metric that measures that **impurity** 
+Entropy is a statistical metric that measures that **impurity.** Given a collection of S, which contains two classes: _Positive_ and _Negative_, of some arbitrary target concept. The entropy with respect to this boolean classification is:
+		
+	Entropy(S) = E(S) = -p<sub>positive</sub>log<sub>2</sub> p <sub>positive</sub> - p<sub>negative</sub>log<sub>2</sub> p <sub>negative</sub> 
 
 
 <br /><br />
