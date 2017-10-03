@@ -62,9 +62,27 @@ The ID3 algorithm builds the tree top-down, starting from the root by meticulous
 
 ### Entropy
 
+> Entropy is a measure of _unpredictability_ of the state, or equivalently, of its _average information content._ 
+
 Entropy is a statistical metric that measures that **impurity.** Given a collection of S, which contains two classes: _Positive_ and _Negative_, of some arbitrary target concept. The entropy with respect to this boolean classification is:
 		
-	Entropy(S) = E(S) = -p<sub>positive</sub>log<sub>2</sub> p <sub>positive</sub> - p<sub>negative</sub>log<sub>2</sub> p <sub>negative</sub> 
+**Entropy(S) = E(S) = -p<sub>positive</sub>log<sub>2</sub> p <sub>positive</sub> - p<sub>negative</sub>log<sub>2</sub> p <sub>negative</sub>**
+
+Where p<sub>positive</sub> is the proportion (probability) of positive examples in S and p<sub>negative</sub> is the proportion of negative examples in S. Entropy is 1 is the collection S contains equal number of examples from both classes, Entropy is 0 if all the examples in S contain the same example.
+
+The entropy values vs the probabilities for a collection S follows a parabolic curve:
+
+![Entropy vs Probablity]({{site.baseurl}}/images/EntropyGraph.png)
+
+<span style = "color: #dfdfdf; font-size:0.6em">Image courtesy: MATLAB data science</span>
+
+One interpretation of entropy is that, entropy specifies the minimum number of bits required to __encode__ the classification of any member of a collection S.
+
+In general terms, when the classes of the target function may not always be boolean, entropy is defined as
+
+![Entropy vs Probablity]({{site.baseurl}}/images/EntropyFormula.png)
+
+
 
 
 <br /><br />
