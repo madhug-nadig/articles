@@ -47,7 +47,7 @@ That is, Decision Trees represent a bunch of `AND` 'statements' chained by `OR` 
  - When you need to build and test fast
  - When the dataset is small is size
 
-# How a decision tree is built?
+# How is a decision tree is built?
 
 Before we start classifying, we first need to build the tree from the available dataset. 
 
@@ -68,7 +68,7 @@ Entropy is a statistical metric that measures that **impurity.** Given a collect
 		
 **Entropy(S) = E(S) = -p<sub>positive</sub>log<sub>2</sub> p <sub>positive</sub> - p<sub>negative</sub>log<sub>2</sub> p <sub>negative</sub>**
 
-Where p<sub>positive</sub> is the proportion (probability) of positive examples in S and p<sub>negative</sub> is the proportion of negative examples in S. Entropy is 1 is the collection S contains equal number of examples from both classes, Entropy is 0 if all the examples in S contain the same example.
+Where p<sub>positive</sub> is the proportion (probability) of positive examples in S and p<sub>negative</sub> is the proportion of negative examples in S. Entropy is 1 if the collection S contains equal number of examples from both classes, Entropy is 0 if all the examples in S contain the same example.
 
 The entropy values vs the probabilities for a collection S follows a parabolic curve:
 
@@ -80,7 +80,7 @@ One interpretation of entropy is that, entropy specifies the minimum number of b
 
 In general terms, when the classes of the target function may not always be boolean, entropy is defined as
 
-![Entropy vs Probablity]({{site.baseurl}}/images/EntropyFormula.png)
+![Entropy Formula]({{site.baseurl}}/images/EntropyFormula.png)
 
 
 
