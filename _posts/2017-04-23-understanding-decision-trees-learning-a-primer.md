@@ -82,7 +82,17 @@ In general terms, when the classes of the target function may not always be bool
 
 ![Entropy Formula]({{site.baseurl}}/images/EntropyFormula.png)
 
+### Information Gain
 
+Now that we know what entropy is, let's look at an attribute that is more attached to the building of the decision tree - _[Information Gain](https://en.wikipedia.org/wiki/Information_gain_in_decision_trees)_. THe information gain is a metric that measures the expected reduction in the impurity of the collection S, caused by splitting the data according to any given attribute. 
+
+The information gain IG(S,A) of an attribute A, from the collection S, can be defined as
+
+![Information Gain Formula]({{site.baseurl}}/images/IG.png)
+
+<span style = "color: #dfdfdf; font-size:0.6em">Image courtesy: Abhyast</span>
+
+where `i` spans through the entire set of all possible values for attribute A, and S <sub>i</sub> is the portion of S for which attribute A has the value _i_. The first term is the entropy of the entire collection S. One way to think about IG is that, the value of IG is the number of bits saved when encoding a target value of an arbitrary member of the collection. 
 
 
 <br /><br />

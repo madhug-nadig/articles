@@ -585,7 +585,7 @@ In in our worker file, [pix.js](https://github.com/madhug-nadig/Parallel-Process
 	    data = e.data[6];
 	    this.alpha = e.data[7];
 
-Then we will initialize the result object, there is where the result will be stored and send back to the main thread. 
+Then we will initialize the result object, this is where the result will be stored and sent back to the main thread. 
 
 	result = {rgbas: [], rect: []};
 
