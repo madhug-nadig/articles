@@ -7,6 +7,12 @@ categories: Machine-Learning
 
 ---
 
+<style>
+table, th, td {
+    border: 1px solid #efefef;
+}
+</style>
+
 # What is decision tree learning?
 
 Decision tree learning is one of the most commonly known machine learning algorithms out there. One of the advantages of decision trees are that there are quite staright forward, easily understandable by humans. Decision trees provide a way to approximate discrete valued functions and are robust to noisy data. Decision trees can be represented using the typical [Tree](https://en.wikipedia.org/wiki/Tree_(data_structure)) Data Structure. 
@@ -100,7 +106,7 @@ Whilst building the decision tree, the information gain metric is used by the ID
 
 Let's take the example of a dataset. This dataset assesses the risk of tumour in a patient. We will be generating a decision tree using the ID3 algorithm.
 
-<table>
+<table >
 	<tbody>
 		<tr>
 			<td> HEADACHE </td>
@@ -149,13 +155,13 @@ Let's take the example of a dataset. This dataset assesses the risk of tumour in
 
 First, let's find the entropy of the entire collection: 
 
-** E(S) = -p<sub>yes</sub> log<sub>2</sub> p<sub>yes</sub> - p<sub>no</sub> log<sub>2</sub> p<sub>no</sub> **
+__E(S) = -p<sub>yes</sub> log<sub>2</sub> p<sub>yes</sub> - p<sub>no</sub> log<sub>2</sub> p<sub>no</sub>__
 
 From the dataset: _p<sub>yes</sub>_ = 4/6 and _p<sub>no</sub>_ = 2/6
 
 So, E(S) = - { (4/6) log<sub>2</sub>(4/6) } - { (2/6) log<sub>2</sub>(2/6) }
 
-This gives us ** E(S) = **
+This gives us **E(S) =**
 
 
 
