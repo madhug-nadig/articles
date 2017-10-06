@@ -162,7 +162,23 @@ From the dataset: _p<sub>yes</sub>_ = 4/6 and _p<sub>no</sub>_ = 2/6
 
 So, E(S) = - { (4/6) log<sub>2</sub>(4/6) } - { (2/6) log<sub>2</sub>(2/6) }
 
-This gives us **E(S) =**
+This gives us **E(S) = 0.9182**
+
+Now, the information gain, let's consider the attribute `HEADACHE`. This attribute has two values `YES` and `NO`.  Now, the proportion of `YES` in the attribute: 4/6 and the proportion of `YES` in the attribute: 2/6
+
+Hence, the split:
+
+S<sub>YES</sub> - [3+, 1-] ( 3 positive and 1 negative classification when HEADACHE has the value YES)
+
+S<sub>NO</sub> - [0+, 2-] ( 2 negative classifications when HEADACHE has the value NO)
+
+Therefore,
+
+IG(S, HEADACHE) = E(S) - (4/6) * E(S<sub>YES</sub>) - (2/6) * E(S<sub>NO</sub>).  
+After Calculation: **IG(S, HEADACHE) = 0.37734**.  
+Similarly, **IG(S, DIZZYNESS) = 0.4590** and **IG(S, BP) = 0.5848**
+
+After we have calculated the information for these attributes, we choose the attribute with the highest information gain as the splitting attribute for the node. This process goes on top-down until we are left we just leaves - the classification. From above, it is clear that the attribute `BLOOD PRESSURE` will be our attribute of choice at the root node. 
 
 
 
