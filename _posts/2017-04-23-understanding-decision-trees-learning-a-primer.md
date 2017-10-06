@@ -94,5 +94,69 @@ The information gain IG(S,A) of an attribute A, from the collection S, can be de
 
 where `i` spans through the entire set of all possible values for attribute A, and S <sub>i</sub> is the portion of S for which attribute A has the value _i_. The first term is the entropy of the entire collection S. One way to think about IG is that, the value of IG is the number of bits saved when encoding a target value of an arbitrary member of the collection. 
 
+Whilst building the decision tree, the information gain metric is used by the ID3 algorithm to select the best attribute - the attribute the provides the "best split" - at each level. 
+
+# Complete example of decision tree learning
+
+Let's take the example of a dataset. This dataset assesses the risk of tumour in a patient. We will be generating a decision tree using the ID3 algorithm.
+
+<table>
+	<tbody>
+		<tr>
+			<td> HEADACHE </td>
+			<td> DIZZYNESS </td>
+			<td> BLOOD PRESSURE </td>
+			<td> RISK </td>
+		</tr>
+		<tr>
+			<td> YES </td>
+			<td> NO </td>
+			<td> HIGH </td>
+			<td> YES </td>
+		</tr>
+		<tr>
+			<td> YES </td>
+			<td> YES </td>
+			<td> HIGH </td>
+			<td> YES </td>
+		</tr>
+		<tr>
+			<td> NO  </td>
+			<td> NO </td>
+			<td> NORMAL </td>
+			<td> NO </td>
+		</tr>
+		<tr>
+			<td> YES  </td>
+			<td> YES </td>
+			<td> NORMAL </td>
+			<td> YES </td>
+		</tr>
+		<tr>
+			<td> YES </td>
+			<td> NO </td>
+			<td> NORMAL </td>
+			<td> NO </td>
+		</tr>
+		<tr>
+			<td> NO </td>
+			<td> YES </td>
+			<td> NORMAL </td>
+			<td> YES </td>
+		</tr>
+	</tbody>
+</table> 
+
+First, let's find the entropy of the entire collection: 
+
+** E(S) = -p<sub>yes</sub> log<sub>2</sub> p<sub>yes</sub> - p<sub>no</sub> log<sub>2</sub> p<sub>no</sub> **
+
+From the dataset: _p<sub>yes</sub>_ = 4/6 and _p<sub>no</sub>_ = 2/6
+
+So, E(S) = - { (4/6) log<sub>2</sub>(4/6) } - { (2/6) log<sub>2</sub>(2/6) }
+
+This gives us ** E(S) = **
+
+
 
 <br /><br />
