@@ -10,6 +10,7 @@ categories: Machine-Learning
 <style>
 table, th, td {
     border: 1px solid #efefef;
+	padding:3px;
 }
 </style>
 
