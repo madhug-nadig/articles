@@ -196,8 +196,10 @@ So, E(S) = - { (2/4) log<sub>2</sub>(2/4) } - { (2/4) log<sub>2</sub>(2/4) }
 
 This gives us **E(S) = 1.0**
 
-After calculations similar as above, we find **IG(HEADACHE) = 0** and **IG(DIZZYNESS) = 1**. We now choose the `DIZZYNESS` attribute as the splitting attribute. 
+After calculations similar as above, we find **IG(HEADACHE) = 0** and **IG(DIZZYNESS) = 1**. We now choose the `DIZZYNESS` attribute as the splitting attribute. This gives us the final decision tree, using which we can predict the classification. Notice that we don't have to use the `HEADACHE` attribute since, from the given data, we can make predictions based upon the other two attributes. 
 
+ 
+![Completed Decision Tree]({{site.baseurl}}/images/Tree.jpg)
 
 
 
