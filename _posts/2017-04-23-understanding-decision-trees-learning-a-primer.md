@@ -164,7 +164,7 @@ So, E(S) = - { (4/6) log<sub>2</sub>(4/6) } - { (2/6) log<sub>2</sub>(2/6) }
 
 This gives us **E(S) = 0.9182**
 
-Now, the information gain, let's consider the attribute `HEADACHE`. This attribute has two values `YES` and `NO`.  Now, the proportion of `YES` in the attribute: 4/6 and the proportion of `YES` in the attribute: 2/6
+Now, the information gain, let's consider the attribute `HEADACHE`. This attribute has two values `YES` and `NO`.  Now, the proportion of `YES` in the attribute: 4/6 and the proportion of `NO` in the attribute: 2/6
 
 Hence, the split:
 
@@ -179,6 +179,13 @@ After Calculation: **IG(S, HEADACHE) = 0.37734**.
 Similarly, **IG(S, DIZZYNESS) = 0.4590** and **IG(S, BP) = 0.5848**
 
 After we have calculated the information for these attributes, we choose the attribute with the highest information gain as the splitting attribute for the node. This process goes on top-down until we are left we just leaves - the classification. From above, it is clear that the attribute `BLOOD PRESSURE` will be our attribute of choice at the root node. 
+
+Splitting at the root node using `BLOOD PRESSURE` gives us the following tree:
+
+
+![Partial Decision Tree]({{site.baseurl}}/images/partial-tree.png)
+
+If the value of `BLOOD PRESSURE` is `YES` then we directly arrive at the class being `YES`. If the value is no, we need to split the dataset again and the child node. As said, this is a top-down approach.
 
 
 
