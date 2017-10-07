@@ -183,9 +183,21 @@ After we have calculated the information for these attributes, we choose the att
 Splitting at the root node using `BLOOD PRESSURE` gives us the following tree:
 
 
-![Partial Decision Tree]({{site.baseurl}}/images/partial-tree.png)
+![Partial Decision Tree]({{site.baseurl}}/images/partial-tree.jpg)
 
 If the value of `BLOOD PRESSURE` is `YES` then we directly arrive at the class being `YES`. If the value is no, we need to split the dataset again and the child node. As said, this is a top-down approach.
+
+Now, let's move to choosing the next splitting attribute. The process is essentially the same, except we now consider the rows where the value of the `BLOOD PRESSURE` attribute
+is `NO`.
+
+_p<sub>yes</sub>_ = 2/4 and _p<sub>no</sub>_ = 2/4
+
+So, E(S) = - { (2/4) log<sub>2</sub>(2/4) } - { (2/4) log<sub>2</sub>(2/4) }
+
+This gives us **E(S) = 1.0**
+
+After calculations similar as above, we find **IG(HEADACHE) = 0** and **IG(DIZZYNESS) = 1**. We now choose the `DIZZYNESS` attribute as the splitting attribute. 
+
 
 
 
