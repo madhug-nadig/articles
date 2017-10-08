@@ -20,6 +20,18 @@ Decision tree learning is one of the most commonly known machine learning algori
 
 >Decision tree learning uses a decision tree (as a predictive model) to go from observations about an item (represented in the branches) to conclusions about the item's target value (represented in the leaves). It is one of the predictive modelling approaches used in statistics, data mining and machine learning.
 
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-3120660330925914"
+     data-ad-slot="1624596889"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
 In decision tree learning, a decision tree - now known by the umbrella term [CART (Classification and Regression Tree)](https://en.wikipedia.org/wiki/Predictive_analytics#Classification_and_regression_trees_.28CART.29) - can be used to visually and explicitly represent decisions and decision making. Though, it is common to use a tree-like model for decisions, learned trees can also be represented as sets of `if-else-then` rules. 
 
 Though decision trees can be utilized for both classification and regression, it's primarily used for classification.
@@ -52,7 +64,7 @@ That is, Decision Trees represent a bunch of `AND` 'statements' chained by `OR` 
  - When there are many missing attribute values in the dataset.
  - When _disjunctive_ descriptions are required
  - When you need to build and test fast
- - When the dataset is small is size
+ - When the dataset is small in size
 
 # How is a decision tree is built?
 
@@ -71,7 +83,7 @@ The ID3 algorithm builds the tree top-down, starting from the root by meticulous
 
 > Entropy is a measure of _unpredictability_ of the state, or equivalently, of its _average information content._ 
 
-Entropy is a statistical metric that measures that **impurity.** Given a collection of S, which contains two classes: _Positive_ and _Negative_, of some arbitrary target concept. The entropy with respect to this boolean classification is:
+Entropy is a statistical metric that measures the **impurity.** Given a collection of S, which contains two classes: _Positive_ and _Negative_, of some arbitrary target concept,  entropy with respect to this boolean classification is:
 		
 **Entropy(S) = E(S) = -p<sub>positive</sub>log<sub>2</sub> p <sub>positive</sub> - p<sub>negative</sub>log<sub>2</sub> p <sub>negative</sub>**
 
@@ -91,7 +103,7 @@ In general terms, when the classes of the target function may not always be bool
 
 ### Information Gain
 
-Now that we know what entropy is, let's look at an attribute that is more attached to the building of the decision tree - _[Information Gain](https://en.wikipedia.org/wiki/Information_gain_in_decision_trees)_. THe information gain is a metric that measures the expected reduction in the impurity of the collection S, caused by splitting the data according to any given attribute. 
+Now that we know what entropy is, let's look at an attribute that is more attached to the building of the decision tree - _[Information Gain](https://en.wikipedia.org/wiki/Information_gain_in_decision_trees)_. Information gain is a metric that measures the expected reduction in the impurity of the collection S, caused by splitting the data according to any given attribute. 
 
 The information gain IG(S,A) of an attribute A, from the collection S, can be defined as
 
@@ -102,6 +114,18 @@ The information gain IG(S,A) of an attribute A, from the collection S, can be de
 where `i` spans through the entire set of all possible values for attribute A, and S <sub>i</sub> is the portion of S for which attribute A has the value _i_. The first term is the entropy of the entire collection S. One way to think about IG is that, the value of IG is the number of bits saved when encoding a target value of an arbitrary member of the collection. 
 
 Whilst building the decision tree, the information gain metric is used by the ID3 algorithm to select the best attribute - the attribute the provides the "best split" - at each level. 
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-3120660330925914"
+     data-ad-slot="1624596889"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
 
 # Complete example of decision tree learning
 
@@ -199,8 +223,30 @@ This gives us **E(S) = 1.0**
 After calculations similar as above, we find **IG(HEADACHE) = 0** and **IG(DIZZYNESS) = 1**. We now choose the `DIZZYNESS` attribute as the splitting attribute. This gives us the final decision tree, using which we can predict the classification. Notice that we don't have to use the `HEADACHE` attribute since, from the given data, we can make predictions based upon the other two attributes. 
 
  
-![Completed Decision Tree]({{site.baseurl}}/images/Tree.jpg)
+![Completed Decision Tree]({{site.baseurl}}/images/Tsree.jpg)
 
+
+The ID3 algorithm usually prefers shorter, wider trees over the taller ones. The trees which has a high information gain are placed closer to the root.
+
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-3120660330925914"
+     data-ad-slot="1624596889"></ins>
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+## Overfitting in a decision tree
+
+As the data that is fed becomes larger, the decision tree tends to become longer. In such cases, noise and corrupt/incorrect data can have a detrimental impact on the decision tree.  This results in the decision tree **overfitting** the dataset, that is decision tree performs satisfactory for the training data, but fails to produce an appropriate approximation of the target concept when it encounters actual data. Overfitting can also occur when insufficent data is provided to build the decision tree (like perhaps, our previous with only 6 rows.)
+
+In order overcome the overfitting scenario, one of the following two things must be done. Either the decision tree should stop growing before it overfits the data or an overfitting tree should be pruned to reduce the error.
+
+That's it for now, if you have any comments, please leave then below.
 
 
 <br /><br />
