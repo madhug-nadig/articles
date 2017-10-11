@@ -20,7 +20,7 @@ SVMs are supervised learning algorithms, hence we'll need to train the algorithm
 
 Let us take the example of a linearly seperable set of points on a 2D plane. There is a possibility of many lines or more generally _hyperplanes_ that might cut across datapoints in which that it splits it into the two given classes.
 
-![Support Vector Machines Seperating lines]({{site.baseurl}}/images/seperating-lines.png)
+![Support Vector Machines Seperating lines]({{site.baseurl}}/images/separating-lines.png)
 <span style = "color: #dfdfdf; font-size:0.6em">Image courtesy: opencv.org</span>
 
 As can be seen from the above image, there are multiple lines that split the data into the two classes. The question now is, **Which is the best line that seperates the two classes?** and how do we find it?
