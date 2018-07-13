@@ -35,6 +35,14 @@ One practical assumption is that, the farther the datapoint is from this seperat
 
 The distance between the closest point and the decision boundary is referred to as **margin**. In SVMs, all we are really doing is maximizing this margin. The points closest to the seperating boundary are referred to as **support vectors**. Thus, all SVM does is maximize the distance between the seperating hyperplane and the support vectors. Simple, yeah?
 
-# What's a Hyperplane?
+## What's a Hyperplane?
 
-A hyperplane is a n-1 dimensional Euclidean space that can divide any n dimensional Eucildean space into 2 disconnected parts. A hyperplane can be a point - 0 dimensional, a line - 1 Dimensional, a plane - 2 Dimensional and so on.   
+A hyperplane is a n-1 dimensional Euclidean space that can divide any n dimensional Eucildean space into 2 disconnected parts. A hyperplane can be a point - 0 dimensional, a line - 1 Dimensional, a plane - 2 Dimensional and so on. 
+
+Let's break it down a bit. First, let's take a line. Now a single point could break that line into two disconnected parts - in this case the said point is the *seperating hyperplace*. When we take a 2D plane, we can have a line as a seperating hyperplane. Similarly, if we take a 3 dimensional euclidean space, we will need a plane to seperate the 3D space into two disconnected parts. Similarly, if we want to split a space with 512 dimensions into two disconnect parts, we will need a 511 Dimensional Euclidean space to do so.
+
+In call the cases, in order to seperate an n dimensional Euclidean space, we used a n-1 dimensional Euclidean space. This n-1 Dimensional space is your hyperplane.
+
+# How does the SVM work?
+
+To make it easier to understand, let us take the example of linearly seperable binary sets. 
