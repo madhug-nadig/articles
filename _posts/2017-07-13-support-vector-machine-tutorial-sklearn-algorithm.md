@@ -58,8 +58,6 @@ Equation of the hyperplane:
 `w`<sup>`T`</sup>` x + b = 0` , where `w` is the feature vector.  
 
 
-
-
 To make it easier to understand, let us take the example of linearly seperable binary sets. 
 
 The goal here would be to find a hyperplane such that it splits the dataset into two classes, all while making sure that the margin is maximized. 
@@ -67,7 +65,9 @@ The goal here would be to find a hyperplane such that it splits the dataset into
 
 # Implementing SVMs in Python using scikit-learn 
 
+Now that we have understood teh algo, let's go ahead and implement it out of box in Python. We can use to the all-powerful `scikit-learn` library to implement SVM. 
 
+> The support vector machines in scikit-learn support both dense (numpy.ndarray and convertible to that by numpy.asarray) and sparse (any scipy.sparse) sample vectors as input.
 
 
 # Advantages and Disadvantages of SVMs
