@@ -102,9 +102,9 @@ Let's do the same for multi-class classification:
 	print(clf.predict([[5.,5.]]))
 	print(clf.predict([[1.,2.]]))
 
-Now, let us work on some real data.
+Now, let us work on some real data. I'm using the UCI Kidney disease dataset. I’ve modified the original data set and have added the header lines. You can find the modified dataset [here](https://github.com/madhug-nadig/Machine-Learning-Algorithms-from-Scratch/blob/master/data/chronic_kidney_disease.csv). The original dataset has the data description and other related metadata. You can find the original dataset from the UCI ML repo [here](https://archive.ics.uci.edu/ml/datasets/Chronic_Kidney_Disease).
 
-   
+
 
 # Advantages and Disadvantages of SVMs
 
@@ -122,3 +122,6 @@ Now, let us work on some real data.
 2. Poor performance in cases where number of features > Number of samples.
 3. SVMs, unlike Bayesian classifiers, do not directly provide probability estimates.
 4. Choosing the Kernel can be quite tricky
+
+
+<br /><br />
