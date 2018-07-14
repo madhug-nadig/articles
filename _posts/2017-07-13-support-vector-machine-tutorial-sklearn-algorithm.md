@@ -65,10 +65,46 @@ The goal here would be to find a hyperplane such that it splits the dataset into
 
 # Implementing SVMs in Python using scikit-learn 
 
-Now that we have understood teh algo, let's go ahead and implement it out of box in Python. We can use to the all-powerful `scikit-learn` library to implement SVM. 
+Now that we have understood the algo, let's go ahead and implement it out of box in Python. We can use to the all-powerful `scikit-learn` library to implement SVM. 
 
 > The support vector machines in scikit-learn support both dense (numpy.ndarray and convertible to that by numpy.asarray) and sparse (any scipy.sparse) sample vectors as input.
 
+In this tutorial, I am going to focus on classification problems that can be solved using SVMs. One could also use scikit-learn library to solve a variety of regression, density estimation and outlier detection. 
+
+In scikit-learn, we can use the `sklearn.svm.SVC`, `sklearn.svm.NuSVC` and `sklearn.svm.LinearSVC` classes to perform multi-class classification on a dataset. SVC and NuSVC are based on libsvm and LinearSVC is based on liblinear. 
+
+> SVC, NuSVC and LinearSVC take as input two arrays: an array X of size [n_samples, n_features] holding the training samples, and an array y of class labels (strings or integers), size [n_samples]
+
+Let's try out a very simple example of SVC, with linearly seperable binary set:
+
+	from sklearn import svm
+	
+	data = [[1,1], [6,6]]
+	y = [1,6]
+	clf = svm.SVC()
+	clf.fit(data, y)
+	# Print out the support vectors
+	print(clf.support_vectors_)
+	# Let us make a prediction
+	print(clf.predict([[5.,5.]]))
+	
+Let's do the same for multi-class classification:
+
+	from sklearn import svm
+	data = [[1,1], [2,2], [3,3], [4,4]]
+	y = [1,2,3,4]
+	# For multi class calssification 
+	clf = svm.SVC(decision_function_shape = 'ovr')
+	clf.fit(data, y)
+	# Print out the support vectors
+	print(clf.support_vectors_)
+	# Let us make some predictions
+	print(clf.predict([[5.,5.]]))
+	print(clf.predict([[1.,2.]]))
+
+Now, let us work on some real data.
+
+   
 
 # Advantages and Disadvantages of SVMs
 
