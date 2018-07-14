@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "SVM Tutorial: Math, Algo, sklearn"
+title:  "SVM Tutorial: The Algorithm and sklearn Implementation"
 date:   2017-07-13 11:34:56 +0530
 description: Support Vector Machines are perhaps one of the most(if not the most) used classification algorithms. One of the prime advantages of SVM is that it works very good right out of the box. You can take the classifier in it’s generic form, without any explicit modifications, run it directly on your data and get good results.
 categories: Machine-Learning
@@ -26,7 +26,7 @@ Let us take the example of a linearly seperable set of points on a 2D plane. The
 
 As can be seen from the above image, there are multiple lines that split the data into the two classes. The question now is, **Which is the best line that seperates the two classes?** and how do we find it?
 
-One practical assumption is that, the farther the datapoint is from this seperating line, the more confidence we have in our prediction. Naturally, we'd want to make all the points of each class as far as possible from the decision boundary. This can be made sure by having the decision boundary be the farthest from points closest to the decision boundary of each class. 
+One practical assumption is that, the farther the datapoint is from this seperating line, the more confidence we have in our prediction. Naturally, we'd want to make all the points of each class as far as possible from the decision boundary. This can be made sure by having the decision boundary be the farthest from points closest to the decision boundary of each class. Unoptimized decision boundary could result in greater misclassifications on new data.
 
 
 ![Support Vector Machines Optimal Hyperplane]({{site.baseurl}}/images/optimal-hyperplane.png)
@@ -45,4 +45,44 @@ In call the cases, in order to seperate an n dimensional Euclidean space, we use
 
 # How does the SVM work?
 
+First some math:
+
+d<sup>+</sup> : Shortest distance between the decision boundary and the positive support vector
+
+d<sup>-</sup> : Shortest distance between the decision boundary and the negative support vector
+
+So, d<sup>+</sup> + d<sup>-</sup> = Margin
+
+Equation of the hyperplane: 
+
+`w`<sup>`T`</sup>` x + b = 0` , where `w` is the feature vector.  
+
+
+
+
 To make it easier to understand, let us take the example of linearly seperable binary sets. 
+
+The goal here would be to find a hyperplane such that it splits the dataset into two classes, all while making sure that the margin is maximized. 
+
+
+# Implementing SVMs in Python using scikit-learn 
+
+
+
+
+# Advantages and Disadvantages of SVMs
+
+## Advantages 
+
+1. Effective in higher dimensions 
+2. Works well in extreme cases
+3. Good performance right out of the box
+4. It is memory efficient
+5. Flexibility when Kernel functions are used.
+
+## Disadvantages
+
+1. SVMs can be quite cumbersome for multiclass problems, you would need a model per class.
+2. Poor performance in cases where number of features > Number of samples.
+3. SVMs, unlike Bayesian classifiers, do not directly provide probability estimates.
+4. Choosing the Kernel can be quite tricky
