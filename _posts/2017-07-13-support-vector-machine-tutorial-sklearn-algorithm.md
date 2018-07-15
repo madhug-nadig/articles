@@ -91,6 +91,7 @@ Let's try out a very simple example of SVC, with linearly seperable binary set:
 Let's do the same for multi-class classification:
 
 	from sklearn import svm
+
 	data = [[1,1], [2,2], [3,3], [4,4]]
 	y = [1,2,3,4]
 	# For multi class calssification 
@@ -102,9 +103,46 @@ Let's do the same for multi-class classification:
 	print(clf.predict([[5.,5.]]))
 	print(clf.predict([[1.,2.]]))
 
-Now, let us work on some real data. I'm using the UCI Kidney disease dataset. I’ve modified the original data set and have added the header lines. You can find the modified dataset [here](https://github.com/madhug-nadig/Machine-Learning-Algorithms-from-Scratch/blob/master/data/chronic_kidney_disease.csv). The original dataset has the data description and other related metadata. You can find the original dataset from the UCI ML repo [here](https://archive.ics.uci.edu/ml/datasets/Chronic_Kidney_Disease).
+Now, let us work on some real data. I'm using the Libsvm [four class dataset](https://www.csie.ntu.edu.tw/~cjlin/libsvmtools/datasets/binary.html#fourclass). I’ve modified the original data set and have added the header lines. You can find the modified dataset [here](https://github.com/madhug-nadig/Machine-Learning-Algorithms-from-Scratch/blob/master/data/chronic_kidney_disease.csv). The original dataset has the data description and other related metadata. You can find the original dataset from the Libsvm data repo [here](https://www.csie.ntu.edu.tw/~cjlin/libsvmtools/datasets/binary/fourclass).
+
+### Handling data
+
+The first thing to do is to read the csv file. To deal with the csv data data, let’s import Pandas first. Pandas is a powerful library that gives Python R like syntax and functioning.  After that we just read the file and seperate out feature and the class columns into X and y. We will be feeding the X and y into our SVM classifier class' `fit` function. Usually the first thing to do whilst working on SVMs is to convert the non-numerical data elements into numerical formats. In our dataset, however, we only have numerical values, so we're good to go as is. 
+
+	import pandas as pd
+	
+	def main():
+		df = pd.read_csv(r"fourclass.tsv", sep = "\t")
+		dataset = df.astype(float).values.tolist()
+		print(df.head()) #Sample of the dataset
+		
+		# Split into feature and class arrays
+		X = np.array(df.drop(['class'], 1))
+		y = np.array(df['class'])
 
 
+
+
+### Visualizing the classification
+
+In order to effectively visualize the SVM's output, I will gonna go ahead and use [mlxtend](http://rasbt.github.io/mlxtend/). Mlextend has has a pretty effective plotting function for visualizing SVMs through decision regions. It actually matplotlib under the hood, so we need to import and plot using matplotlib when using mlxtend. 
+
+Let's import!
+
+	from mlxtend.plotting import plot_decision_regions
+	import matplotlib.pyplot as plt
+
+Now, once we have `fit` our data, we can use the `plot_decision_regions` method from the mlxtend library. 
+
+	plot_decision_regions(X=X, y=y, clf=clf, legend=2)
+	plt.xlabel("x", size=5)
+	plt.ylabel("y", size=5)
+	plt.title('SVM Decision Region Boundary', size=6)
+	plt.show()
+
+Here's what we get
+
+![Support Vector Machines Seperating lines]({{site.baseurl}}/images/svm-example-sklearn.png)
 
 # Advantages and Disadvantages of SVMs
 
@@ -123,5 +161,5 @@ Now, let us work on some real data. I'm using the UCI Kidney disease dataset. I�
 3. SVMs, unlike Bayesian classifiers, do not directly provide probability estimates.
 4. Choosing the Kernel can be quite tricky
 
-
+That's it for now, if you have any comments, please leave them below.
 <br /><br />
