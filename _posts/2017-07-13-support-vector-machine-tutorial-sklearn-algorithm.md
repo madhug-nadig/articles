@@ -103,9 +103,9 @@ Let's do the same for multi-class classification:
 	print(clf.predict([[5.,5.]]))
 	print(clf.predict([[1.,2.]]))
 
-Now, let us work on some real data. I'm using the Libsvm [four class dataset](https://www.csie.ntu.edu.tw/~cjlin/libsvmtools/datasets/binary.html#fourclass). I’ve modified the original data set and have added the header lines. You can find the modified dataset [here](https://github.com/madhug-nadig/Machine-Learning-Algorithms-from-Scratch/blob/master/data/chronic_kidney_disease.csv). The original dataset has the data description and other related metadata. You can find the original dataset from the Libsvm data repo [here](https://www.csie.ntu.edu.tw/~cjlin/libsvmtools/datasets/binary/fourclass).
+Now, let us work on some real data. I have with me a dataset with 2 parameters and 2 classes. You can find thedataset [here](https://github.com/madhug-nadig/Machine-Learning-Algorithms-from-Scratch/blob/master/data/chronic_kidney_disease.csv). 
 
-### Handling data
+### Handling and fitting the data
 
 The first thing to do is to read the csv file. To deal with the csv data data, let’s import Pandas first. Pandas is a powerful library that gives Python R like syntax and functioning.  After that we just read the file and seperate out feature and the class columns into X and y. We will be feeding the X and y into our SVM classifier class' `fit` function. Usually the first thing to do whilst working on SVMs is to convert the non-numerical data elements into numerical formats. In our dataset, however, we only have numerical values, so we're good to go as is. 
 
@@ -120,8 +120,41 @@ The first thing to do is to read the csv file. To deal with the csv data data, l
 		X = np.array(df.drop(['class'], 1))
 		y = np.array(df['class'])
 
+The predict class is binary: **“1”** or **“0”**. The dataset will be divided into ‘test’ and ‘training’ samples for [cross validation](https://en.wikipedia.org/wiki/Cross-validation_(statistics)). The training set will be used to ‘teach’ the algorithm about the dataset, ie. to build a model. The test set will be used for evaluation of the results.
+
+Let us split the data into test and train. In this case, I will be taking 20% of the dataset as the test set. We can can use `sklearn`'s `cross_validation` method to get this done:
+
+	from sklearn import cross_validation
+
+	def main()
+		....
+		
+		X_train, X_test, y_train, y_test = cross_validation.train_test_split(X, y, test_size = 0.2)
+
+Now, let's fit the data into our classifier
 
 
+	clf = svm.NuSVC(decision_function_shape = 'ovo')
+	clf.fit(X_train, y_train)
+
+Yep, it's that simple(to start with).
+
+The `decision_function_shape` by default is `ovr` - One vs rest type multi-classifier. The other option is `ovo` - one vs one classifier.
+
+Now, let's find the accuracy
+
+	accuracy = clf.score(X_test, y_test)
+	print(accuracy)
+	
+	>> 0.9
+
+Not bad. We can now make a prediction using the `clf.predict()` method. 
+
+	example_measure = [[11,1]]
+	prediction = clf.predict(example_measure)
+	print(prediction)
+
+	>> [1]
 
 ### Visualizing the classification
 
@@ -143,6 +176,49 @@ Now, once we have `fit` our data, we can use the `plot_decision_regions` method 
 Here's what we get
 
 ![Support Vector Machines Seperating lines]({{site.baseurl}}/images/svm-example-sklearn.png)
+
+As we can see, the decision boundaries look alright and it can be observed that the margin is perhaps as large as it can be.
+
+Here's the final code:
+	
+	from sklearn import cross_validation, svm
+	import pandas as pd
+	import numpy as np
+	from mlxtend.plotting import plot_decision_regions
+	import matplotlib.pyplot as plt
+	
+	def main():
+		df = pd.read_csv(r"data.tsv", sep = "\t")
+		dataset = df.astype(float).values.tolist()
+		print(df.head())
+	
+		X = np.array(df.drop(['class'], 1))
+		y = np.array(df['class'])
+	
+		X_train, X_test, y_train, y_test = cross_validation.train_test_split(X, y, test_size = 0.2)
+	
+		clf = svm.NuSVC(decision_function_shape = 'ovo')
+		clf.fit(X_train, y_train)
+	
+		accuracy = clf.score(X_test, y_test)
+	
+		print(accuracy)
+	
+		plot_decision_regions(X=X, 
+	                      y=y,
+	                      clf=clf, 
+	                      legend=2)
+	
+		plt.xlabel("one", size=14)
+		plt.ylabel("two", size=14)
+		plt.title('SVM Decision Region Boundary', size=16)
+		plt.show()
+		example_measure = [[11,1]]
+		prediction = clf.predict(example_measure)
+		print(prediction)
+	
+	if __name__ == "__main__":
+		main()
 
 # Advantages and Disadvantages of SVMs
 
