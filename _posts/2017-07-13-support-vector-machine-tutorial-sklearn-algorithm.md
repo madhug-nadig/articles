@@ -39,13 +39,12 @@ The distance between the closest point and the decision boundary is referred to 
 
 A hyperplane is a n-1 dimensional Euclidean space that can divide any n dimensional Eucildean space into 2 disconnected parts. A hyperplane can be a point - 0 dimensional, a line - 1 Dimensional, a plane - 2 Dimensional and so on. 
 
-Let's break it down a bit. First, let's take a line. Now a single point could break that line into two disconnected parts - in this case the said point is the *seperating hyperplace*. When we take a 2D plane, we can have a line as a seperating hyperplane. Similarly, if we take a 3 dimensional euclidean space, we will need a plane to seperate the 3D space into two disconnected parts. Similarly, if we want to split a space with 512 dimensions into two disconnect parts, we will need a 511 Dimensional Euclidean space to do so.
+Let's break it down a bit. First, let's take a line. Now a single point could break that line into two disconnected parts - in this case the said point is the *seperating hyperplane*. When we take a 2D plane, we can have a line as a seperating hyperplane. If we take a 3 dimensional euclidean space, we will need a plane to seperate the 3D space into two disconnected parts. Similarly, if we want to split a space with 512 dimensions into two disconnect parts, we will need a 511 Dimensional Euclidean space to do so.
 
 In call the cases, in order to seperate an n dimensional Euclidean space, we used a n-1 dimensional Euclidean space. This n-1 Dimensional space is your hyperplane.
 
 # How does the SVM work?
 
-First some math:
 
 d<sup>+</sup> : Shortest distance between the decision boundary and the positive support vector
 
@@ -57,10 +56,13 @@ Equation of the hyperplane:
 
 `w`<sup>`T`</sup>` x + b = 0` , where `w` is the feature vector.  
 
+Now, the equation `w`<sup>`T`</sup>` x + b = y` is used to predict the class (`y` in the euqation) of any incoming data point. After substituting the param values for `w` and `x`, we can decide if the data-point belongs to the class by looking at the sign of `y`. 
 
-To make it easier to understand, let us take the example of linearly seperable binary sets. 
+To make it easier to understand, let us take the example of a binary set - with classes A and B. w can say that if the value of `y` for an incoming data point is negative, it belongs to class A. Else if the value of `y` is positive, we can classify it as B.  
 
-The goal here would be to find a hyperplane such that it splits the dataset into two classes, all while making sure that the margin is maximized. 
+We get the equation `w`<sup>`T`</sup>` x + b = 0` after a derivation which I am covering in an article on derivation for SVM. 
+
+The goal here would be to find a hyperplane such that it splits the dataset into two classes, all while making sure that the margin is maximized. Once we find that optimal seperating hyperplanhe, we can predict the class of new data points.
 
 
 # Implementing SVMs in Python using scikit-learn 
@@ -201,6 +203,7 @@ Here's the final code:
 		clf.fit(X_train, y_train)
 	
 		accuracy = clf.score(X_test, y_test)
+
 	
 		print(accuracy)
 	
