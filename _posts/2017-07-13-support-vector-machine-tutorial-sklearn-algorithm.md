@@ -35,6 +35,8 @@ One practical assumption is that, the farther the datapoint is from this seperat
 
 The distance between the closest point and the decision boundary is referred to as **margin**. In SVMs, all we are really doing is maximizing this margin. The points closest to the seperating boundary are referred to as **support vectors**. Thus, all SVM does is maximize the distance between the seperating hyperplane and the support vectors. Simple, yeah?
 
+<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSczU9aI5-E1ngX2530-cvCZRSkRKMCJyI2yEXylAKAFDGwJUw/viewform?embedded=true" width="700" height="410" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe>
+
 ## What's a Hyperplane?
 
 A hyperplane is a n-1 dimensional Euclidean space that can divide any n dimensional Eucildean space into 2 disconnected parts. A hyperplane can be a point - 0 dimensional, a line - 1 Dimensional, a plane - 2 Dimensional and so on. 
