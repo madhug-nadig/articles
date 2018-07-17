@@ -63,7 +63,7 @@ To make it easier to understand, let us take the example of a binary set - with 
 
 We get the equation `w`<sup>`T`</sup>` x + b = 0` after a derivation which I am covering in an article on derivation for SVM. 
 
-The goal here would be to find a hyperplane such that it splits the dataset into two classes, all while making sure that the margin is maximized. Once we find that optimal seperating hyperplanhe, we can predict the class of new data points.
+The goal here would be to find a hyperplane such that it splits the dataset into two classes, all while making sure that the margin is maximized. Once we find that optimal seperating hyperplane, we can predict the class of new data points.
 
 
 # Implementing SVMs in Python using scikit-learn 
@@ -242,4 +242,9 @@ Here's the final code:
 4. Choosing the Kernel can be quite tricky
 
 That's it for now, if you have any comments, please leave them below.
+
+
+<div><iframe src="https://docs.google.com/forms/d/e/1FAIpQLSczU9aI5-E1ngX2530-cvCZRSkRKMCJyI2yEXylAKAFDGwJUw/viewform?embedded=true" width="700" height="410" frameborder="0" marginheight="0" marginwidth="0">Loading...</iframe></div>
+
+
 <br /><br />
