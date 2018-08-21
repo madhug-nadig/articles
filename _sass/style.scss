@@ -270,3 +270,28 @@ footer {
     }
 }
 
+/*ANNOUNCEMENTS*/
+
+#accouncement{
+	width:80%;
+	border:5px solid #882d2b;
+	margin:5px;
+	padding:5px;
+	text-align:center;
+}
+
+#announcement a{
+	text-decoration:none;
+	background-image: linear-gradient(to top,#9ddbe6,#c0e4e4);
+	color:#fff;
+	font-weight: 700;
+	border-radius:50%;
+	padding: 15px;
+}
+
+#announcement a:hover{
+	background-color:#000;
+}
+
+
+
