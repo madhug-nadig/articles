@@ -9,20 +9,21 @@ categories: Parallel-Processing
 
 <style>
 
-.accouncement{
+#accouncement{
 	width:80%;
 	border:5px solid #882d2b;
 	margin:5px;
 	padding:5px;
+	text-align:center;
 }
 
-.announcement a{
+#announcement a{
 	text-decoration:none;
 	background-image: linear-gradient(to top,#9ddbe6,#c0e4e4);
 	color:#fff;
 	font-weight: 700;
 	border-radius:10px;
-	border: 2px solid #000;
+	padding: 15px;
 	padding-left:5px;
 }
 
@@ -259,7 +260,7 @@ To calculate the Speedup, let's write the same computation in serial:
     if __name__ == '__main__':
     	main()
 
-<div class = "announcement">
+<div class = "announcement" id = "announcement">
 	<p>Still have questions? Fine me on <a> Codementor </a></p>
 </div>
 
