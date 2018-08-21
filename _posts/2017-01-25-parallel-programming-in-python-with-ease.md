@@ -15,11 +15,15 @@ categories: Parallel-Processing
 	margin:5px;
 	padding:5px;
 	text-align:center;
+	margin-top:30px!important;
+	margin-bottom:30px!important;
 }
 
 #announcement span{
 	color: #3398c7;
 	text-align:center;
+	font-size:3rem;
+	margin:0px auto;
 }
 
 #announcement span a{
@@ -32,7 +36,7 @@ categories: Parallel-Processing
 }
 
 #announcement a:hover{
-	background-color:#000;
+	background-image:linear-gradient(to top,#000,#000);
 }
 
 </style>
