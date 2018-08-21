@@ -407,5 +407,6 @@ function type(d) {
 
 
 That's it for now, if you have any comments, please leave them below.
+
 <br />
 <br />
