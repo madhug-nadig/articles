@@ -7,6 +7,31 @@ categories: Parallel-Processing
 
 ---
 
+<style>
+
+#accouncement{
+	width:80%;
+	border:5px solid #882d2b;
+	margin:5px;
+	padding:5px;
+	text-align:center;
+}
+
+#announcement a{
+	text-decoration:none;
+	background-image: linear-gradient(to top,#9ddbe6,#c0e4e4);
+	color:#fff;
+	font-weight: 700;
+	border-radius:50%;
+	padding: 15px;
+}
+
+#announcement a:hover{
+	background-color:#000;
+}
+
+</style>
+
 Due to the recent [slowdown/possible demise of Moore's law](https://www.technologyreview.com/s/601102/intel-puts-the-brakes-on-moores-law/), parallel programming has gained widespread prominence as the paradigm of the future. Since more than a decade, due to the anticipation of the end of the Moore's law, CPUs with multiple cores have become the norm. Multicore CPU's have also found their way into _smartphones_ too, with [LG Optimus 2X](https://en.wikipedia.org/wiki/LG_Optimus_2X) being the first phone to have multiple cores, way back in 2010. Just switching to the new processor _may no longer guarantee_ faster performance. With multicore/multiprocessor architectures, it is imperative to write software in way that they could be run in parallel. Most computer programs simply cannot take advantage of performance increases offered by GPUs or multi-core CPUs unless those programs are adquately modified. It is time for developers to take a more active role in improving performance by taking the computer architecture into consideration. 
 
 In this post, I will write about parallel programming in `python`.
