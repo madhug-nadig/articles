@@ -22,8 +22,10 @@ categories: Parallel-Processing
 #announcement span{
 	color: #3398c7;
 	text-align:center;
-	font-size:3rem;
+	font-size:2.33rem;
+	font-family:'Secular One', Arial;
 	margin:0px auto;
+	
 }
 
 #announcement span a{
@@ -32,6 +34,7 @@ categories: Parallel-Processing
 	color:#fff;
 	font-weight: 700;
 	border-radius: 28px;
+	font-family: 'Lato';
 	padding: 15px;
 }
 
@@ -269,7 +272,7 @@ To calculate the Speedup, let's write the same computation in serial:
     	main()
 
 <div class = "announcement" id = "announcement">
-	<span>Still have questions? Find me on <a> Codementor </a></span>
+	<span>Still have questions? Find me on <a href='https://www.codementor.io/madhugnadig' target ="_blank" > Codementor </a></span>
 </div>
 
 Here are the results for serial and parallel after many runs:
