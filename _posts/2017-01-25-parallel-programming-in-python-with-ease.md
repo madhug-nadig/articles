@@ -19,6 +19,7 @@ categories: Parallel-Processing
 
 #announcement span{
 	color: #3398c7;
+	text-align:center;
 }
 
 #announcement span a{
