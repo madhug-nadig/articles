@@ -259,7 +259,7 @@ To calculate the Speedup, let's write the same computation in serial:
     if __name__ == '__main__':
     	main()
 
-<div class = "announcements">
+<div class = "announcement">
 	<p>Still have questions? Fine me on <a> Codementor </a></p>
 </div>
 
