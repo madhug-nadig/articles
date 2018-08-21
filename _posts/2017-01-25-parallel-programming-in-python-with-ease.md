@@ -11,7 +11,7 @@ categories: Parallel-Processing
 
 .accouncement{
 	width:80%;
-	border:5px solid #;
+	border:5px solid #882d2b;
 	margin:5px;
 	padding:5px;
 }
