@@ -17,12 +17,16 @@ categories: Parallel-Processing
 	text-align:center;
 }
 
-#announcement a{
+#announcement span{
+	color: #3398c7;
+}
+
+#announcement span a{
 	text-decoration:none;
-	background-image: linear-gradient(to top,#9ddbe6,#c0e4e4);
+	background-image: linear-gradient(to top,#3398c7,#c0e4e4);
 	color:#fff;
 	font-weight: 700;
-	border-radius:50%;
+	border-radius:25%;
 	padding: 15px;
 }
 
@@ -260,7 +264,7 @@ To calculate the Speedup, let's write the same computation in serial:
     	main()
 
 <div class = "announcement" id = "announcement">
-	<p>Still have questions? Fine me on <a> Codementor </a></p>
+	<span>Still have questions? Find me on <a> Codementor </a></span>
 </div>
 
 Here are the results for serial and parallel after many runs:
