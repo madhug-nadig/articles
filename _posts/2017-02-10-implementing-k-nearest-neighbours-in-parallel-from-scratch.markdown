@@ -7,6 +7,45 @@ categories: Machine-Learning Parallel-Processing
 
 ---
 
+
+<style>
+
+#accouncement{
+	width:80%;
+	border:5px solid #882d2b;
+	margin:5px;
+	padding:5px;
+	text-align:center;
+	margin-top:30px!important;
+	margin-bottom:30px!important;
+}
+
+#announcement span{
+	color: #3398c7;
+	text-align:center;
+	font-size:2.33rem;
+	font-family:'Secular One', Arial;
+	margin:0px auto;
+	
+}
+
+#announcement span a{
+	text-decoration:none;
+	background-image: linear-gradient(to top,#3398c7,#c0e4e4);
+	color:#fff;
+	font-weight: 700;
+	border-radius: 33px;
+	font-family: 'Lato';
+	padding: 15px;
+}
+
+#announcement a:hover{
+	background-image:linear-gradient(to top,#000,#000);
+}
+
+</style>
+
+
 K Nearest Neighbours is one of the most commonly implemented Machine Learning classification algorithms. In my previous blog post, [I had implemented the algorithm from scratch in Python](/articles/machine-learning/2017/01/13/implementing-k-nearest-neighbours-from-scratch-in-python.html). If you are not very familiar with the algorithm or it's implementation, do check my previous post.
 
 One of the prime drawbacks of the k-NN algorithm is it's efficiency. Being a supervised **[lazy learning](https://en.wikipedia.org/wiki/Lazy_learning)** algorithm, the k-NN waits till the end to compute. On top of this, due to its [non-parametric](https://en.wikipedia.org/wiki/Non-parametric_statistics) 'nature', the k-NN considers the entire dataset as it's model. 
@@ -169,6 +208,11 @@ compared to 91.25 from serial: __close enough.__
 The average parallel accuracy is also very close to the average serial accuracy with values of 88.4 and 88.6 respectively.
 
 After running the code on the same dataset *without* shuffling the data, both the programs produce the same results indicating that the parallel program is equivalent to the serial implementation.
+
+
+<div class = "announcement" id = "announcement">
+	<span>Still have questions? Find me on <a href='https://www.codementor.io/madhugnadig' target ="_blank" > Codementor </a></span>
+</div>
 
 ## Speedup
 

@@ -8,6 +8,45 @@ categories: Parallel-Processing
 
 ---
 
+
+<style>
+
+#accouncement{
+	width:80%;
+	border:5px solid #882d2b;
+	margin:5px;
+	padding:5px;
+	text-align:center;
+	margin-top:30px!important;
+	margin-bottom:30px!important;
+}
+
+#announcement span{
+	color: #3398c7;
+	text-align:center;
+	font-size:2.33rem;
+	font-family:'Secular One', Arial;
+	margin:0px auto;
+	
+}
+
+#announcement span a{
+	text-decoration:none;
+	background-image: linear-gradient(to top,#3398c7,#c0e4e4);
+	color:#fff;
+	font-weight: 700;
+	border-radius: 33px;
+	font-family: 'Lato';
+	padding: 15px;
+}
+
+#announcement a:hover{
+	background-image:linear-gradient(to top,#000,#000);
+}
+
+</style>
+
+
 # Introduction
 
 OpenMP is one of the most popular solutions to parallel computation in C/C++. OpenMP is a mature API and has been around two decades, the first OpenMP API spec came out for Fortran(Yes, FORTRAN). OpenMP provides a high level of abstraction and allows compiler directives to be embedded in the source code. 
@@ -131,6 +170,12 @@ Further, if there are more than one instances of the required element present in
 
 
 You can find the complete code of Parallel Linear Search [here](https://github.com/madhug-nadig/Parallel-Processing-Nadig/blob/master/Parallel%20Programming%20in%20C%20-%20Linear%20Search.c)
+
+
+
+<div class = "announcement" id = "announcement">
+	<span>Still have questions? Find me on <a href='https://www.codementor.io/madhugnadig' target ="_blank" > Codementor </a></span>
+</div>
 
 ## Selection Sort
 

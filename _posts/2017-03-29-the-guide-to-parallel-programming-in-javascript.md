@@ -7,6 +7,45 @@ categories: Parallel-Processing
 
 ---
 
+
+<style>
+
+#accouncement{
+	width:80%;
+	border:5px solid #882d2b;
+	margin:5px;
+	padding:5px;
+	text-align:center;
+	margin-top:30px!important;
+	margin-bottom:30px!important;
+}
+
+#announcement span{
+	color: #3398c7;
+	text-align:center;
+	font-size:2.33rem;
+	font-family:'Secular One', Arial;
+	margin:0px auto;
+	
+}
+
+#announcement span a{
+	text-decoration:none;
+	background-image: linear-gradient(to top,#3398c7,#c0e4e4);
+	color:#fff;
+	font-weight: 700;
+	border-radius: 33px;
+	font-family: 'Lato';
+	padding: 15px;
+}
+
+#announcement a:hover{
+	background-image:linear-gradient(to top,#000,#000);
+}
+
+</style>
+
+
 Back when JavaScript was developed as _Mocha_ at Netscape Communications Corporation by Brendan Eich in 1995, the language was meant for adding _programmability_ on the web - making the web more interactive for the user. Over the years, JavaScript has gained massive prominence and has become one of the most important languages of the day. The rise of the web has taken JavaScript places it was never conceived to be. 
 
 Anyone who has written considerable amount of code in JavaScript will not be surprised to know that JavaScript [was written in 10 days](https://www.computer.org/csdl/mags/co/2012/02/mco2012020007.pdf). As lovable as it may be, JavaScript has subtle bug friendly features and [lot of other things that programmers would rather not have](https://whydoesitsuck.com/why-does-javascript-suck/). But it is one of the essential programming(scripting?) languages in today's web driven world. Hence, it is imperative to implement the best of software programming techniques and technologies in JavaScript.
@@ -502,6 +541,12 @@ function type(d) {
 }
 
 </script>
+
+
+
+<div class = "announcement" id = "announcement">
+	<span>Still have questions? Find me on <a href='https://www.codementor.io/madhugnadig' target ="_blank" > Codementor </a></span>
+</div>
 
 # Practical Application: Runtime Image Processing Through Pixel Manipulation
 

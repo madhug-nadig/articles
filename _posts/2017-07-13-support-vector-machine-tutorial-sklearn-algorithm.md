@@ -7,6 +7,44 @@ categories: Machine-Learning
 
 ---
 
+
+<style>
+
+#accouncement{
+	width:80%;
+	border:5px solid #882d2b;
+	margin:5px;
+	padding:5px;
+	text-align:center;
+	margin-top:30px!important;
+	margin-bottom:30px!important;
+}
+
+#announcement span{
+	color: #3398c7;
+	text-align:center;
+	font-size:2.33rem;
+	font-family:'Secular One', Arial;
+	margin:0px auto;
+	
+}
+
+#announcement span a{
+	text-decoration:none;
+	background-image: linear-gradient(to top,#3398c7,#c0e4e4);
+	color:#fff;
+	font-weight: 700;
+	border-radius: 33px;
+	font-family: 'Lato';
+	padding: 15px;
+}
+
+#announcement a:hover{
+	background-image:linear-gradient(to top,#000,#000);
+}
+
+</style>
+
 Support Vector Machines are perhaps one of the most(if not the most) used classification algorithms. They heralded the downfall of the Neural Networks (It was only in the late 2000s that Neural Nets caught on at the advent of Deep Learning and availability of powerful computers) in the 1990s by classifying images efficiently and more accurately. One of the prime advantages of SVM is that it works very good right out of the box. You can take the classifier in it's generic form, without any explicit modifications, run it directly on your data and get good results. In addition to their low error rate, support vector machines are computationally inexpensive in contrast to other calssification algorithms such as the K Nearest Neighbours. 
 
 ## So what is a support vector machine?
@@ -223,6 +261,11 @@ Here's the final code:
 	
 	if __name__ == "__main__":
 		main()
+
+
+<div class = "announcement" id = "announcement">
+	<span>Still have questions? Find me on <a href='https://www.codementor.io/madhugnadig' target ="_blank" > Codementor </a></span>
+</div>
 
 # Advantages and Disadvantages of SVMs
 

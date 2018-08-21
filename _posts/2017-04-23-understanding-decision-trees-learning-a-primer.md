@@ -12,6 +12,41 @@ table, th, td {
     border: 1px solid #efefef;
 	padding:3px;
 }
+
+#accouncement{
+	width:80%;
+	border:5px solid #882d2b;
+	margin:5px;
+	padding:5px;
+	text-align:center;
+	margin-top:30px!important;
+	margin-bottom:30px!important;
+}
+
+#announcement span{
+	color: #3398c7;
+	text-align:center;
+	font-size:2.33rem;
+	font-family:'Secular One', Arial;
+	margin:0px auto;
+	
+}
+
+#announcement span a{
+	text-decoration:none;
+	background-image: linear-gradient(to top,#3398c7,#c0e4e4);
+	color:#fff;
+	font-weight: 700;
+	border-radius: 33px;
+	font-family: 'Lato';
+	padding: 15px;
+}
+
+#announcement a:hover{
+	background-image:linear-gradient(to top,#000,#000);
+}
+
+
 </style>
 
 # What is decision tree learning?
@@ -239,6 +274,11 @@ The ID3 algorithm usually prefers shorter, wider trees over the taller ones. The
 <script>
      (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
+
+
+<div class = "announcement" id = "announcement">
+	<span>Still have questions? Find me on <a href='https://www.codementor.io/madhugnadig' target ="_blank" > Codementor </a></span>
+</div>
 
 ## Overfitting in a decision tree
 

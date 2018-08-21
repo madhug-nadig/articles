@@ -33,7 +33,7 @@ categories: Parallel-Processing
 	background-image: linear-gradient(to top,#3398c7,#c0e4e4);
 	color:#fff;
 	font-weight: 700;
-	border-radius: 28px;
+	border-radius: 33px;
 	font-family: 'Lato';
 	padding: 15px;
 }
