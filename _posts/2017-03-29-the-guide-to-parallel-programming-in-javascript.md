@@ -8,45 +8,7 @@ categories: Parallel-Processing
 ---
 
 
-<style>
-
-#accouncement{
-	width:80%;
-	border:5px solid #882d2b;
-	margin:5px;
-	padding:5px;
-	text-align:center;
-	margin-top:30px!important;
-	margin-bottom:30px!important;
-}
-
-#announcement span{
-	color: #3398c7;
-	text-align:center;
-	font-size:2.33rem;
-	font-family:'Secular One', Arial;
-	margin:0px auto;
-	
-}
-
-#announcement span a{
-	text-decoration:none;
-	background-image: linear-gradient(to top,#3398c7,#c0e4e4);
-	color:#fff;
-	font-weight: 700;
-	border-radius: 33px;
-	font-family: 'Lato';
-	padding: 15px;
-}
-
-#announcement a:hover{
-	background-image:linear-gradient(to top,#000,#000);
-}
-
-</style>
-
-
-Back when JavaScript was developed as _Mocha_ at Netscape Communications Corporation by Brendan Eich in 1995, the language was meant for adding _programmability_ on the web - making the web more interactive for the user. Over the years, JavaScript has gained massive prominence and has become one of the most important languages of the day. The rise of the web has taken JavaScript places it was never conceived to be. 
+Back when JavaScript was developed as _Mocha_ at Netscape Communications Corporation by Brendan Eich in 1995, the language was meant for adding _programmability_ on the web - making the web more interactive for the user. Over the years, JavaScript has gained massive prominence and has become one of the most important languages of the day. The rise of the web has taken JavaScript places it was never conceived to be.
 
 Anyone who has written considerable amount of code in JavaScript will not be surprised to know that JavaScript [was written in 10 days](https://www.computer.org/csdl/mags/co/2012/02/mco2012020007.pdf). As lovable as it may be, JavaScript has subtle bug friendly features and [lot of other things that programmers would rather not have](https://whydoesitsuck.com/why-does-javascript-suck/). But it is one of the essential programming(scripting?) languages in today's web driven world. Hence, it is imperative to implement the best of software programming techniques and technologies in JavaScript.
 
@@ -83,7 +45,7 @@ JavaScript is no longer confined to the browser. It runs everywhere and on anyth
 
 # The JavaScript event Loop
 
-Perhaps the most solid obstacle to parallel programming in JS was its event based paradigm. 
+Perhaps the most solid obstacle to parallel programming in JS was its event based paradigm.
 
 >JavaScript has a concurrency model based on an "event loop" where almost all I/O is non-blocking. When the operation has been completed, a message is enqueued along with the provided callback function. At some point in the future, the message is dequeued and the callback fired.
 
@@ -113,13 +75,13 @@ Thanks to web workers, we now have a better way to achieve this.
 
 # Enter Web Workers
 
-Parallel computing in JavaScript can be achieved through [Web Workers API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API), which were introduced with the HTML5 specification. 
+Parallel computing in JavaScript can be achieved through [Web Workers API](https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API), which were introduced with the HTML5 specification.
 
 > A web worker, as defined by the World Wide Web Consortium (W3C) and the Web Hypertext Application Technology Working Group (WHATWG), is a JavaScript script executed from an HTML page that runs in the background, independently of other user-interface scripts that may also have been executed from the same HTML page. Web workers are often able to utilize multi-core CPUs more effectively. Web workers are relatively heavy-weight. They are expected to be long-lived, have a high start-up performance cost, and a high per-instance memory cost.
 
-Web workers allow the user to run JavaScript in parallel without interfering the user interface. A _worker_ script will be loaded and run in the backgroud, completely independent of the user interface scripts. This means that the workers do not have any access to the user interface elements, such as the DOM and common JS functions like `getElementById`(You can still make AJAX calls using Web Workers). The prime use case of the web worker API is to perform computationally expensive task in the background, without interrupting or being interrupted by user interaction. 
+Web workers allow the user to run JavaScript in parallel without interfering the user interface. A _worker_ script will be loaded and run in the backgroud, completely independent of the user interface scripts. This means that the workers do not have any access to the user interface elements, such as the DOM and common JS functions like `getElementById`(You can still make AJAX calls using Web Workers). The prime use case of the web worker API is to perform computationally expensive task in the background, without interrupting or being interrupted by user interaction.
 
-With web workers, it is now possbile to have multiple JS threads running in parallel. It allows the browser to have a normal operation with the event loop based execution of the single main thread on the user side, while making room for multiple threads in the background. Each web worker has a separate message queue, event loop, and memory space independent from the original thread that instantiated it. 
+With web workers, it is now possbile to have multiple JS threads running in parallel. It allows the browser to have a normal operation with the event loop based execution of the single main thread on the user side, while making room for multiple threads in the background. Each web worker has a separate message queue, event loop, and memory space independent from the original thread that instantiated it.
 
 Web workers communicate with the main document/ the main thread via message passing technique. The message passing is done using the [postMessage](https://developer.mozilla.org/en-US/docs/Web/API/Window/postMessage) API.
 
@@ -145,7 +107,7 @@ Let's start with the worker. The worker can have a handler to the `onmessage` ev
 	  postMessage(result);
 	}
 
-I will implement the [three-hump camel function](https://www.sfu.ca/~ssurjano/camel3.html) in the background using web workers and send over the result using the postMessage API. 
+I will implement the [three-hump camel function](https://www.sfu.ca/~ssurjano/camel3.html) in the background using web workers and send over the result using the postMessage API.
 
 The function:
 
@@ -157,14 +119,14 @@ In our task.js:
 
 	onmessage = function(e) {
 		console.log("Message received from main script.");
-	
+
 		// Implementing three hump camel function
-	
+
 		var x = e.data[0];
 		var y = e.data[1];
-	
+
 		var result = (2*x*x) - (1.05*x*x*x*x) + (Math.pow(x,6)/6) + (x*y) + (y*y);
-	
+
 		var workerResult = "Result: " + result;
 		console.log("Posting message back to main script.");
 		postMessage(workerResult);
@@ -172,7 +134,7 @@ In our task.js:
 
 On the event of the main thread sending the message the `onmessage` and the function executes. The worker computes the function in the background and put the message in the message queue through the `postMessage` function.
 
-Now, coming to our main thread: 
+Now, coming to our main thread:
 
 	function compute(){
 		if (window.Worker) { // Check if the Browser supports the Worker api.
@@ -190,7 +152,7 @@ Now, coming to our main thread:
 		}
 	}
 
-We have one function compute that executes on a button onclick. We first check if the browser supports web worker API. Then we create a worker using the `Worker()` constructor. After which we post the data to the worker using the `postMessage()` function. This will run the worker script in the background, since the worker script is waiting for our message event. 
+We have one function compute that executes on a button onclick. We first check if the browser supports web worker API. Then we create a worker using the `Worker()` constructor. After which we post the data to the worker using the `postMessage()` function. This will run the worker script in the background, since the worker script is waiting for our message event.
 
 We then wait for the message event from the worker. We handle that event with our callback and update the result.
 
@@ -269,17 +231,17 @@ Mergesort:
 
 	    if (arr.length < 2)
 	        return arr;
-	 
+
 	    var middle = parseInt(arr.length / 2);
 	    var left   = arr.slice(0, middle);
 	    var right  = arr.slice(middle, arr.length);
-	 
+
 	    return merge(mergeSort(left), mergeSort(right));
 	}
-	 
+
 	function merge(left, right){
 	    var result = [];
-	 
+
 	    while (left.length && right.length) {
 	        if (left[0] <= right[0]) {
 	            result.push(left.shift());
@@ -287,16 +249,16 @@ Mergesort:
 	            result.push(right.shift());
 	        }
 	    }
-	 
+
 	    while (left.length)
 	        result.push(left.shift());
-	 
+
 	    while (right.length)
 	        result.push(right.shift());
-	 
+
 	    return result;
 	}
-	 
+
 
 Now, in order for these tasks to run in parallel, we need to create a worker process for each of these:
 
@@ -328,7 +290,7 @@ Now, in order for these tasks to run in parallel, we need to create a worker pro
 
 In our main.js, we need to create and call both the woekers.
 
-	
+
 	function bothsort(){
 		if (window.Worker) { // Check if the Browser supports the Worker api.
 			// Requires script name as input
@@ -378,7 +340,7 @@ Once the parallelization of a task is complete, it is important to evaluate the 
 > Speedup (Sp) is defined as the ratio of runtime for a sequential algorithm (T1) to runtime for a parallel algorithm with p processors (Tp). That is, Sp = T1 / Tp. Ideal speedup results when Sp = p. Speedup is formally derived from Amdahl’s law, which considers the portion of a program that is serial vs. the portion that is parallel when calculating speedup.
 
 Here are the results for serial and parallel after many runs:
-	
+
 	| Number of Data points | Serial      | Parallel    | Speedup |
 	|-----------------------|-------------|-------------|---------|
 	| 400   	        | 9.165000    | 1.855000    | 4.9407  |
@@ -465,7 +427,7 @@ data = [
 ];
 
 ww = document.getElementById("graph").offsetWidth;
-hh = document.body.clientHeight/1.333; 
+hh = document.body.clientHeight/1.333;
 
 console.log(ww);
 
@@ -593,7 +555,7 @@ From Pixelify.js code, the parallelizable region from the code is the calculatio
             this[this.clean ? '_contextClean' : '_context'].fillStyle = rgba;
             this[this.clean ? '_contextClean' : '_context']
                         .fillRect( (this.x + x) - hs, (this.y + y) - hs, this.pixel, this.pixel )
-        }	
+        }
 	}
 
 From the looks of it, this isn't much of a CPU intensive task. This might not bode well with the web workers. Well, there's only one way to find out for sure. So, let's jump right into the code.
@@ -606,7 +568,7 @@ In our main library file [pixelify - parallel.js](https://github.com/madhug-nadi
 
     var worker = new Worker("pix.js");
 	// Sending message as an array to the worker
-    worker.postMessage([this.h , this.pixel, this.w, this.x, this.y, hs, data, this.alpha]); 
+    worker.postMessage([this.h , this.pixel, this.w, this.x, this.y, hs, data, this.alpha]);
 	// storing the current context in a variable.
     var pxo = this;
 
@@ -619,7 +581,7 @@ Now, let's listen to the message from the worker. In our worker, we will send ov
 	}
 
 In in our worker file, [pix.js](https://github.com/madhug-nadig/Parallel-Processing-Nadig/blob/master/pix.js) we will listen to the `onmessage` event and re-assemble the split parameters sent from the main thread.
-	
+
 	onmessage = function(e){
 	    this.h = e.data[0];
 	    this.pixel = e.data[1];
@@ -630,7 +592,7 @@ In in our worker file, [pix.js](https://github.com/madhug-nadig/Parallel-Process
 	    data = e.data[6];
 	    this.alpha = e.data[7];
 
-Then we will initialize the result object, this is where the result will be stored and sent back to the main thread. 
+Then we will initialize the result object, this is where the result will be stored and sent back to the main thread.
 
 	result = {rgbas: [], rect: []};
 
@@ -695,25 +657,25 @@ The speed-up is abysmal. In fact the parallel code is much much slower than the 
 
 ### Reasons for bad parallel performance
 
-1. **Task not CPU intensive** 
+1. **Task not CPU intensive**
 	- As noted before, our parallelization region was not CPU intensive. The Web Workers were made for CPu intensive tasks, hence, not having a CPU intensive task made web workers less effective.
 2. **Workarounds**
 	- We had to use a lot of workarounds for the library to work in parallel. First, the `this` context was broken down and then reassembled by the worker.
 	- Then, the results were calcuated and stored in an object. The object was relayed to the main thread which then applied to results to the `canvas` object - this added an additional nested loop in the main thread - a proper obstacle to performance.
 3. **Data movement**
-	- Lot of data moved between the main thread and the worker process - adding to the overheads. The result object itself was pretty huge. 
-	- On top of the that, image binary data was also sent over as it is through postMessage. 
+	- Lot of data moved between the main thread and the worker process - adding to the overheads. The result object itself was pretty huge.
+	- On top of the that, image binary data was also sent over as it is through postMessage.
 
 
 # Concluding Remarks
 
-Web workers bring about an exciting prospect of parallism in JavaScript. Bringing parallelism towards the JavaScript programmer is a big win. 
+Web workers bring about an exciting prospect of parallism in JavaScript. Bringing parallelism towards the JavaScript programmer is a big win.
 
 **Web workers are for CPU intensive tasks**, from our example of task parallelism we have seen that web workers do well with CPU intensive tasks, with the above example reaching the speed-up of **30x** with just two web workers. Web workers are not suitable when the task in hand is not CPU intensive as seen from the above image manipulation example.
 
 The inability of working with the DOM is a one of the stark disadvantages as we have seen from the example above. Adding workarounds will hinder the performance.
 
-All in all, web workers are an amazing for CPU intensive parallelism. Though not very suitable for tasks which require DOM interaction, they are a very valuable asset when javascript isn't running on the webpage. 
+All in all, web workers are an amazing for CPU intensive parallelism. Though not very suitable for tasks which require DOM interaction, they are a very valuable asset when javascript isn't running on the webpage.
 
 That's it for now; if you have any comments, please leave them below.
 

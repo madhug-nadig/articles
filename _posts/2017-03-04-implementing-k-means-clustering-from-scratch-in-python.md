@@ -8,44 +8,6 @@ categories: Machine-Learning
 ---
 
 
-<style>
-
-#accouncement{
-	width:80%;
-	border:5px solid #882d2b;
-	margin:5px;
-	padding:5px;
-	text-align:center;
-	margin-top:30px!important;
-	margin-bottom:30px!important;
-}
-
-#announcement span{
-	color: #3398c7;
-	text-align:center;
-	font-size:2.33rem;
-	font-family:'Secular One', Arial;
-	margin:0px auto;
-	
-}
-
-#announcement span a{
-	text-decoration:none;
-	background-image: linear-gradient(to top,#3398c7,#c0e4e4);
-	color:#fff;
-	font-weight: 700;
-	border-radius: 33px;
-	font-family: 'Lato';
-	padding: 15px;
-}
-
-#announcement a:hover{
-	background-image:linear-gradient(to top,#000,#000);
-}
-
-</style>
-
-
 K Means Clustering is one of the most popular Machine Learning algorithms for cluster analysis in data mining. K-means clustering aims to partition n observations into k clusters in which each observation belongs to the cluster with the nearest mean, serving as a [prototype](https://en.wikipedia.org/wiki/Prototype) of the cluster.
 
 K Means algorithm is an [unsupervised learning](https://en.wikipedia.org/wiki/Unsupervised_learning) algorithm, ie. it needs no training data, it performs the computation on the actual dataset. This should be apparent from the fact that in K Means, we are just trying to group similar data points into clusters, there is no prediction involved.
@@ -68,9 +30,9 @@ The algorithm has a loose relationship to the [k-nearest neighbor classifier](ht
 
 ### How k-Means Clustering works:
 
-The K Means algorithm is iterative based, it repeatedly calculates the cluster centroids, refining the values until they do not change much. 
+The K Means algorithm is iterative based, it repeatedly calculates the cluster centroids, refining the values until they do not change much.
 
-The k-means algorithm takes a dataset of '_n_' points as input, together with an integer parameter '_k_' specifying how many clusters to create(supplied by the programmer). The output is a set of '*k*' cluster centroids and a labeling of the dataset that maps each of the data points to a unique cluster. 
+The k-means algorithm takes a dataset of '_n_' points as input, together with an integer parameter '_k_' specifying how many clusters to create(supplied by the programmer). The output is a set of '*k*' cluster centroids and a labeling of the dataset that maps each of the data points to a unique cluster.
 
 The math:
 
@@ -78,7 +40,7 @@ The math:
 
 <span style = "color: #dfdfdf; font-size:0.6em">Image courtesy: DSlab</span>
 
-In the beginning, the algorithm chooses _k_ centroids in the dataset. Then it calculates the distance of each point to each centroid. Each centroid represents a cluster and the points closest to the centroid are assigned to the cluster. At the end of the first iteration, the centroid values are recalculated, usually taking the arithmetic mean of all points in the cluster. 
+In the beginning, the algorithm chooses _k_ centroids in the dataset. Then it calculates the distance of each point to each centroid. Each centroid represents a cluster and the points closest to the centroid are assigned to the cluster. At the end of the first iteration, the centroid values are recalculated, usually taking the arithmetic mean of all points in the cluster.
 
 After the new values of centroid are found, the algorithm performs the same set of steps over and over again until the differences between _old centroids_ and the _new centroids_ are negligible.
 
@@ -99,7 +61,7 @@ The implementation can be divided into the following:
 1. Handle Data: Clean the file, normalize the parameters, given numeric values to non-numeric attributes. Read data from the file and split the data for cross validation.
 2. Find Initial Centroids: Choose _k_ centroids in random.
 3. Distance Calculation: Finding the distance between each of the datapoints with each of the centroids. This distance metric is used to find the which cluster the points belong to.
-4. Re-calculating the centroids: Find the new values for centroid. 
+4. Re-calculating the centroids: Find the new values for centroid.
 5. Stop the iteration: Stop the algorithm when the difference between the old and the new centroids is negligible.
 
 
@@ -140,7 +102,7 @@ The first thing to do is to read the csv file. To deal with the csv data data, l
 Now, loading the data file:
 
 	df = pd.read_csv(r".\data\ipl_bowlers_norm.csv")
-    
+
 In `main.py`:
 
 	df = df[['one', 'two']]
@@ -201,7 +163,7 @@ First, let's initialize the centroids randomly:
 	for i in range(self.k):
 		self.centroids[i] = data[i]
 
-Now, let's enter the main loop. 
+Now, let's enter the main loop.
 
 	for i in range(self.max_iterations):
 			self.classes = {}
@@ -224,7 +186,7 @@ Now, let's re-calculate the cluster centroids.
 	for classification in self.classes:
 		self.centroids[classification] = np.average(self.classes[classification], axis = 0)
 
-The dictionary `previous` stores the value of centroids that the previous iteration returned, we performed the clustering in this iteration based on these centroids. Then we iterate though the `classes` list and find the average of all the datapoints in the given cluster. This is, perhaps, the _machine learning_ part of k-means. The algorithm recomputes the centroids as long as it's optimal(or if there have been far too many interations in  attempting to do so). 
+The dictionary `previous` stores the value of centroids that the previous iteration returned, we performed the clustering in this iteration based on these centroids. Then we iterate though the `classes` list and find the average of all the datapoints in the given cluster. This is, perhaps, the _machine learning_ part of k-means. The algorithm recomputes the centroids as long as it's optimal(or if there have been far too many interations in  attempting to do so).
 
 Time to see if our algorithm has reached the optimal values of centroids. For this, let's have a flag `isOptimal`.
 
@@ -241,7 +203,7 @@ Let's iterate though the new centroids and compare it with the older centroid va
 			isOptimal = False
 
 		#break out of the main loop if the results are optimal, ie. the centroids don't change their positions much(more than our tolerance)
-		
+
 	if isOptimal:
 			break
 
@@ -259,8 +221,8 @@ In main:
 
 	# Plotting starts here, the colors
 	colors = 10*["r", "g", "c", "b", "k"]
-	
-Lets mark our centroids with an `x`. 
+
+Lets mark our centroids with an `x`.
 
 	for centroid in km.centroids:
 		plt.scatter(km.centroids[centroid][0], km.centroids[centroid][1], s = 130, marker = "x")

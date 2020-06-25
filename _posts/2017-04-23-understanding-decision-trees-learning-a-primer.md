@@ -7,51 +7,9 @@ categories: Machine-Learning
 
 ---
 
-<style>
-table, th, td {
-    border: 1px solid #efefef;
-	padding:3px;
-}
-
-#accouncement{
-	width:80%;
-	border:5px solid #882d2b;
-	margin:5px;
-	padding:5px;
-	text-align:center;
-	margin-top:30px!important;
-	margin-bottom:30px!important;
-}
-
-#announcement span{
-	color: #3398c7;
-	text-align:center;
-	font-size:2.33rem;
-	font-family:'Secular One', Arial;
-	margin:0px auto;
-	
-}
-
-#announcement span a{
-	text-decoration:none;
-	background-image: linear-gradient(to top,#3398c7,#c0e4e4);
-	color:#fff;
-	font-weight: 700;
-	border-radius: 33px;
-	font-family: 'Lato';
-	padding: 15px;
-}
-
-#announcement a:hover{
-	background-image:linear-gradient(to top,#000,#000);
-}
-
-
-</style>
-
 # What is decision tree learning?
 
-Decision tree learning is one of the most commonly known machine learning algorithms out there. One of the advantages of decision trees are that there are quite staright forward, easily understandable by humans. Decision trees provide a way to approximate discrete valued functions and are robust to noisy data. Decision trees can be represented using the typical [Tree](https://en.wikipedia.org/wiki/Tree_(data_structure)) Data Structure. 
+Decision tree learning is one of the most commonly known machine learning algorithms out there. One of the advantages of decision trees are that there are quite staright forward, easily understandable by humans. Decision trees provide a way to approximate discrete valued functions and are robust to noisy data. Decision trees can be represented using the typical [Tree](https://en.wikipedia.org/wiki/Tree_(data_structure)) Data Structure.
 
 >Decision tree learning uses a decision tree (as a predictive model) to go from observations about an item (represented in the branches) to conclusions about the item's target value (represented in the leaves). It is one of the predictive modelling approaches used in statistics, data mining and machine learning.
 
@@ -67,13 +25,13 @@ Decision tree learning is one of the most commonly known machine learning algori
      (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
 
-In decision tree learning, a decision tree - now known by the umbrella term [CART (Classification and Regression Tree)](https://en.wikipedia.org/wiki/Predictive_analytics#Classification_and_regression_trees_.28CART.29) - can be used to visually and explicitly represent decisions and decision making. Though, it is common to use a tree-like model for decisions, learned trees can also be represented as sets of `if-else-then` rules. 
+In decision tree learning, a decision tree - now known by the umbrella term [CART (Classification and Regression Tree)](https://en.wikipedia.org/wiki/Predictive_analytics#Classification_and_regression_trees_.28CART.29) - can be used to visually and explicitly represent decisions and decision making. Though, it is common to use a tree-like model for decisions, learned trees can also be represented as sets of `if-else-then` rules.
 
 Though decision trees can be utilized for both classification and regression, it's primarily used for classification.
 
 ## Representating a Decision Tree
 
-Decision trees perform classification after sorting the instances in a top-down approach - from the root to the leaf. Each non-leaf node _splits_ the set of instances based on a test of an attribute. Each branch emanting from a node corresponds to one of the possible values of the said attribute in the node. The leaves of the decision tree specifies the label or the class in which a given instance belongs to. 
+Decision trees perform classification after sorting the instances in a top-down approach - from the root to the leaf. Each non-leaf node _splits_ the set of instances based on a test of an attribute. Each branch emanting from a node corresponds to one of the possible values of the said attribute in the node. The leaves of the decision tree specifies the label or the class in which a given instance belongs to.
 
 Here's an example of a classification tree (Titanic Dataset):
 
@@ -83,7 +41,7 @@ Here's an example of a classification tree (Titanic Dataset):
 
 The above model uses three attributes namely : _Gender, age and number of spouses/children_. As can be seen from the example, the internal nodes have an attribute test associated with them. This test splits the data set based on the value of the said attribute of the incoming instance. The branches correspond to the values of the attribute in question. At the end, the leaf node represent the class of the instance - in this case the fate of the titanic passengers.  
 
-> Decision Trees represent a disjunction of conjunctions of constraints on attributes values of instances. 
+> Decision Trees represent a disjunction of conjunctions of constraints on attributes values of instances.
 
 That is, Decision Trees represent a bunch of `AND` 'statements' chained by `OR` statements. For example, let's look at the titanic example above. The given tree can be represented by a disjunction of conjuctions as:
 	( female ) OR
@@ -103,23 +61,23 @@ That is, Decision Trees represent a bunch of `AND` 'statements' chained by `OR` 
 
 # How is a decision tree is built?
 
-Before we start classifying, we first need to build the tree from the available dataset. 
+Before we start classifying, we first need to build the tree from the available dataset.
 
 > Most algorithms that have been developed for learning decision trees are variations of the core algorithm that employs a __top down__, __greedy__ search through the possible space of decision trees.
 
-In this article, I will be focussing on the [Iterative Dichotomiser 3](https://en.wikipedia.org/wiki/ID3_algorithm), commonly know as the ID3 algorithm. Variants/Extensions of the ID3 algorithm, such as C4.5, are very much in practical use today. 
+In this article, I will be focussing on the [Iterative Dichotomiser 3](https://en.wikipedia.org/wiki/ID3_algorithm), commonly know as the ID3 algorithm. Variants/Extensions of the ID3 algorithm, such as C4.5, are very much in practical use today.
 
-The ID3 algorithm builds the tree top-down, starting from the root by meticulously choosing which attribute that will be tested at each given node. Each attribute is evaluated through statistical means as to see __which attribute splits the dataset the best.__ The best attribute is made the root, with it's attribute values branching out. The process continues with the rest of the attributes. Once an attribute is selected, it is not possible to _backtrack_. 
+The ID3 algorithm builds the tree top-down, starting from the root by meticulously choosing which attribute that will be tested at each given node. Each attribute is evaluated through statistical means as to see __which attribute splits the dataset the best.__ The best attribute is made the root, with it's attribute values branching out. The process continues with the rest of the attributes. Once an attribute is selected, it is not possible to _backtrack_.
 
 
 ## Choosing the attribute
 
 ### Entropy
 
-> Entropy is a measure of _unpredictability_ of the state, or equivalently, of its _average information content._ 
+> Entropy is a measure of _unpredictability_ of the state, or equivalently, of its _average information content._
 
 Entropy is a statistical metric that measures the **impurity.** Given a collection of S, which contains two classes: _Positive_ and _Negative_, of some arbitrary target concept,  entropy with respect to this boolean classification is:
-		
+
 **Entropy(S) = E(S) = -p<sub>positive</sub>log<sub>2</sub> p <sub>positive</sub> - p<sub>negative</sub>log<sub>2</sub> p <sub>negative</sub>**
 
 Where p<sub>positive</sub> is the proportion (probability) of positive examples in S and p<sub>negative</sub> is the proportion of negative examples in S. Entropy is 1 if the collection S contains equal number of examples from both classes, Entropy is 0 if all the examples in S contain the same example.
@@ -138,7 +96,7 @@ In general terms, when the classes of the target function may not always be bool
 
 ### Information Gain
 
-Now that we know what entropy is, let's look at an attribute that is more attached to the building of the decision tree - _[Information Gain](https://en.wikipedia.org/wiki/Information_gain_in_decision_trees)_. Information gain is a metric that measures the expected reduction in the impurity of the collection S, caused by splitting the data according to any given attribute. 
+Now that we know what entropy is, let's look at an attribute that is more attached to the building of the decision tree - _[Information Gain](https://en.wikipedia.org/wiki/Information_gain_in_decision_trees)_. Information gain is a metric that measures the expected reduction in the impurity of the collection S, caused by splitting the data according to any given attribute.
 
 The information gain IG(S,A) of an attribute A, from the collection S, can be defined as
 
@@ -146,9 +104,9 @@ The information gain IG(S,A) of an attribute A, from the collection S, can be de
 
 <span style = "color: #dfdfdf; font-size:0.6em">Image courtesy: Abhyast</span>
 
-where `i` spans through the entire set of all possible values for attribute A, and S <sub>i</sub> is the portion of S for which attribute A has the value _i_. The first term is the entropy of the entire collection S. One way to think about IG is that, the value of IG is the number of bits saved when encoding a target value of an arbitrary member of the collection. 
+where `i` spans through the entire set of all possible values for attribute A, and S <sub>i</sub> is the portion of S for which attribute A has the value _i_. The first term is the entropy of the entire collection S. One way to think about IG is that, the value of IG is the number of bits saved when encoding a target value of an arbitrary member of the collection.
 
-Whilst building the decision tree, the information gain metric is used by the ID3 algorithm to select the best attribute - the attribute the provides the "best split" - at each level. 
+Whilst building the decision tree, the information gain metric is used by the ID3 algorithm to select the best attribute - the attribute the provides the "best split" - at each level.
 
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <ins class="adsbygoogle"
@@ -211,9 +169,9 @@ Let's take the example of a dataset. This dataset assesses the risk of tumour in
 			<td> YES </td>
 		</tr>
 	</tbody>
-</table> 
+</table>
 
-First, let's find the entropy of the entire collection: 
+First, let's find the entropy of the entire collection:
 
 __E(S) = -p<sub>yes</sub> log<sub>2</sub> p<sub>yes</sub> - p<sub>no</sub> log<sub>2</sub> p<sub>no</sub>__
 
@@ -237,7 +195,7 @@ IG(S, HEADACHE) = E(S) - (4/6) * E(S<sub>YES</sub>) - (2/6) * E(S<sub>NO</sub>).
 After Calculation: **IG(S, HEADACHE) = 0.37734**.  
 Similarly, **IG(S, DIZZYNESS) = 0.4590** and **IG(S, BP) = 0.5848**
 
-After we have calculated the information for these attributes, we choose the attribute with the highest information gain as the splitting attribute for the node. This process goes on top-down until we are left we just leaves - the classification. From above, it is clear that the attribute `BLOOD PRESSURE` will be our attribute of choice at the root node. 
+After we have calculated the information for these attributes, we choose the attribute with the highest information gain as the splitting attribute for the node. This process goes on top-down until we are left we just leaves - the classification. From above, it is clear that the attribute `BLOOD PRESSURE` will be our attribute of choice at the root node.
 
 Splitting at the root node using `BLOOD PRESSURE` gives us the following tree:
 
@@ -255,9 +213,9 @@ So, E(S) = - { (2/4) log<sub>2</sub>(2/4) } - { (2/4) log<sub>2</sub>(2/4) }
 
 This gives us **E(S) = 1.0**
 
-After calculations similar as above, we find **IG(HEADACHE) = 0** and **IG(DIZZYNESS) = 1**. We now choose the `DIZZYNESS` attribute as the splitting attribute. This gives us the final decision tree, using which we can predict the classification. Notice that we don't have to use the `HEADACHE` attribute since, from the given data, we can make predictions based upon the other two attributes. 
+After calculations similar as above, we find **IG(HEADACHE) = 0** and **IG(DIZZYNESS) = 1**. We now choose the `DIZZYNESS` attribute as the splitting attribute. This gives us the final decision tree, using which we can predict the classification. Notice that we don't have to use the `HEADACHE` attribute since, from the given data, we can make predictions based upon the other two attributes.
 
- 
+
 ![Completed Decision Tree]({{site.baseurl}}/images/Tsree.jpg)
 
 

@@ -7,46 +7,7 @@ categories: Machine-Learning
 
 ---
 
-<style>
-
-#accouncement{
-	width:80%;
-	border:5px solid #882d2b;
-	margin:5px;
-	padding:5px;
-	text-align:center;
-	margin-top:30px!important;
-	margin-bottom:30px!important;
-}
-
-#announcement span{
-	color: #3398c7;
-	text-align:center;
-	font-size:2.33rem;
-	font-family:'Secular One', Arial;
-	margin:0px auto;
-	
-}
-
-#announcement span a{
-	text-decoration:none;
-	background-image: linear-gradient(to top,#3398c7,#c0e4e4);
-	color:#fff;
-	font-weight: 700;
-	border-radius: 33px;
-	font-family: 'Lato';
-	padding: 15px;
-}
-
-#announcement a:hover{
-	background-image:linear-gradient(to top,#000,#000);
-}
-
-</style>
-
-
-
-K Nearest Neighbours is one of the most commonly implemented Machine Learning classification algorithms. The kNN is more widely used in classification problems than for regression problems, although it can be applied for both classification and regression problems. 
+K Nearest Neighbours is one of the most commonly implemented Machine Learning classification algorithms. The kNN is more widely used in classification problems than for regression problems, although it can be applied for both classification and regression problems.
 
 The kNN algorithm is easy to understand and to implement. It works well in a large number of cases and is a powerful tool to have in the closet.
 
@@ -192,13 +153,13 @@ Now, split the data into test and training; insert them into test and training d
 
         for record in training_data:
 				#Append the list in the dict will all the elements of the record except the class
-                training_set[record[-1]].append(record[:-1]) 
+                training_set[record[-1]].append(record[:-1])
 
         #Insert data into the test set
 
         for record in test_data:
 				# Append the list in the dict will all the elements of the record except the class
-                test_set[record[-1]].append(record[:-1]) 
+                test_set[record[-1]].append(record[:-1])
 
 
 <div class = "announcement" id = "announcement">
@@ -263,7 +224,7 @@ The above code can be extended to _n_ number of features. In this example, howev
 
 ## Prediction:
 
-After figuring out the distances between the points, we will use the distances to find the '_k_' nearest neighbours of the given point and then, based on the classes of these 'neighbours', make the prediction on the class of the incoming data. 
+After figuring out the distances between the points, we will use the distances to find the '_k_' nearest neighbours of the given point and then, based on the classes of these 'neighbours', make the prediction on the class of the incoming data.
 
 This is quite straight-forward: First calculate the distance between the incoming point and all the points in the training set. Then select a subset of size _k_ from those points and find the probability of the incoming point being in each class. The class with the most probability will be selected as the predicted class.
 
@@ -299,7 +260,7 @@ In `CustomKNN` class:
 
 ## Testing/Evaluation :
 
-Now that we have finished up the algorithm, it's time to test how well it performs. Since, for this dataset, k-NN is a bindary classifier, I will be using [classification accuracy](https://en.wikipedia.org/wiki/Accuracy_and_precision#In_binary_classification) to evaluate the algorithm. 
+Now that we have finished up the algorithm, it's time to test how well it performs. Since, for this dataset, k-NN is a bindary classifier, I will be using [classification accuracy](https://en.wikipedia.org/wiki/Accuracy_and_precision#In_binary_classification) to evaluate the algorithm.
 
 >The accuracy is the proportion of true results (both true positives and true negatives) among the total number of cases examined.
 
@@ -308,16 +269,16 @@ In the class `CustomKNN`:
 	def test(self, test_set, training_set):
 		for group in test_set:
 			for data in test_set[group]:
-				
+
 				#Making the predictions
 
 				predicted_class,confidence = self.predict(training_set, data, k =3)
-				
+
 				if predicted_class == group: #Got it right
 					self.accurate_predictions += 1
 				else:
 					print("Wrong classification with confidence " + str(confidence * 100) + " and class " + str(predicted_class))
-				
+
 				self.total_predictions += 1
 
 		self.accuracy = 100*(self.accurate_predictions/self.total_predictions)
@@ -331,7 +292,7 @@ After a few runs, the best value for accuracy that I got:
 
 ## Comparing accuracy of Custom k-NN with sci-kit k-NN:
 
-Now, let's compare our implmentation with the sci-kit learn implementation. This is just for demonstration purposes only. If I was using k-NN algorithm in a production environment, I would _definitely_ use the library function and so should you. 
+Now, let's compare our implmentation with the sci-kit learn implementation. This is just for demonstration purposes only. If I was using k-NN algorithm in a production environment, I would _definitely_ use the library function and so should you.
 
 Here is the code with the sci-kit learn k-NN for the same dataset:
 
@@ -341,21 +302,21 @@ Here is the code with the sci-kit learn k-NN for the same dataset:
 
 
 	def mod_data(df):
-			
+
 		df.replace('?', -999999, inplace = True)
-			
+
 		df.replace('yes', 4, inplace = True)
 		df.replace('no', 2, inplace = True)
 
 		df.replace('notpresent', 4, inplace = True)
 		df.replace('present', 2, inplace = True)
-			
+
 		df.replace('abnormal', 4, inplace = True)
 		df.replace('normal', 2, inplace = True)
-			
+
 		df.replace('poor', 4, inplace = True)
 		df.replace('good', 2, inplace = True)
-			
+
 		df.replace('ckd', 4, inplace = True)
 		df.replace('notckd', 2, inplace = True)
 
@@ -375,10 +336,10 @@ Here is the code with the sci-kit learn k-NN for the same dataset:
 
 	accuracy = clf.score(X_test, y_test)
 
-	print("Accuracy: " + str(accuracy*100) + "%") 
+	print("Accuracy: " + str(accuracy*100) + "%")
 
 After many runs, the best accuracy that came out of the library algorithm:
-	
+
 	>>>Accuracy: 86.75%
 
 However, in most runs, the accuracy hovered around the value of `81.25%`. I was quite surprised at the result myself. I am not fully sure as to why the custom implementation  _**slightly**_ out-performed the sci-kit learn implementation. This probably has something to do with the fact that I have used sci-kit k-NN as it is - without any customization whatsoever. The _k_ value and _distance metric_ themselves play an important role in accuracy. It is also possible that sci-kit implementation refrains from going through the entire dataset to improve the running time.

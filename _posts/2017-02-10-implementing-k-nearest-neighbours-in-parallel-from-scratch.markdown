@@ -8,47 +8,9 @@ categories: Machine-Learning Parallel-Processing
 ---
 
 
-<style>
-
-#accouncement{
-	width:80%;
-	border:5px solid #882d2b;
-	margin:5px;
-	padding:5px;
-	text-align:center;
-	margin-top:30px!important;
-	margin-bottom:30px!important;
-}
-
-#announcement span{
-	color: #3398c7;
-	text-align:center;
-	font-size:2.33rem;
-	font-family:'Secular One', Arial;
-	margin:0px auto;
-	
-}
-
-#announcement span a{
-	text-decoration:none;
-	background-image: linear-gradient(to top,#3398c7,#c0e4e4);
-	color:#fff;
-	font-weight: 700;
-	border-radius: 33px;
-	font-family: 'Lato';
-	padding: 15px;
-}
-
-#announcement a:hover{
-	background-image:linear-gradient(to top,#000,#000);
-}
-
-</style>
-
-
 K Nearest Neighbours is one of the most commonly implemented Machine Learning classification algorithms. In my previous blog post, [I had implemented the algorithm from scratch in Python](/articles/machine-learning/2017/01/13/implementing-k-nearest-neighbours-from-scratch-in-python.html). If you are not very familiar with the algorithm or it's implementation, do check my previous post.
 
-One of the prime drawbacks of the k-NN algorithm is it's efficiency. Being a supervised **[lazy learning](https://en.wikipedia.org/wiki/Lazy_learning)** algorithm, the k-NN waits till the end to compute. On top of this, due to its [non-parametric](https://en.wikipedia.org/wiki/Non-parametric_statistics) 'nature', the k-NN considers the entire dataset as it's model. 
+One of the prime drawbacks of the k-NN algorithm is it's efficiency. Being a supervised **[lazy learning](https://en.wikipedia.org/wiki/Lazy_learning)** algorithm, the k-NN waits till the end to compute. On top of this, due to its [non-parametric](https://en.wikipedia.org/wiki/Non-parametric_statistics) 'nature', the k-NN considers the entire dataset as it's model.
 
 So, the algorithms works on the _entire_ dataset at the _very end_ for _each prediction_. This considerably slows down the performace of k-NN and for larger datasets, it is excruciatingly difficult to apply k-NN due to its inability to scale.
 
@@ -66,7 +28,7 @@ Now, let's see if we can speed up our [previous serial implementation](https://g
 
 ## Proposal
 
-The brute force version of k-NN that was written previously is [highly parallelizable](http://web.cs.ucdavis.edu/~amenta/pubs/bfknn.pdf). This is due to the fact the computation of the distances between the data points is completely _independent_ of one another. Furthermore, if there are _n_ points in the test set, all of the computation regarding the classification of these _n_ points is independent of one another and can be easily accomplished in parallel. This allows for partitioning the computation work with least synchronization effort. The distance computations can be calculated seperately and then brought together or the dataset itself can be split up into multiple factions to be run in parallel. 
+The brute force version of k-NN that was written previously is [highly parallelizable](http://web.cs.ucdavis.edu/~amenta/pubs/bfknn.pdf). This is due to the fact the computation of the distances between the data points is completely _independent_ of one another. Furthermore, if there are _n_ points in the test set, all of the computation regarding the classification of these _n_ points is independent of one another and can be easily accomplished in parallel. This allows for partitioning the computation work with least synchronization effort. The distance computations can be calculated seperately and then brought together or the dataset itself can be split up into multiple factions to be run in parallel.
 
 That is, the brute force k-NN has high potential to work faster under [data parallelism](https://en.wikipedia.org/wiki/Data_parallelism):
 
@@ -78,7 +40,7 @@ The idea is to split the data amongst different processors and then combine them
 
 ### Parallel processing in Python
 
-Parallel programming in Python isn't as straight foward as it is in mainstream languages such as Java or C/C++. This is due to the fact that the default python interpreter(Cpython) was designed with simplicity in mind and with the notion that multithreading is [tricky and dangerous](http://www.softpanorama.org/People/Ousterhout/Threads/index.shtml).  The python interpreter has a thread-safe mechanism, the **Global interpreter lock**. 
+Parallel programming in Python isn't as straight foward as it is in mainstream languages such as Java or C/C++. This is due to the fact that the default python interpreter(Cpython) was designed with simplicity in mind and with the notion that multithreading is [tricky and dangerous](http://www.softpanorama.org/People/Ousterhout/Threads/index.shtml).  The python interpreter has a thread-safe mechanism, the **Global interpreter lock**.
 
 >Global interpreter lock (GIL) is a mechanism used in computer language interpreters to synchronize the execution of threads so that only one native thread can execute at a time. An interpreter that uses GIL always allows exactly one thread to execute at a time, even if run on a multi-core processor.
 
@@ -105,7 +67,7 @@ The implementation revolves around applying data parallelism to the distance fin
 					print("Wrong classification with confidence " + str(confidence * 100) + " and class " + str(predicted_class))
 				self.total_predictions += 1
 
-The above for loop is the bottleneck of the k-NN algorithm. We need to parallelize the above for loop. Since we are going to be applying data parallelism, we needn't worry about the actual functions used; we will uilize the same functions again. Applying data parallelism will not affect the actual results in any way. 
+The above for loop is the bottleneck of the k-NN algorithm. We need to parallelize the above for loop. Since we are going to be applying data parallelism, we needn't worry about the actual functions used; we will uilize the same functions again. Applying data parallelism will not affect the actual results in any way.
 
 
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -128,33 +90,33 @@ Now, let's parallelize the main loop using `multiprocessing pools`:
 
 		pool = mp.Pool(processes= 8)
 		arr = {}
-		
+
 		for group in test_set:
 			arr[group] =  pool.starmap(self.predict, zip(repeat(training_set), test_set[group], repeat(3)))
-		
-The incoming data points will be split and fed into 8 sub-processes that can run in parallel. 
+
+The incoming data points will be split and fed into 8 sub-processes that can run in parallel.
 
 
-In the parallel code, I will calculate the accuracy of the algorithm in the function `test` seperately, in order to avoid race conditions and sharing of variables amongst sub-processes. 
+In the parallel code, I will calculate the accuracy of the algorithm in the function `test` seperately, in order to avoid race conditions and sharing of variables amongst sub-processes.
 
-First I will change the predict function a bit so that it includes the incoming data point in the output. This is essential since without it, there's no way of figuring out which prediction corresponds to which data point. Due to parallel execution, the order of the output is non-deterministic. 
+First I will change the predict function a bit so that it includes the incoming data point in the output. This is essential since without it, there's no way of figuring out which prediction corresponds to which data point. Due to parallel execution, the order of the output is non-deterministic.
 
 	def predict(self, training_data, to_predict, k = 3):
 		if len(training_data) >= k:
 			print("K cannot be smaller than the total voting groups(ie. number of training data points)")
 			return
-		
+
 		distributions = []
 		for group in training_data:
 			for features in training_data[group]:
 				euclidean_distance = np.linalg.norm(np.array(features)- np.array(to_predict))
 				distributions.append([euclidean_distance, group])
-		
+
 		results = [i[1] for i in sorted(distributions)[:k]]
 		result = Counter(results).most_common(1)[0][0]
 		confidence = Counter(results).most_common(1)[0][1]/k
-		
-		return result, to_predict 
+
+		return result, to_predict
 
 
 Now let's write the accuracy calculation part of the code based on the new output provided by the predict function:
@@ -167,7 +129,7 @@ Now let's write the accuracy calculation part of the code based on the new outpu
 						self.total_predictions += 1
 						if group == i[0]:
 							self.accurate_predictions+=1
-		
+
 		self.accuracy = 100*(self.accurate_predictions/self.total_predictions)
 		print("\nAcurracy :", str(self.accuracy) + "%")
 
@@ -191,13 +153,13 @@ The complete `test` function after parallelization:
 						self.total_predictions += 1
 						if group == i[0]:
 							self.accurate_predictions+=1
-		
+
 		self.accuracy = 100*(self.accurate_predictions/self.total_predictions)
 		print("\nAcurracy :", str(self.accuracy) + "%")
 
 ## "Correctness"
 
-Now that we've parallelized the program, we have to check if the parallel program produces the same required result as it's serial counter part. 
+Now that we've parallelized the program, we have to check if the parallel program produces the same required result as it's serial counter part.
 
 After numerous parallel runs of the algorithm, the best value of accuracy that it produced:
 
@@ -309,7 +271,7 @@ data = [
 ];
 
 ww = document.getElementById("graph").offsetWidth;
-hh = document.body.clientHeight/1.333; 
+hh = document.body.clientHeight/1.333;
 
 console.log(ww);
 

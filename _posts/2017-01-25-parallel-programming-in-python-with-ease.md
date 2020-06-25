@@ -7,50 +7,13 @@ categories: Parallel-Processing
 
 ---
 
-<style>
-
-#accouncement{
-	width:80%;
-	border:5px solid #882d2b;
-	margin:5px;
-	padding:5px;
-	text-align:center;
-	margin-top:30px!important;
-	margin-bottom:30px!important;
-}
-
-#announcement span{
-	color: #3398c7;
-	text-align:center;
-	font-size:2.33rem;
-	font-family:'Secular One', Arial;
-	margin:0px auto;
-	
-}
-
-#announcement span a{
-	text-decoration:none;
-	background-image: linear-gradient(to top,#3398c7,#c0e4e4);
-	color:#fff;
-	font-weight: 700;
-	border-radius: 33px;
-	font-family: 'Lato';
-	padding: 15px;
-}
-
-#announcement a:hover{
-	background-image:linear-gradient(to top,#000,#000);
-}
-
-</style>
-
-Due to the recent [slowdown/possible demise of Moore's law](https://www.technologyreview.com/s/601102/intel-puts-the-brakes-on-moores-law/), parallel programming has gained widespread prominence as the paradigm of the future. Since more than a decade, due to the anticipation of the end of the Moore's law, CPUs with multiple cores have become the norm. Multicore CPU's have also found their way into _smartphones_ too, with [LG Optimus 2X](https://en.wikipedia.org/wiki/LG_Optimus_2X) being the first phone to have multiple cores, way back in 2010. Just switching to the new processor _may no longer guarantee_ faster performance. With multicore/multiprocessor architectures, it is imperative to write software in way that they could be run in parallel. Most computer programs simply cannot take advantage of performance increases offered by GPUs or multi-core CPUs unless those programs are adquately modified. It is time for developers to take a more active role in improving performance by taking the computer architecture into consideration. 
+Due to the recent [slowdown/possible demise of Moore's law](https://www.technologyreview.com/s/601102/intel-puts-the-brakes-on-moores-law/), parallel programming has gained widespread prominence as the paradigm of the future. Since more than a decade, due to the anticipation of the end of the Moore's law, CPUs with multiple cores have become the norm. Multicore CPU's have also found their way into _smartphones_ too, with [LG Optimus 2X](https://en.wikipedia.org/wiki/LG_Optimus_2X) being the first phone to have multiple cores, way back in 2010. Just switching to the new processor _may no longer guarantee_ faster performance. With multicore/multiprocessor architectures, it is imperative to write software in way that they could be run in parallel. Most computer programs simply cannot take advantage of performance increases offered by GPUs or multi-core CPUs unless those programs are adquately modified. It is time for developers to take a more active role in improving performance by taking the computer architecture into consideration.
 
 In this post, I will write about parallel programming in `python`.
 
-Parallel programming in Python is a bit _tricky_ as compared to languages such as C/C++ and Java, where one can write parallel programs by executing multiple threads. Python interpreter was designed with simplicity in mind and with the notion that multithreading is [tricky and dangerous](http://www.softpanorama.org/People/Ousterhout/Threads/index.shtml).  The default python(CPython) interpreter has a thread-safe mechanism, the **Global interpreter lock**. 
+Parallel programming in Python is a bit _tricky_ as compared to languages such as C/C++ and Java, where one can write parallel programs by executing multiple threads. Python interpreter was designed with simplicity in mind and with the notion that multithreading is [tricky and dangerous](http://www.softpanorama.org/People/Ousterhout/Threads/index.shtml).  The default python(CPython) interpreter has a thread-safe mechanism, the **Global interpreter lock**.
 
->Global interpreter lock (GIL) is a mechanism used in computer language interpreters to synchronize the execution of threads so that only one native thread can execute at a time. An interpreter that uses GIL always allows exactly one thread to execute at a time, even if run on a multi-core processor. 
+>Global interpreter lock (GIL) is a mechanism used in computer language interpreters to synchronize the execution of threads so that only one native thread can execute at a time. An interpreter that uses GIL always allows exactly one thread to execute at a time, even if run on a multi-core processor.
 
 **Python is restricted to a single OS thread**; therefore, it cannot make use of the multiple cores and processors available on modern hardware. So _throwing some threads_ into the program will not result in faster performance, since the threads essentially run in serial. The actual overhead of thread creation, synchronization and termination will actually slow down the program. This problem exists only in CPython, not in Jython or IronPython.
 
@@ -68,10 +31,10 @@ If you interested to know more about Cpython's GIL, you should read this [articl
      (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
 
- 
+
 ## The **[multiprocessing](http://docs.python.org/3/library/multiprocessing.html?highlight=multiprocessing#multiprocessing)** library
 
-Instead of threads, Python programmers should use the `multiprocessing` library to easily create and coordinate multiple Python processes. Each one is scheduled independently on the CPU by the OS. Multiprocessing is an invaluable library for writing parallel programs in python. 
+Instead of threads, Python programmers should use the `multiprocessing` library to easily create and coordinate multiple Python processes. Each one is scheduled independently on the CPU by the OS. Multiprocessing is an invaluable library for writing parallel programs in python.
 
 >The multiprocessing module aims at providing a simple API for the use of parallelism
 based on processes
@@ -81,8 +44,8 @@ present in Python.
 
 From what I gather from the internet, this programming model is easier than parallelism with threads and by far, the most popular soultion to parallel programming in python. Multiprocessing is ideal for **CPU bound tasks**.
 
-The multiprocessing module has been in the Python Standard Library since Python 2.6. 
-It is important to understand that in multiprocessing, it's the process level abstraction, not thread level. 
+The multiprocessing module has been in the Python Standard Library since Python 2.6.
+It is important to understand that in multiprocessing, it's the process level abstraction, not thread level.
 
 > The multiprocessing package offers both local and remote concurrency, effectively side-stepping the Global Interpreter Lock by using subprocesses instead of threads.
 
@@ -96,27 +59,27 @@ of data are exchanged among processes.
 In multiprocessing, new processes are spawned by creating a `Process` object and then calling its `start()` method. The processes can be terminated by using the `join()` method.
 
 In a simple example, I will parallel compute a rudimentary calculation. I will compute the square root of the cube of the first 7 positive integers **parallely** using the `Process` class. A new process is spawned for each argument(_definately_ not scalable, but a good enough example), so this case, we will have 7 subprocesses in parallel.
-    
+
     import multiprocessing as mp
     import math
-    
-    
+
+
     def cubes_and_sqare_root(a, order,output):
     	output.put((int(order), math.sqrt(a**3)))
-    
+
     def main():
-    	#Using the queue as the message passing paradigm 
+    	#Using the queue as the message passing paradigm
     	output = mp.Queue()
     	processes = [mp.Process(target=cubes_and_sqare_root, args=(x, x,output)) for x in range(1,8)]
-    
+
     	for process in processes:
     		process.start()
-    
+
     	for process in processes:
     		process.join()
-    
+
     	results = [output.get() for process in processes]
-    
+
     	print(results)
 
     if __name__ == '__main__':
@@ -131,7 +94,7 @@ The output:
 Let's print out the details of all the subprocesses involved in the above computation:
 
     import os
-    
+
 	def process_info():
 		print('Module:', __name__, '\n')
         print('Parent Process id:', os.getppid(), '\n')
@@ -142,27 +105,27 @@ The output in exact order:
     Module:__mp_main__
     Parent Process id:23524
     Process id:22928
-    
+
     Module:__mp_main__
     Parent Process id:23524
     Process id:24604
-    
+
     Module:__mp_main__
     Parent Process id:23524
     Process id:11584
-    
+
     Module:__mp_main__
     Parent Process id:23524
     Process id:23472
-    
+
     Module:__mp_main__
     Parent Process id:23524
     Process id:9068
-    
+
     Module:__mp_main__
     Parent Process id:23524
     Process id:24636
-    
+
     Module:__mp_main__
     Parent Process id:23524
     Process id:23964
@@ -189,16 +152,16 @@ Pools are easier to manage than Processes with Queues and in many cases Processe
 
 We can create a pool by:
 
-	pool = mp.Pool( number_of_subprograms ) 
+	pool = mp.Pool( number_of_subprograms )
 
-The argument passed is the number of subprocesses to be spawned. I will set it to the number of CPUs. 
-	
+The argument passed is the number of subprocesses to be spawned. I will set it to the number of CPUs.
+
 	>>>mp.cpu_count()
 	>>>8
 
-To run the function in parallel, we have to use one of the methods in pool: 
+To run the function in parallel, we have to use one of the methods in pool:
 
--	`apply(func[, args[, kwds]])`: 
+-	`apply(func[, args[, kwds]])`:
 
 >Call func with arguments args and keyword arguments kwds. It blocks until the result is ready. Given this blocks, apply_async() is better suited for performing work in parallel. Additionally, func is only executed in one of the workers of the pool.
 
@@ -226,48 +189,48 @@ Here is the code to perform same computation that I did with `Process`, this tim
     import multiprocessing as mp
     import math
     import os
-    
-    
+
+
     def process_info():
     	print('Module:' + str(__name__) + '\n')
     	print('Parent Process id:' + str(os.getppid())+ '\n' )
     	print('Process id:' + str(os.getpid())+ '\n\n' )
-    
+
     def cubes_and_sqare_root(a):
     	process_info()
     	return (int(a), math.sqrt(a**3))
-    
+
     def main():
     	pool = mp.Pool(processes= mp.cpu_count())
     	results = [ pool.map(cubes_and_sqare_root, (x for x in range(1,8))) ]
     	print(results)
-    
+
     if __name__ == '__main__':
     	main()
-    
+
 As seen above, `Pool` is much simpler than `Process.` You can find the entire sample code related to the above program, [here](https://github.com/madhug-nadig/Parallel-Processing-Nadig/blob/master/Python%20multiprocessing%20example-%20Pools.py)
 
 ## Speedup
 
-Once the parallelization of a task is complete, it is important to evaluate the speed and efficiency of the new program. 
+Once the parallelization of a task is complete, it is important to evaluate the speed and efficiency of the new program.
 
 >Speedup (Sp) is defined as the ratio of runtime for a sequential algorithm (T1) to runtime for a parallel algorithm with p processors (Tp). That is, Sp = T1 / Tp. Ideal speedup results when Sp = p. Speedup is formally derived from [Amdahl's law](http://en.wikipedia.org/wiki/Amdahl's_law), which considers the portion of a program that is serial vs. the portion that is parallel when calculating speedup.
 
 To calculate the Speedup, let's write the same computation in serial:
-    
+
     import math
     import time
-    
+
     def cubes_and_sqare_root(a):
     	return (int(a), math.sqrt(a**3))
-    
+
     def main():
-    	
+
     	s = time.clock()
     	results = list(map(cubes_and_sqare_root, (x for x in range(1,10000000))))
     	e = time.clock()
     	print(e-s)
-    
+
     if __name__ == '__main__':
     	main()
 
@@ -286,7 +249,7 @@ Here are the results for serial and parallel after many runs:
     | 1000000   	| 1.035941925 | 0.601318320 | 1.72   |
     | 10000000  	| 10.85937320 | 6.245669530 | 1.73   |
 
-Since the computation is relatively rudimentary, the advantages of parallel processing does not show until the data is large enough. This is due to the fact that the calculation itself isn't CPU intensive. Hence, for lower sizes of input data, the overheads of subprocess level management overtake the advantages of parallel processing. 
+Since the computation is relatively rudimentary, the advantages of parallel processing does not show until the data is large enough. This is due to the fact that the calculation itself isn't CPU intensive. Hence, for lower sizes of input data, the overheads of subprocess level management overtake the advantages of parallel processing.
 
 Once the size of data increases, the speedup rises rapidly, and then plateaus at a value around 1.72 - 1.73. With this, we can conclude that parallelization works well for CPU intensive tasks with multiprocessing.
 
@@ -367,7 +330,7 @@ data = [
 ];
 
 ww = document.getElementById("graph").offsetWidth;
-hh = document.body.clientHeight/1.333; 
+hh = document.body.clientHeight/1.333;
 
 console.log(ww);
 
