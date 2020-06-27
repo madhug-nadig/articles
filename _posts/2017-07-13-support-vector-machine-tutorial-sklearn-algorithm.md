@@ -27,23 +27,23 @@ Let us take the example of a linearly seperable set of points on a 2D plane. The
 
 As can be seen from the above image, there are multiple lines that split the data into the two classes. The question now is, **Which is the best line that seperates the two classes?** and how do we find it?
 
-One practical assumption is that, the farther the datapoint is from this seperating line, the more confidence we have in our prediction. Naturally, we'd want to make all the points of each class as far as possible from the decision boundary. This can be made sure by having the decision boundary be the farthest from points closest to the decision boundary of each class. Unoptimized decision boundary could result in greater misclassifications on new data.
+One practical assumption is that, the farther the datapoint is from this separating line, the more confidence we have in our prediction. Naturally, we'd want to make all the points of each class as far as possible from the decision boundary. This can be made sure by having the decision boundary be the farthest from points closest to the decision boundary of each class. Unoptimized decision boundary could result in greater mis-classifications on new data.
 
 
 ![Support Vector Machines Optimal Hyperplane]({{site.baseurl}}/images/optimal-hyperplane.png)
 
 <span style = "color: #dfdfdf; font-size:0.6em">Image courtesy: opencv.org</span>
 
-The distance between the closest point and the decision boundary is referred to as **margin**. In SVMs, all we are really doing is maximizing this margin. The points closest to the seperating boundary are referred to as **support vectors**. Thus, all SVM does is maximize the distance between the seperating hyperplane and the support vectors. Simple, yeah?
+The distance between the closest point and the decision boundary is referred to as **margin**. In SVMs, all we are really doing is maximizing this margin. The points closest to the separating boundary are referred to as **support vectors**. Thus, all SVM does is maximize the distance between the separating hyperplane and the support vectors. Simple, yeah?
 
 
 ## What's a Hyperplane?
 
 A hyperplane is a n-1 dimensional Euclidean space that can divide any n dimensional Eucildean space into 2 disconnected parts. A hyperplane can be a point - 0 dimensional, a line - 1 Dimensional, a plane - 2 Dimensional and so on.
 
-Let's break it down a bit. First, let's take a line. Now a single point could break that line into two disconnected parts - in this case the said point is the *seperating hyperplane*. When we take a 2D plane, we can have a line as a seperating hyperplane. If we take a 3 dimensional euclidean space, we will need a plane to seperate the 3D space into two disconnected parts. Similarly, if we want to split a space with 512 dimensions into two disconnect parts, we will need a 511 Dimensional Euclidean space to do so.
+Let's break it down a bit. First, let's take a line. Now a single point could break that line into two disconnected parts - in this case the said point is the *seperating hyperplane*. When we take a 2D plane, we can have a line as a separating hyperplane. If we take a 3 dimensional euclidean space, we will need a plane to separate the 3D space into two disconnected parts. Similarly, if we want to split a space with 512 dimensions into two disconnect parts, we will need a 511 Dimensional Euclidean space to do so.
 
-In call the cases, in order to seperate an n dimensional Euclidean space, we used a n-1 dimensional Euclidean space. This n-1 Dimensional space is your hyperplane.
+In call the cases, in order to separate an n dimensional Euclidean space, we used a n-1 dimensional Euclidean space. This n-1 Dimensional space is your hyperplane.
 
 # How does the SVM work?
 
@@ -64,7 +64,7 @@ To make it easier to understand, let us take the example of a binary set - with 
 
 We get the equation `w`<sup>`T`</sup>` x + b = 0` after a derivation which I am covering in an article on derivation for SVM.
 
-The goal here would be to find a hyperplane such that it splits the dataset into two classes, all while making sure that the margin is maximized. Once we find that optimal seperating hyperplane, we can predict the class of new data points.
+The goal here would be to find a hyperplane such that it splits the dataset into two classes, all while making sure that the margin is maximized. Once we find that optimal separating hyperplane, we can predict the class of new data points.
 
 
 # Implementing SVMs in Python using scikit-learn
@@ -79,7 +79,7 @@ In scikit-learn, we can use the `sklearn.svm.SVC`, `sklearn.svm.NuSVC` and `skle
 
 > SVC, NuSVC and LinearSVC take as input two arrays: an array X of size [n_samples, n_features] holding the training samples, and an array y of class labels (strings or integers), size [n_samples]
 
-Let's try out a very simple example of SVC, with linearly seperable binary set:
+Let's try out a very simple example of SVC, with linearly separable binary set:
 
 	from sklearn import svm
 

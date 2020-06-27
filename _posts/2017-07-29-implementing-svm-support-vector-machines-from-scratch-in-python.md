@@ -12,7 +12,7 @@ Support Vector Machine is one of the most popular Machine Learning algorithms fo
 
 Support Vector Machine algorithm is a [supervised learning](https://en.wikipedia.org/wiki/Unsupervised_learning) algorithm, ie. it needs training data. You will have to feed the algorithm training data for it make predictions on the actual data.
 
-> One can apply the 1-nearest neighbor classifier on the cluster centers obtained by k-means to classify new data into the existing clusters.
+In my previous blog post, [I had implemented explained the theory behind SVMs and had implemented the algorithm with Python's scikit learn](http://madhugnadig.com/articles/machine-learning/2017/07/13/support-vector-machine-tutorial-sklearn-algorithm.html). If you are not very familiar with the algorithm or its scikit-learn implementation, do check my previous post.
 
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <!-- Image AD -->
