@@ -136,11 +136,6 @@ Now, split the data into test and training; insert them into test and training d
 				# Append the list in the dict will all the elements of the record except the class
                 test_set[record[-1]].append(record[:-1])
 
-
-<div class = "announcement" id = "announcement">
-	<span>Still have questions? Find me on <a href='https://www.codementor.io/madhugnadig' target ="_blank" > Codementor </a></span>
-</div>
-
 ## Defining Functions:
 
 Now, let's define the functions that go inside the `CustomSVM` class. For the simplicity of this tutorial, we will not delve into Advanced SVM topics such as
@@ -151,49 +146,47 @@ As their names suggest, the `fit` function will use the incoming data to model a
 
 First we have the `fit` function. We only need the pre-processed data set as a param for fit, that's all we need to model a SVM at this point.
 
-  def fit(self, dataset):
-    pass
-
+    def fit(self, dataset):
+      pass
 
 
 Let's define the `predict` function. The predict function take in the attributes, ie. the incoming values for which we need to make a prediction. The `predict` function will use the model that will by created by the `fit` function
 
-  def predict(self, attrs):
-    pass
+    def predict(self, attrs):
+      pass
 
-### Distance Metric:
+### Implementing the `fit` function:
 
-The k-means algorithm, like the k-NN algorithm, relies heavy on the idea of _distance_ between the data points and the centroid. This distance is computed is using the **distance metric**. Now, the decision regarding the decision measure is _very, very imperative_ in k-Means. A given incoming point can be predicted by the algorithm to belong one cluster or many depending on the distance metric used. From the previous sentence, it should be apparent that different distance measures may result in different answers.
-
-There is no sure-shot way of choosing a distance metric, the results mainly depend on the dataset itself. The only way of surely knowing the right distance metric is to apply different distance measures to the same dataset and choose the one which is most accurate.
-
-In this case, I will be using the **[Euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance)** as the distance metric (through there are other options such as the **[Manhattan Distance](https://en.wiktionary.org/wiki/Manhattan_distance), [Minkowski Distance](https://en.wikipedia.org/wiki/Minkowski_distance)** ). The Euclidean distance is straight line distance between two data points, that is, the distance between the points if they were represented in an _n-dimensional Cartesian plane_, more specifically, if they were present in the _Euclidean space_.
+The `fit` function is the core function of our implementation. This is where we will _train_ algorithm based on the training data set provided. This function will model the data by calculating values for `W` - feature vector and `b` - bias. In the fit function, we will be be trying to find the optimal values for `W` and `b`, essentially trying to _approximate_ the solution for the equation: `W`<sup>`T`</sup>` x + b = y`. The `predict` function will use the calculated values of `W` and `b` to find the classification for any new input data points based on the input data point `x`.   
 
 
-### Implementing Euclidean distance for two features in python:
+### Implementing the `predict` function:
 
-    import math
+Now that we have the fit function implemented, the `predict` is much easier to implement. Using the optimal separating hyperplane we find in the `fit` function, we can predict the class of new incoming data points.
 
-    def Euclidean_distance(feat_one, feat_two):
+As mentioned above, we have to solve for `y` in the equation: `W`<sup>`T`</sup>` x + b = y`. `y` is our class. We have the values of `x` provided in the `attrs` param in the function. `W` and `b` are already calculated in the `fit` function. So all we need to do in the `predict` function is to just substitute the values of `W`, `x` and `b`, then we will have our classification (`y`).
 
-        squared_distance = 0
+Breaking the above equation down:
 
-        #Assuming correct input to the function where the lengths of two features are the same
+`W`<sup>`T`</sup> `x` = `W`.`x` (dot product). To perform the dot product we can use `numpy`'s handy `dot` function. Before that, we would have to convert our `attrs` array into `numpy` array, which can be done by using the `array` function. The `+ b` part of the equation is a simple addition, so it is very straight forward. So, the python implementation of the equation will look like: `(np.dot(np.array(attrs), self.W) + self.b)`.
 
-        for i in range(len(feat_one)):
+By implementing the above, we will have something like this:
 
-                squared_distance += (feat_one[i] – feat_two[i])**2
+    import numpy as np
 
-        ed = sqrt(squared_distances)
+    def predict(self, attrs):
+      #sign of the X(i).W + b defines the class
+      classification = np.sign(np.dot(np.array(attrs), self.W) + self.b)
 
-        return ed;
+      return classification
 
-The above code can be extended to _n_ number of features. In this example, however, I will rely on Python's numpy library's function: `numpy.linalg.norm`
+
 
 
 <div class = "announcement" id = "announcement">
 	<span>Still have questions? Find me on <a href='https://www.codementor.io/madhugnadig' target ="_blank" > Codementor </a></span>
 </div>
+
 
 ## Clustering:
 
