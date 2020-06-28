@@ -56,7 +56,7 @@ So, d<sup>+</sup> + d<sup>-</sup> = Margin
 
 Equation of the hyperplane:
 
-`w`<sup>`T`</sup>` x + b = 0` , where `w` is the feature vector.  
+`w`<sup>`T`</sup>` x + b = 0` , where `w` is the feature vector and `b` is the bias.  
 
 Now, the equation `w`<sup>`T`</sup>` x + b = y` is used to predict the class (`y` in the euqation) of any incoming data point. After substituting the param values for `w` and `x`, we can decide if the data-point belongs to the class by looking at the sign of `y`.
 
