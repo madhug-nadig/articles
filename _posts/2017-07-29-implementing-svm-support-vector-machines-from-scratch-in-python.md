@@ -31,10 +31,9 @@ In my previous blog post, [I had explained the theory behind SVMs and had implem
 The implementation can be divided into the following:
 
 1. Handle Data: Clean the file, normalize the parameters, given numeric values to non-numeric attributes. Read data from the file and split the data for cross validation.
-2. Find Initial Centroids: Choose _k_ centroids in random.
-3. Distance Calculation: Finding the distance between each of the datapoints with each of the centroids. This distance metric is used to find the which cluster the points belong to.
-4. Re-calculating the centroids: Find the new values for centroid.
-5. Stop the iteration: Stop the algorithm when the difference between the old and the new centroids is negligible.
+2. Initialize : The heuristic for our SMO, steps sizes and multiples.
+3. Optimization: Run the SMO loop until we complete the convex optimization for the values of `W` and `b`.
+4. Stop the iteration: Stop the algorithm when the difference between the old and the new centroids is negligible.
 
 ### Predict the presence of Chronic Kidney disease:
 
@@ -42,7 +41,7 @@ I've used the "Chronic Kidney Diseases" dataset from the UCI ML repository. We w
 
 I shall visualize the algorithm using the mathplotlib module for python.
 
-The dataset will be divided into _'test'_ and _'training'_ samples for **[cross validation](https://en.wikipedia.org/wiki/Cross-validation_(statistics))**. The training set will be used to 'teach' the algorithm about the dataset, ie. to build a model; which, in the case of k-NN algorithm happens during active runtime during prediction. The test set will be used for evaluation of the results.
+The dataset will be divided into _'test'_ and _'training'_ samples for **[cross validation](https://en.wikipedia.org/wiki/Cross-validation_(statistics))**. The training set will be used to 'teach' the algorithm about the dataset, ie. to build a model. The test set will be used for evaluation of the results.
 
 
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -187,7 +186,7 @@ where αi (alpha i) is a Lagrange multiplier for solution and <x(i),x> called in
 At each step SMO chooses two elements αi and αj to jointly optimize, find the optimal values for those two parameters given that all the others are fixed, and updates the α vector accordingly. The choice of the two points is determined by a heuristic, while the optimization of the two multipliers is performed
 analytically. Despite needing more iterations to converge, each iteration uses so few operations that the algorithm exhibits an overall speed-up of some orders of magnitude.
 
-Further, SMO was such an important development for SVMs mainly because of the limited use of computational resources required for the optimization. WIth SMO, we do not directly perform any matrix operations, and hence we do not need to store the kernel martix in memory. This allows the SMO to run with limited memory, which is very useful for large data sets. If you are interested to know know more about SMO, [here](https://jupiter.math.nctu.edu.tw/~yuhjye/assets/file/teaching/2017_machine_learning/SMO%20algorithm.pdf) is a good resource that covers the theory a bit deeper.
+Further, SMO was such an important development for SVMs mainly because of the limited use of computational resources required for the optimization. With SMO, we do not directly perform any matrix operations, and hence we do not need to store the kernel martix in memory. This allows the SMO to run with limited memory, which is very useful for large data sets. If you are interested to know know more about SMO, [here](https://jupiter.math.nctu.edu.tw/~yuhjye/assets/file/teaching/2017_machine_learning/SMO%20algorithm.pdf) is a good resource that covers the theory a bit deeper.
 
 ### Implementing SMO within our `fit` function
 
@@ -221,9 +220,9 @@ For this case, we are going to have three step sizes. Each orders of magnitude s
     step_size = [self.max_attr * 0.1,self.max_attr * 0.01,self.max_attr * 0.005]
     latest_optimum = float(inf)
 
-Now that we have basic setup for finding `W`, let's focus on `b`. We will define the range and the multiple for `b`. We can set it to 5 (which is very expensive anyway, since we are more sensitive to the value of `W` than we are of `b`).
+Now that we have basic setup for finding `W`, let's focus on `b`. We will define the range and the multiple for `b`. We can set it to35 (which is very expensive anyway, since we are more sensitive to the value of `W` than we are of `b`). The `b_range` will be out extended range from the min and max heuristic that we have chosen. `b_multiple` is essentially our step size for finding `b`.  
 
-    b_range = 5
+    b_range = 3
     b_multiple = 5
 
 
@@ -236,6 +235,50 @@ That concludes the initial set up of algorithm. Next, we dive right into the opt
 
     for step in step_size:
       W = np.array([latest_optimum,latest_optimum])
+      optimization_flag = false
+
+We can now jump right into the loop. We keeping optimizing until we know that we have hit the limit (ie. the `optimization_flag` is `true`). We can start the inner loop with the range of values that we are considering out optimal `b` to be in. This would be the range of all values between the maximum attribute value and the negative of that value. Within the inner loop, we will perform `W`<sup>`T`</sup>, which as mentioned before, is just multiplying the defined `W` will all the elements of the `trans` array. The inner loop will look like:
+
+    while not opti:
+      for b in np.arange(-1*(self.max_attr* b_range ), self.max_attr * b_range, step * b_multiple):
+        for transformation in trans:
+          W_t = W * transformation
+
+This is where we jump into the computationally expensive part. We go through the **entire** data set and perform out calculations to make sure it fits as well as possible. For every single data point in our training data, we check for the equation  `y`<sup>`i`</sup>`(W`<sup>`T`</sup>`.x`<sup>`i`</sup>` + b) >= 1`, even if there is a single data point which does not conform to the above equation, we no longer continue. We can have a flag (`found`) to keep track of whether _all_ of the data points conform to the aforementioned equation. If we happen to find a the values where we are able to satisfy the equation, we will then update our `options` dictionary. We calculate the magnitude of `W` using [numpy's linalg.norm](https://numpy.org/doc/stable/reference/generated/numpy.linalg.norm.html). At this point, our inner loop looks like this:
+
+      for step in step_size:
+        W = np.array([latest_optimum,latest_optimum])
+        opti = False
+
+        while not opti:
+          for b in np.arange(-1*(self.max_attr* b_range ), self.max_attr * b_range, step * b_multiple):
+            for transformation in trans:
+              W_t = W * transformation
+              # Default found to true
+              found = True
+              for yi, xi in self.dataset.items():
+                if not (yi* np.dot(W_t , xi)+b ) >= 1:
+                  found = False
+                  break
+                if found:
+                  options[np.linalg.norm(W_t)] = [W_t, b]
+
+Now, let us define our optimized case. This is where the myriad of assumptions we have make come into play. To summerize, we assumed that `W` is gonna be in the form of `W=[C,C]` for simplicity, and then we starts with C at a value of infinity. Then we check all 4 possible transformation of `W` (`[C,C] [C,-C] [-C,C] [-C,-C]`) and keep only the viable ones. The viable ones are the ones that satisfy the condition `yi(xi.w+b) >= 1`. Then we lower the value of `C` by the step and repeat the same process. So we know that we have checked all the steps when the value of `C` goes below 0. For optimization flag to be true, we just need to check if `w[0]` is less than 0. This is because not every step `i` better than the previous, or more optimized. We only care about the final state. Since we are checking all 4 symmetrical cases for `W` for various values of `C`, there is no point in checking negative values since by having negative values for `C` would result in double checking cases we have already checked. So we can safely stop the optimization pass once we have the value of `W[0]` (or `W[1]` since they are the same value) goes below zero.  
+
+In case, we have not reached the local minima, we just move on to the next step.  
+
+
+        if W[0]<0:
+          opti = True
+          print("Optimized by a step: ", step)
+        else:
+          W -= step # This is fine since all values of W are the same
+
+After all of loops within the pass is done, we have to set the values for `W` and `b` for them to be used by the `predict` function. We choose the lowest magnitude value from the `options` as the most optimal one. We then update the `latest_optimum` for the next pass. 
+
+      norms = min([n for n in options])
+      self.W = options[norms][0]
+      self.b = options[norms][1]
 
 
 ## Implementing the `predict` function:
