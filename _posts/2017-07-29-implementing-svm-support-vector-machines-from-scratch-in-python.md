@@ -178,7 +178,7 @@ In this article, we will consider a linear classifier for a binary classificatio
 
 With f(x), we can predict y = 1 if f(x) ≥ 0 and y = -1 if f(x) < 0. And, without getting into too many theoretical details, this f(x) can be expressed by solving the dual problem as :
 
-![Lagarange Form]({{site.baseurl}}/images/svm-equation-2.jpg)
+![Lagarange Form]({{site.baseurl}}/images/svm-equation-2.png)
 
 where αi (alpha i) is a Lagrange multiplier for solution and <x(i),x> called inner product of x(i) and x. The simplified SMO algorithm takes two α parameters, αi and αj, and optimizes them. To do this, we iterate over all αi, i = 1, . . . m.
 
@@ -199,9 +199,44 @@ Now, let's get on with our fit function.
       # Magnitude of W is the key, list of W and b is the value
       options = {}
 
-First, we set the incoming data set as the data on which train the algorituhms on. We also have the `options` variable initialized as an empty dictionary. The `options` varuable will have the magnitude of W (`||W||`) as the key as a a list of `W` and `b` as the value.
+First, we set the incoming data set as the data on which train the algorithms on. We also have the `options` variable initialized as an empty dictionary. The `options` variable will have the magnitude of W (`||W||`) as the key as a a list of `W` and `b` as the value.
 
-We then define our 2 dimensional transform list, which will have the values of `[1,1], [1,-1], [-1, 1], [-1, -1]`.    
+For our choice of the two points we need determine it by a heuristic (it can also be random). For our case, we will use the heuristic as the min and max feature values, so we can start at the out-most ranges and converge inward.
+
+    all_feature_values = []
+
+    for yi, attrs in self.dataset.items():
+      for attr in attrs:
+        for f in attr:
+          all_feature_values.append(f)
+
+    self.max_attr = max(data)
+    self.min_attr = min(data)
+    del all_feature_values
+
+We can get rid of `all_feature_values` to save up some sweet memory space. Next, we need to think about the step sizes we are going to use whilst performing the optimization. We are essentially starting at the out-most ranges, so initially our steps sizes can to be big. This makes the first pass optimization faster and having small step sizes at the initial pass does not improve the optimization values. We sequentially go through smaller and smaller step sizes as we find the local minima for each pass. So, for each pass, we have smaller step sizes and at the same time, smaller range of values to search for in our quest for finding optimal values. With this optimization, we are approximating the optimal values for `W`.
+
+For this case, we are going to have three step sizes. Each orders of magnitude smaller than the previous one. We also have to initialize the initial value (`latest_optimum`) of our vector `W`. For simplicity, we will just have _one_ unique value in out vector ie. we will repeat the same value in all the elements of the vector. While, this is unarguably a very sub-optimal way of going about things, the SVM with this limitation still performs well - which is a testament to how good the algorithm is. We will set the default value of our `latest_optimum` as positive infinity, since we want any value derived from the first optimization step will replace it.
+
+    step_size = [self.max_attr * 0.1,self.max_attr * 0.01,self.max_attr * 0.005]
+    latest_optimum = float(inf)
+
+Now that we have basic setup for finding `W`, let's focus on `b`. We will define the range and the multiple for `b`. We can set it to 5 (which is very expensive anyway, since we are more sensitive to the value of `W` than we are of `b`).
+
+    b_range = 5
+    b_multiple = 5
+
+
+We then define our 2 dimensional transform list, which will have the values of `[1,1], [1,-1], [-1, 1], [-1, -1]`. Having this as a list will make it easier to perform the transformations.
+
+    trans =  [[1,1],[-1,1],[-1,-1],[1 ,-1]]
+
+That concludes the initial set up of algorithm. Next, we dive right into the optimization steps. We first initialize the `W` vector as a list of `latest_optimum` values. We also need a flag to break out of the optimization, once we feel that the values cannot be optimized further. The fact we are essentially solving for a convex optimization problem gives us the luxury of knowing when the optimization has been completed.  
+
+
+    for step in step_size:
+      W = np.array([latest_optimum,latest_optimum])
+
 
 ## Implementing the `predict` function:
 
@@ -225,108 +260,6 @@ By implementing the above, we will have something like this:
 
       return classification
 
-
-
-<div class = "announcement" id = "announcement">
-	<span>Still have questions? Find me on <a href='https://www.codementor.io/madhugnadig' target ="_blank" > Codementor </a></span>
-</div>
-
-
-## Clustering:
-
-After figuring out the distances between the points, we will use the distances to find which cluster amongst the _k_ clusters a given data point belongs to.  
-
-First, let's initialize the centroids randomly:
-
-	#initialize the centroids, the first 'k' elements in the dataset will be our initial centroids
-	for i in range(self.k):
-		self.centroids[i] = data[i]
-
-Now, let's enter the main loop.
-
-	for i in range(self.max_iterations):
-			self.classes = {}
-			for i in range(self.k):
-				self.classes[i] = []
-
-			#find the distance between the point and cluster; choose the nearest centroid
-			for features in data:
-				distances = [np.linalg.norm(features - self.centroids[centroid]) for centroid in self.centroids]
-				classification = distances.index(min(distances))
-				self.classes[classification].append(features)
-
-The main loop executes `max_iterations` number of times at most. We are defining the  each cluster in the `classes` list. Then we iterate through the features in data and find the distance between the features of the data point and the features of the centroid. After finding the cluster nearest to the datapoint, we append the cluster list within `classes` with the data point's feature vector.
-
-Now, let's re-calculate the cluster centroids.
-
-	previous = dict(self.centroids)
-
-	#average the cluster datapoints to re-calculate the centroids
-	for classification in self.classes:
-		self.centroids[classification] = np.average(self.classes[classification], axis = 0)
-
-The dictionary `previous` stores the value of centroids that the previous iteration returned, we performed the clustering in this iteration based on these centroids. Then we iterate though the `classes` list and find the average of all the datapoints in the given cluster. This is, perhaps, the _machine learning_ part of k-means. The algorithm recomputes the centroids as long as it's optimal(or if there have been far too many interations in  attempting to do so).
-
-Time to see if our algorithm has reached the optimal values of centroids. For this, let's have a flag `isOptimal`.
-
-	isOptimal = True
-
-Let's iterate though the new centroids and compare it with the older centroid values and see if it's converged.
-
-	for centroid in self.centroids:
-
-		original_centroid = previous[centroid]
-		curr = self.centroids[centroid]
-
-		if np.sum((curr - original_centroid)/original_centroid * 100.0) > self.tolerance:
-			isOptimal = False
-
-		#break out of the main loop if the results are optimal, ie. the centroids don't change their positions much(more than our tolerance)
-
-	if isOptimal:
-			break
-
-We find the situation to be optimal if the percentage change in the centroid values is lower than our accepted value of tolerance. We break out of the main loop if we find that the algorithm has reached the optimal stage, ie. the changes in the values of centroids, if the algorithm continued to execute, is negligible.
-
-## Visualizing the clusters
-
-Now that we are done with clustering, let us visualize the datasets to see where these clusters stand at. I will be using python [matplotlib](http://matplotlib.org/) module to visualize the dataset and then color the different clusters for visual identification.
-
-In main:
-
-
-	km = K_Means(3)
-	km.fit(X)
-
-	# Plotting starts here, the colors
-	colors = 10*["r", "g", "c", "b", "k"]
-
-Lets mark our centroids with an `x`.
-
-	for centroid in km.centroids:
-		plt.scatter(km.centroids[centroid][0], km.centroids[centroid][1], s = 130, marker = "x")
-
-Now, let's go ahead and plot the datapoints and color them based on their cluster.
-
-
-	for classification in km.classes:
-		color = colors[classification]
-		for features in km.classes[classification]:
-			plt.scatter(features[0], features[1], color = color,s = 30)
-
-Show the plot:
-
-	plt.show()
-
-Output:
-<style>
-.mpld3-yaxis line, .mpld3-yaxis path {
-    shape-rendering: crispEdges;
-    stroke: black;
-    fill: none;
-}
-
-Here we have our scatter plot with clustering done on it using K Means clustering algorithm. The three clusters can be thought of as _Batsmen_ (<span style = "color:red">Red</span>), _Bowlers_(<span style = "color:green">Green</span>) and _Allrounders_(<span style = "color:blue">Blue</span>).
 
 That's it for now; if you have any comments, please leave them below.
 
