@@ -155,12 +155,55 @@ Let's define the `predict` function. The predict function take in the attributes
     def predict(self, attrs):
       pass
 
-### Implementing the `fit` function:
+## Implementing the `fit` function:
 
-The `fit` function is the core function of our implementation. This is where we will _train_ algorithm based on the training data set provided. This function will model the data by calculating values for `W` - feature vector and `b` - bias. In the fit function, we will be be trying to find the optimal values for `W` and `b`, essentially trying to _approximate_ the solution for the equation: `W`<sup>`T`</sup>` x + b = y`. The `predict` function will use the calculated values of `W` and `b` to find the classification for any new input data points based on the input data point `x`.   
+The `fit` function is the core function of our implementation. This is where we will _train_ algorithm based on the training data set provided. This function will model the data by calculating values for `W` - feature vector and `b` - bias. In the fit function, we will be be trying to find the optimal values for `W` and `b`, essentially trying to _approximate_ the solution for the equation: `W`<sup>`T`</sup>` x + b = y`. The `predict` function will use the calculated values of `W` and `b` to find the classification for any new input data points based on the input data point `x`. The `fit` part of the algorithm is where do our optimization. In SVMs, we are to perform convex optimizations.    
 
+> A convex optimization problem is a problem where all of the constraints are convex functions, and the objective is a convex function if minimizing
 
-### Implementing the `predict` function:
+In this tutorial, we are not going to delve into the depths of optimization problems and the theoretical aspects behind them. If you are interested in exploring convex optimizations further, [here](https://web.stanford.edu/class/ee364a/lectures/problems.pdf) is a good resource for you to do so. You can also refer [here](https://www.solver.com/convex-optimization) if you want know more about the optimization problems and the geometry behind them.  
+
+Let's get started out on our SMO optimization.
+
+### SVM Optimization through SMO - Sequential minimal optimization :
+
+For our implementation, we are going to optimize using the [SMO (Sequential minimal optimization)](https://en.wikipedia.org/wiki/Sequential_minimal_optimization) method. SMO is one of the older optimizations used in SVMs and are relatively easier to implement. Needless to say, there are much more complex and better performing optimizations out there. The Sequential Minimal Optimization (SMO) algorithm is
+derived by taking the idea of the decomposition method to its
+extreme and optimizing a minimal subset of just two points at
+each iteration.
+
+> Sequential minimal optimization (SMO) is an algorithm for solving the quadratic programming (QP) problem that arises during the training of support-vector machines (SVM).
+
+In this article, we will consider a linear classifier for a binary classification problem with labels y (y ϵ [-1,1]) and features x. A SVM will compute a linear classifier (or a line) of the form: `W`<sup>`T`</sup>` x + b = y`
+
+With f(x), we can predict y = 1 if f(x) ≥ 0 and y = -1 if f(x) < 0. And, without getting into too many theoretical details, this f(x) can be expressed by solving the dual problem as :
+
+![Lagarange Form]({{site.baseurl}}/images/svm-equation-2.jpg)
+
+where αi (alpha i) is a Lagrange multiplier for solution and <x(i),x> called inner product of x(i) and x. The simplified SMO algorithm takes two α parameters, αi and αj, and optimizes them. To do this, we iterate over all αi, i = 1, . . . m.
+
+> The power of this technique resides in the fact that the optimization problem for two data points admits an analytical solution, eliminating the need to use an iterative quadratic programming optimizer as part of the algorithm.
+
+At each step SMO chooses two elements αi and αj to jointly optimize, find the optimal values for those two parameters given that all the others are fixed, and updates the α vector accordingly. The choice of the two points is determined by a heuristic, while the optimization of the two multipliers is performed
+analytically. Despite needing more iterations to converge, each iteration uses so few operations that the algorithm exhibits an overall speed-up of some orders of magnitude.
+
+Further, SMO was such an important development for SVMs mainly because of the limited use of computational resources required for the optimization. WIth SMO, we do not directly perform any matrix operations, and hence we do not need to store the kernel martix in memory. This allows the SMO to run with limited memory, which is very useful for large data sets. If you are interested to know know more about SMO, [here](https://jupiter.math.nctu.edu.tw/~yuhjye/assets/file/teaching/2017_machine_learning/SMO%20algorithm.pdf) is a good resource that covers the theory a bit deeper.
+
+### Implementing SMO within our `fit` function
+
+Now, let's get on with our fit function.
+
+    def fit(self, dataset):
+      self.dataset = dataset
+
+      # Magnitude of W is the key, list of W and b is the value
+      options = {}
+
+First, we set the incoming data set as the data on which train the algorituhms on. We also have the `options` variable initialized as an empty dictionary. The `options` varuable will have the magnitude of W (`||W||`) as the key as a a list of `W` and `b` as the value.
+
+We then define our 2 dimensional transform list, which will have the values of `[1,1], [1,-1], [-1, 1], [-1, -1]`.    
+
+## Implementing the `predict` function:
 
 Now that we have the fit function implemented, the `predict` is much easier to implement. Using the optimal separating hyperplane we find in the `fit` function, we can predict the class of new incoming data points.
 
@@ -168,7 +211,9 @@ As mentioned above, we have to solve for `y` in the equation: `W`<sup>`T`</sup>`
 
 Breaking the above equation down:
 
-`W`<sup>`T`</sup> `x` = `W`.`x` (dot product). To perform the dot product we can use `numpy`'s handy `dot` function. Before that, we would have to convert our `attrs` array into `numpy` array, which can be done by using the `array` function. The `+ b` part of the equation is a simple addition, so it is very straight forward. So, the python implementation of the equation will look like: `(np.dot(np.array(attrs), self.W) + self.b)`.
+`W`<sup>`T`</sup> `x` = `W`.`x` (dot product). To perform the dot product we can use `numpy`'s handy `dot` function. Before that, we would have to convert our `attrs` array into `numpy` array, which can be done by using the `array` function. The `+ b` part of the equation is a simple addition, so it is very straight forward. So, the python implementation of the equation will look like:  
+
+ `(np.dot(np.array(attrs), self.W) + self.b)`   
 
 By implementing the above, we will have something like this:
 
@@ -179,7 +224,6 @@ By implementing the above, we will have something like this:
       classification = np.sign(np.dot(np.array(attrs), self.W) + self.b)
 
       return classification
-
 
 
 
