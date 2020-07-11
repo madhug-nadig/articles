@@ -33,7 +33,7 @@ The implementation can be divided into the following:
 1. Handle Data: Clean the file, normalize the parameters, given numeric values to non-numeric attributes. Read data from the file and split the data for cross validation.
 2. Initialize : The heuristic for our SMO, steps sizes and multiples.
 3. Optimization: Run the SMO loop until we complete the convex optimization for the values of `W` and `b`.
-4. Stop the iteration: Stop the algorithm when the difference between the old and the new centroids is negligible.
+4. Stop the iteration: Stop the algorithm when the we have the magnitude of feature vector is less than 0.
 
 ### Predict the presence of Chronic Kidney disease:
 
@@ -54,17 +54,6 @@ The dataset will be divided into _'test'_ and _'training'_ samples for **[cross 
 <script>
      (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
-
-
-### Setting up the class:
-
-Before we move forward, let's create a class for the algorithm.
-
-    class CustomSVM:
-      def __init__(self):
-        pass
-
-We have the `CustomSVM`, that will be our main class for the algorithm. In the constructor, we do not have to initialize any value.
 
 
 ## Handling Data:
@@ -135,6 +124,19 @@ Now, split the data into test and training; insert them into test and training d
 				# Append the list in the dict will all the elements of the record except the class
                 test_set[record[-1]].append(record[:-1])
 
+
+
+### Setting up the class:
+
+Before we move forward, let's create a class for the algorithm.
+
+      class CustomSVM:
+          def __init__(self):
+              pass
+
+We have the `CustomSVM`, that will be our main class for the algorithm. In the constructor, we do not have to initialize any value.
+
+
 ## Defining Functions:
 
 Now, let's define the functions that go inside the `CustomSVM` class. For the simplicity of this tutorial, we will not delve into Advanced SVM topics such as
@@ -186,7 +188,7 @@ where αi (alpha i) is a Lagrange multiplier for solution and <x(i),x> called in
 At each step SMO chooses two elements αi and αj to jointly optimize, find the optimal values for those two parameters given that all the others are fixed, and updates the α vector accordingly. The choice of the two points is determined by a heuristic, while the optimization of the two multipliers is performed
 analytically. Despite needing more iterations to converge, each iteration uses so few operations that the algorithm exhibits an overall speed-up of some orders of magnitude.
 
-Further, SMO was such an important development for SVMs mainly because of the limited use of computational resources required for the optimization. With SMO, we do not directly perform any matrix operations, and hence we do not need to store the kernel martix in memory. This allows the SMO to run with limited memory, which is very useful for large data sets. If you are interested to know know more about SMO, [here](https://jupiter.math.nctu.edu.tw/~yuhjye/assets/file/teaching/2017_machine_learning/SMO%20algorithm.pdf) is a good resource that covers the theory a bit deeper.
+Further, SMO was such an important development for SVMs mainly because of the limited use of computational resources required for the optimization. With SMO, we do not directly perform any matrix operations, and hence we do not need to store the kernel matrix in memory. This allows the SMO to run with limited memory, which is very useful for large data sets. If you are interested to know know more about SMO, [here](https://jupiter.math.nctu.edu.tw/~yuhjye/assets/file/teaching/2017_machine_learning/SMO%20algorithm.pdf) is a good resource that covers the theory a bit deeper.
 
 ### Implementing SMO within our `fit` function
 
@@ -239,7 +241,7 @@ That concludes the initial set up of algorithm. Next, we dive right into the opt
 
 We can now jump right into the loop. We keeping optimizing until we know that we have hit the limit (ie. the `optimization_flag` is `true`). We can start the inner loop with the range of values that we are considering out optimal `b` to be in. This would be the range of all values between the maximum attribute value and the negative of that value. Within the inner loop, we will perform `W`<sup>`T`</sup>, which as mentioned before, is just multiplying the defined `W` will all the elements of the `trans` array. The inner loop will look like:
 
-    while not opti:
+    while not optimization_flag:
       for b in np.arange(-1*(self.max_attr* b_range ), self.max_attr * b_range, step * b_multiple):
         for transformation in trans:
           W_t = W * transformation
@@ -248,9 +250,9 @@ This is where we jump into the computationally expensive part. We go through the
 
       for step in step_size:
         W = np.array([latest_optimum,latest_optimum])
-        opti = False
+        optimization_flag = False
 
-        while not opti:
+        while not optimization_flag:
           for b in np.arange(-1*(self.max_attr* b_range ), self.max_attr * b_range, step * b_multiple):
             for transformation in trans:
               W_t = W * transformation
@@ -269,17 +271,73 @@ In case, we have not reached the local minima, we just move on to the next step.
 
 
         if W[0]<0:
-          opti = True
+          optimization_flag = True
           print("Optimized by a step: ", step)
         else:
           W -= step # This is fine since all values of W are the same
 
-After all of loops within the pass is done, we have to set the values for `W` and `b` for them to be used by the `predict` function. We choose the lowest magnitude value from the `options` as the most optimal one. We then update the `latest_optimum` for the next pass. 
+After all of loops within the pass is done, we have to set the values for `W` and `b` for them to be used by the `predict` function. We choose the lowest magnitude value from the `options` as the most optimal one. We then update the `latest_optimum` for the next pass.
 
       norms = min([n for n in options])
       self.W = options[norms][0]
       self.b = options[norms][1]
 
+      latest_optimum = options[norms][0][0] + step*2
+
+So, in the end, our `fit` function will look like:
+
+      def fit(self, dataset):
+        self.dataset = dataset
+
+        # Magnitude of W is the key, list of W and b is the value
+        options = {}
+
+        all_feature_values = []
+
+        for yi, attrs in self.dataset.items():
+          for attr in attrs:
+            for f in attr:
+              all_feature_values.append(f)
+
+        self.max_attr = max(data)
+        self.min_attr = min(data)
+        del all_feature_values
+
+        step_size = [self.max_attr * 0.1,self.max_attr * 0.01,self.max_attr * 0.005]
+        latest_optimum = float(inf)
+
+        b_range = 3
+        b_multiple = 5
+
+        trans =  [[1,1],[-1,1],[-1,-1],[1 ,-1]]
+
+        for step in step_size:
+          W = np.array([latest_optimum,latest_optimum])
+          optimization_flag = False
+
+          while not opti:
+            for b in np.arange(-1*(self.max_attr* b_range ), self.max_attr * b_range, step * b_multiple):
+              for transformation in trans:
+                W_t = W * transformation
+                found = True
+                for yi, xi in self.dataset.items():
+                  print(b)
+                  if not (yi* np.dot(W_t , xi)+b ) >= 1:
+                    found = False
+                    break
+                if found:
+                  options[np.linalg.norm(W_t)] = [W_t, b]
+            if W[0]<0:
+              optimization_flag = True
+              print("Optimized by a step: ", step)
+            else:
+              W -= step
+
+          norms = min([n for n in options])
+          self.W = options[norms][0]
+          self.b = options[norms][1]
+
+          latest_optimum = options[norms][0][0] + step*2
 
 ## Implementing the `predict` function:
 
