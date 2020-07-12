@@ -16,6 +16,8 @@ Support Vector Machine algorithm is a [supervised learning](https://en.wikipedia
 
 In my previous blog post, [I had explained the theory behind SVMs and had implemented the algorithm with Python's scikit learn](http://madhugnadig.com/articles/machine-learning/2017/07/13/support-vector-machine-tutorial-sklearn-algorithm.html). If you are not very familiar with the algorithm or its scikit-learn implementation, do check my previous post.
 
+![Support Vector Machines Seperating lines]({{site.baseurl}}/images/svm-example-sklearn.png)
+
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <!-- Image AD -->
 <ins class="adsbygoogle"
@@ -35,14 +37,13 @@ The implementation can be divided into the following:
 3. Optimization: Run the SMO loop until we complete the convex optimization for the values of `W` and `b`.
 4. Stop the iteration: Stop the algorithm when the we have the magnitude of feature vector is less than 0.
 
-### Predict the presence of Chronic Kidney disease:
+### Predict the Iris flower type :
 
-I've used the "Chronic Kidney Diseases" dataset from the UCI ML repository. We will be predicting the presence of chronic kidney disease based on many input parameters. The _predict class_ is binary: **"chronic"** or **"not chronic"**.
+I've used the classic "Iris" dataset from the UCI ML repository. We will be predicting the type of [Iris](https://en.wikipedia.org/wiki/Iris_(plant)) based on many input parameters. The _predict class_ is binary: **"Iris-setosa"** or **"Iris-versicolor"**.  
 
 I shall visualize the algorithm using the mathplotlib module for python.
 
 The dataset will be divided into _'test'_ and _'training'_ samples for **[cross validation](https://en.wikipedia.org/wiki/Cross-validation_(statistics))**. The training set will be used to 'teach' the algorithm about the dataset, ie. to build a model. The test set will be used for evaluation of the results.
-
 
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <ins class="adsbygoogle"
@@ -56,12 +57,12 @@ The dataset will be divided into _'test'_ and _'training'_ samples for **[cross 
 </script>
 
 
-## Handling Data:
+## Handling Data:  
 
 
-I've modified the original data set and have added the header lines. You can find the modified dataset [here](https://github.com/madhug-nadig/Machine-Learning-Algorithms-from-Scratch/blob/master/data/chronic_kidney_disease.csv).
+I've modified the original data set and have changed the number of classes to 2. You can find the modified dataset [here](https://github.com/madhug-nadig/Machine-Learning-Algorithms-from-Scratch/blob/master/data/iris.csv).
 
-The original dataset has the data description and other related metadata. You can find the original dataset from the UCI ML repo [here](https://archive.ics.uci.edu/ml/datasets/Chronic_Kidney_Disease).
+The original dataset has the data description and other related metadata. You can find the original dataset from the UCI ML repo [here](https://archive.ics.uci.edu/ml/datasets/Iris).
 
 The first thing to do is to read the csv file. To deal with the csv data data, let's import Pandas first. Pandas is a powerful library that gives Python R like syntax and functioning.
 
@@ -69,41 +70,31 @@ The first thing to do is to read the csv file. To deal with the csv data data, l
 
 Now, loading the data file:
 
-    df = pd.read_csv(r".\data\chronic_kidney_disease.csv") #Reading from the data file
+    df = pd.read_csv(r".\data\iris.csv") #Reading from the data file
 
 The first thing is to convert the non-numerical data elements into numerical formats. In this dataset, all the non-numerical elements are of Boolean type. This makes it easy to convert them to numbers. I've assigned the numbers '4' and '2' to positive and negative Boolean attributes respectively.
 
-    def mod_data(df):
 
-        df.replace('?', -999999, inplace = True)
-        df.replace('yes', 4, inplace = True)
-        df.replace('no', 2, inplace = True)
-        df.replace('notpresent', 4, inplace = True)
-        df.replace('present', 2, inplace = True)
-        df.replace('abnormal', 4, inplace = True)
-        df.replace('normal', 2, inplace = True)
-        df.replace('poor', 4, inplace = True)
-        df.replace('good', 2, inplace = True)
-        df.replace('ckd', 4, inplace = True)
-        df.replace('notckd', 2, inplace = True)
+      df.replace('Iris-setosa', -1, inplace = True)
+      df.replace('Iris-versicolor', 1, inplace = True)
+
 
 In `main.py`:
 
-        mod_data(df)
         dataset = df.astype(float).values.tolist()
         #Shuffle the dataset
         random.shuffle(dataset) #import random for this
 
 Next, we have split the data into test and train. In this case, I will be taking 25% of the dataset as the test set:
 
-        #25% of the available data will be used for testing
+        #20% of the available data will be used for testing
 
-        test_size = 0.25
+        test_size = 0.2
 
         #The keys of the dict are the classes that the data is classfied into
 
-        training_set = {2: [], 4:[]}
-        test_set = {2: [], 4:[]}
+        training_set = {-1: [], 1:[]}
+        test_set = {-1: [], 1: []}
 
 Now, split the data into test and training; insert them into test and training dictionaries:
 
@@ -155,6 +146,13 @@ Let's define the `predict` function. The predict function take in the attributes
 
     def predict(self, attrs):
       pass
+
+
+Let's define the `test` function. The test function take in the a list of  attributes, ie. the test data set for our cross validate. The `test` function will use the model that will by created by the `fit` function and use `predict` to predict the classes of test data. We will calculate the accuracy of the algorithm.
+
+    def test(self, attrs):
+      pass
+
 
 ## Implementing the `fit` function:
 
@@ -228,9 +226,10 @@ Now that we have basic setup for finding `W`, let's focus on `b`. We will define
     b_multiple = 5
 
 
-We then define our 2 dimensional transform list, which will have the values of `[1,1], [1,-1], [-1, 1], [-1, -1]`. Having this as a list will make it easier to perform the transformations.
+We then define our 4 dimensional transform list (since we have 4 feature attributes), which will have the values of `[1, 1, 1, 1], [1, 1, 1, -1], [1, 1,-1, 1], [1, 1,-1,-1], [1 ,-1, 1, 1], [1 ,-1, -1, 1], [1 ,-1, 1, -1], [1 ,-1, -1, -1], [-1, 1, 1, 1], [-1, 1, 1, -1], [-1, 1, -1, 1], [-1, 1, -1, -1], [-1,-1, 1, 1], [-1,-1, 1, -1], [-1,-1, -1, 1], [-1,-1, -1, -1]`. Having this as a list will make it easier to perform the transformations.
 
-    trans =  [[1,1],[-1,1],[-1,-1],[1 ,-1]]
+
+		trans =  [[1, 1, 1, 1], [1, 1, 1, -1], [1, 1,-1, 1], [1, 1,-1,-1], [1 ,-1, 1, 1], [1 ,-1, -1, 1], [1 ,-1, 1, -1], [1 ,-1, -1, -1], [-1, 1, 1, 1], [-1, 1, 1, -1], [-1, 1, -1, 1], [-1, 1, -1, -1], [-1,-1, 1, 1], [-1,-1, 1, -1], [-1,-1, -1, 1], [-1,-1, -1, -1]]
 
 That concludes the initial set up of algorithm. Next, we dive right into the optimization steps. We first initialize the `W` vector as a list of `latest_optimum` values. We also need a flag to break out of the optimization, once we feel that the values cannot be optimized further. The fact we are essentially solving for a convex optimization problem gives us the luxury of knowing when the optimization has been completed.  
 
@@ -249,21 +248,21 @@ We can now jump right into the loop. We keeping optimizing until we know that we
 This is where we jump into the computationally expensive part. We go through the **entire** data set and perform out calculations to make sure it fits as well as possible. For every single data point in our training data, we check for the equation  `y`<sup>`i`</sup>`(W`<sup>`T`</sup>`.x`<sup>`i`</sup>` + b) >= 1`, even if there is a single data point which does not conform to the above equation, we no longer continue. We can have a flag (`found`) to keep track of whether _all_ of the data points conform to the aforementioned equation. If we happen to find a the values where we are able to satisfy the equation, we will then update our `options` dictionary. We calculate the magnitude of `W` using [numpy's linalg.norm](https://numpy.org/doc/stable/reference/generated/numpy.linalg.norm.html). At this point, our inner loop looks like this:
 
       for step in step_size:
-        W = np.array([latest_optimum,latest_optimum])
-        optimization_flag = False
+      W = np.array([latest_optimum,latest_optimum, latest_optimum, latest_optimum])
+      optimization_flag = False
 
-        while not optimization_flag:
-          for b in np.arange(-1*(self.max_attr* b_range ), self.max_attr * b_range, step * b_multiple):
-            for transformation in trans:
-              W_t = W * transformation
-              # Default found to true
-              found = True
-              for yi, xi in self.dataset.items():
-                if not (yi* np.dot(W_t , xi)+b ) >= 1:
+      while not optimization_flag:
+        for b in np.arange(-1*(self.max_attr * b_range ), self.max_attr * b_range, step * b_multiple):
+          for transformation in trans:
+            W_t = W * transformation
+            found = True
+            for yi, attributes in self.dataset.items():
+              for xi in attributes:
+                if not (yi * (np.dot(xi, W_t)  +b )) >= 1:
                   found = False
                   break
-                if found:
-                  options[np.linalg.norm(W_t)] = [W_t, b]
+            if found:
+              options[np.linalg.norm(W_t)] = [W_t, b]
 
 Now, let us define our optimized case. This is where the myriad of assumptions we have make come into play. To summerize, we assumed that `W` is gonna be in the form of `W=[C,C]` for simplicity, and then we starts with C at a value of infinity. Then we check all 4 possible transformation of `W` (`[C,C] [C,-C] [-C,C] [-C,-C]`) and keep only the viable ones. The viable ones are the ones that satisfy the condition `yi(xi.w+b) >= 1`. Then we lower the value of `C` by the step and repeat the same process. So we know that we have checked all the steps when the value of `C` goes below 0. For optimization flag to be true, we just need to check if `w[0]` is less than 0. This is because not every step `i` better than the previous, or more optimized. We only care about the final state. Since we are checking all 4 symmetrical cases for `W` for various values of `C`, there is no point in checking negative values since by having negative values for `C` would result in double checking cases we have already checked. So we can safely stop the optimization pass once we have the value of `W[0]` (or `W[1]` since they are the same value) goes below zero.  
 
@@ -274,7 +273,7 @@ In case, we have not reached the local minima, we just move on to the next step.
           optimization_flag = True
           print("Optimized by a step: ", step)
         else:
-          W -= step # This is fine since all values of W are the same
+          W = np.array(list(map(lambda w: w-step, W)))
 
 After all of loops within the pass is done, we have to set the values for `W` and `b` for them to be used by the `predict` function. We choose the lowest magnitude value from the `options` as the most optimal one. We then update the `latest_optimum` for the next pass.
 
@@ -299,8 +298,8 @@ So, in the end, our `fit` function will look like:
             for f in attr:
               all_feature_values.append(f)
 
-        self.max_attr = max(data)
-        self.min_attr = min(data)
+        self.max_attr = max(all_feature_values)
+        self.min_attr = min(all_feature_values)
         del all_feature_values
 
         step_size = [self.max_attr * 0.1,self.max_attr * 0.01,self.max_attr * 0.005]
@@ -309,35 +308,39 @@ So, in the end, our `fit` function will look like:
         b_range = 3
         b_multiple = 5
 
-        trans =  [[1,1],[-1,1],[-1,-1],[1 ,-1]]
+
+        trans =  [[1, 1, 1, 1], [1, 1, 1, -1], [1, 1,-1, 1], [1, 1,-1,-1], [1 ,-1, 1, 1], [1 ,-1, -1, 1], [1 ,-1, 1, -1], [1 ,-1, -1, -1], [-1, 1, 1, 1], [-1, 1, 1, -1], [-1, 1, -1, 1], [-1, 1, -1, -1], [-1,-1, 1, 1], [-1,-1, 1, -1], [-1,-1, -1, 1], [-1,-1, -1, -1]]
 
         for step in step_size:
           W = np.array([latest_optimum,latest_optimum])
           optimization_flag = False
 
-          while not opti:
-            for b in np.arange(-1*(self.max_attr* b_range ), self.max_attr * b_range, step * b_multiple):
-              for transformation in trans:
-                W_t = W * transformation
-                found = True
-                for yi, xi in self.dataset.items():
-                  print(b)
-                  if not (yi* np.dot(W_t , xi)+b ) >= 1:
-                    found = False
-                    break
-                if found:
-                  options[np.linalg.norm(W_t)] = [W_t, b]
-            if W[0]<0:
-              optimization_flag = True
-              print("Optimized by a step: ", step)
-            else:
-              W -= step
+          for step in step_size:
+        			W = np.array([latest_optimum,latest_optimum, latest_optimum, latest_optimum])
+        			optimization_flag = False
 
-          norms = min([n for n in options])
-          self.W = options[norms][0]
-          self.b = options[norms][1]
+        			while not optimization_flag:
+        				for b in np.arange(-1*(self.max_attr* b_range ), self.max_attr * b_range, step * b_multiple):
+        					for transformation in trans:
+        						W_t = W * transformation
+        						found = True
+        						for yi, attributes in self.dataset.items():
+        							for xi in attributes:
+        								if not (yi * (np.dot(xi, W_t)  +b )) >= 1:
+        									found = False
+        									break
+        						if found:
+        							options[np.linalg.norm(W_t)] = [W_t, b]
+        				if W[0]<0:
+        					optimization_flag = True
+        				else:
+        					W = np.array(list(map(lambda w: w-step, W)))
 
-          latest_optimum = options[norms][0][0] + step*2
+            norms = min([n for n in options])
+            self.W = options[norms][0]
+            self.b = options[norms][1]
+
+            latest_optimum = options[norms][0][0] + step*2
 
 ## Implementing the `predict` function:
 
@@ -361,6 +364,35 @@ By implementing the above, we will have something like this:
 
       return classification
 
+
+## Implementing the cross validation:
+
+Now that we have the `predict` function implemented, Now is the time to check the accuracy of our algorithm. As mentioned early in the post, we will be using cross validation for the same. We will take the `test_set`, for which we already know the classes, and we shall use our `predict` function to predict the classes using our model.
+
+For the cross validation, we can create a `test` function on our `CustomSVM` class:
+
+      def test(self, test_set):
+        self.accurate_predictions, self.total_predictions = 0, 0
+        for group in test_set:
+          for data in test_set[group]:
+            predicted_class = self.predict(data)
+            if predicted_class == group:
+              self.accurate_predictions += 1
+            self.total_predictions += 1
+        self.accuracy = 100*(self.accurate_predictions/self.total_predictions)
+        print("\nAcurracy :", str(self.accuracy) + "%")
+
+For our iris dataset, we can run the cross validation:
+      svm = CustomSVM()
+
+      svm.fit(dataset = training_set)
+      svm.test(test_set)
+
+Which has the output:
+
+    Acurracy : 100.0%
+
+Although, a 100% accuracy is usually too good to be true and in fact is generally detrimental due to over fitting; in our case, for the simple, easily separable classes of the data set - this makes sense.
 
 That's it for now; if you have any comments, please leave them below.
 
