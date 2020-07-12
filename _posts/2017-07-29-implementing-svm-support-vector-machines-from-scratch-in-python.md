@@ -35,7 +35,7 @@ The implementation can be divided into the following:
 1. Handle Data: Clean the file, normalize the parameters, given numeric values to non-numeric attributes. Read data from the file and split the data for cross validation.
 2. Initialize : The heuristic for our SMO, steps sizes and multiples.
 3. Optimization: Run the SMO loop until we complete the convex optimization for the values of `W` and `b`.
-4. Stop the iteration: Stop the algorithm when the we have the magnitude of feature vector is less than 0.
+4. Stop the iteration: Stop the algorithm when the we have optimal values found.
 
 ### Predict the Iris flower type :
 
