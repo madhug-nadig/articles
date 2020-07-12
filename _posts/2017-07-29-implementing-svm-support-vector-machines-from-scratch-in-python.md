@@ -10,6 +10,8 @@ categories: Machine-Learning
 
 Support Vector Machine is one of the most popular Machine Learning algorithms for classification in data mining. One of the prime advantages of SVM is that it works very good right out of the box. You can take the classifier in it's generic form, without any explicit modifications, run it directly on your data and get good results. In addition to their low error rate, support vector machines are computationally inexpensive in contrast to other classification algorithms such as the K Nearest Neighbours.
 
+[Full code here](https://github.com/madhug-nadig/Machine-Learning-Algorithms-from-Scratch)
+
 Support Vector Machine algorithm is a [supervised learning](https://en.wikipedia.org/wiki/Unsupervised_learning) algorithm, ie. it needs training data. You will have to feed the algorithm training data for it make predictions on the actual data.
 
 ### How a Support Vector Machine works:
