@@ -2,7 +2,7 @@
 layout: post
 title:  "Implementing Decision Trees From Scratch - in Python"
 date:   2017-05-01 10:34:56 +0530
-description:   Decision Tree learning is one of the most widely used and practical methods for inductive inference. Decision Trees are easily understood by human and can be developed/used without much pain. In this post I will walk through the basics and the working of decision trees In this post I will implement decision trees from scratch in Python.
+description:   Decision Tree learning is one of the most widely used and practical methods for inductive inference. Decision Trees are easily understood by human and can be developed/used without much pain. In this post I will implement decision trees from scratch in Python.
 categories: Machine-Learning
 
 ---
