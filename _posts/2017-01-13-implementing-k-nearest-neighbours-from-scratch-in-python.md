@@ -135,7 +135,7 @@ Next, we have split the data into test and train. In this case, I will be taking
 
         test_size = 0.25
 
-        #The keys of the dict are the classes that the data is classfied into
+        #The keys of the dict are the classes that the data is classified into
 
         training_set = {2: [], 4:[]}
 

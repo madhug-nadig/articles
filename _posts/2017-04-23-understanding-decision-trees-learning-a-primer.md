@@ -11,7 +11,7 @@ categories: Machine-Learning
 
 Decision tree learning is one of the most commonly known machine learning algorithms out there. One of the advantages of decision trees are that there are quite staright forward, easily understandable by humans. Decision trees provide a way to approximate discrete valued functions and are robust to noisy data. Decision trees can be represented using the typical [Tree](https://en.wikipedia.org/wiki/Tree_(data_structure)) Data Structure.
 
->Decision tree learning uses a decision tree (as a predictive model) to go from observations about an item (represented in the branches) to conclusions about the item's target value (represented in the leaves). It is one of the predictive modelling approaches used in statistics, data mining and machine learning.
+> Decision tree learning uses a decision tree (as a predictive model) to go from observations about an item (represented in the branches) to conclusions about the item's target value (represented in the leaves). It is one of the predictive modelling approaches used in statistics, data mining and machine learning.
 
 
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
@@ -216,7 +216,7 @@ This gives us **E(S) = 1.0**
 After calculations similar as above, we find **IG(HEADACHE) = 0** and **IG(DIZZYNESS) = 1**. We now choose the `DIZZYNESS` attribute as the splitting attribute. This gives us the final decision tree, using which we can predict the classification. Notice that we don't have to use the `HEADACHE` attribute since, from the given data, we can make predictions based upon the other two attributes.
 
 
-![Completed Decision Tree]({{site.baseurl}}/images/Tsree.jpg)
+![Completed Decision Tree]({{site.baseurl}}/images/Tree.jpg)
 
 
 The ID3 algorithm usually prefers shorter, wider trees over the taller ones. The trees which has a high information gain are placed closer to the root.

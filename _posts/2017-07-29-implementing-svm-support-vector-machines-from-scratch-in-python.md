@@ -1,18 +1,18 @@
 ---
 layout: post
 title:  "Implementing SVM from Scratch - in Python"
-date:   2017-09-29 12:34:56 +0530
+date:   2017-07-29 12:34:56 +0530
 description:   Support vector machines (SVMs, also support vector networks) are supervised learning models with associated learning algorithms that analyze data used for classification and regression analysis. SVMS is one of the most commonly implemented Machine Learning classification algorithms. In this post I will implement the SMV algorithm from scratch in Python.
 categories: Machine-Learning
 
 ---
 
 
-Support Vector Machine is one of the most popular Machine Learning algorithms for classification in data mining. One of the prime advantages of SVM is that it works very good right out of the box. You can take the classifier in it's generic form, without any explicit modifications, run it directly on your data and get good results. In addition to their low error rate, support vector machines are computationally inexpensive in contrast to other classification algorithms such as the K Nearest Neighbours.
+Support Vector Machine is one of the most popular Machine Learning algorithms for classification in data mining. One of the prime advantages of SVM is that it works very good right out of the box. You can take the classifier in it's generic form, without any explicit modifications, run it directly on your data and get good results. In addition to their low error rate, support vector machines are computationally inexpensive in contrast to other classification algorithms such as the K Nearest Neighbours.  
 
 [Full code here](https://github.com/madhug-nadig/Machine-Learning-Algorithms-from-Scratch)
 
-Support Vector Machine algorithm is a [supervised learning](https://en.wikipedia.org/wiki/Unsupervised_learning) algorithm, ie. it needs training data. You will have to feed the algorithm training data for it make predictions on the actual data.
+Support Vector Machine algorithm is a [supervised learning](https://en.wikipedia.org/wiki/Unsupervised_learning) algorithm, ie. it needs training data. You will have to feed the algorithm training data for it make predictions on the actual data.  
 
 ### How a Support Vector Machine works:
 
@@ -42,8 +42,6 @@ The implementation can be divided into the following:
 ### Predict the Iris flower type :
 
 I've used the classic "Iris" dataset from the UCI ML repository. We will be predicting the type of [Iris](https://en.wikipedia.org/wiki/Iris_(plant)) based on many input parameters. The _predict class_ is binary: **"Iris-setosa"** or **"Iris-versicolor"**.  
-
-I shall visualize the algorithm using the mathplotlib module for python.
 
 The dataset will be divided into _'test'_ and _'training'_ samples for **[cross validation](https://en.wikipedia.org/wiki/Cross-validation_(statistics))**. The training set will be used to 'teach' the algorithm about the dataset, ie. to build a model. The test set will be used for evaluation of the results.
 
@@ -93,7 +91,7 @@ Next, we have split the data into test and train. In this case, I will be taking
 
         test_size = 0.2
 
-        #The keys of the dict are the classes that the data is classfied into
+        #The keys of the dict are the classes that the data is classified into
 
         training_set = {-1: [], 1:[]}
         test_set = {-1: [], 1: []}
