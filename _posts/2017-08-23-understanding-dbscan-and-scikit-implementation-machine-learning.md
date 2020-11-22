@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Machine Learning: Understanding DBSCAN and implementing it in Python scikit-learn"
+title: "Understanding DBSCAN and implementing it in Python scikit-learn"
 date: 2017-08-23 12:14:00 +0530
 description: DBSCAN - Density-based spatial clustering of applications with noise is one of the most common machine learning data clustering algorithms and it is one of the most academically cited methods. DBSCAN is a spatial algorithm, it groups clusters of points which are spatially close to each other.
 categories: Machine-Learning
@@ -68,16 +68,16 @@ This value of density is meaningless in itself, but will play a very significant
 
 Now that we have the pre-requisites covered, we can jump right into the algorithm. DBSCAN takes in two parameters:
 
--  Ɛ - The radius of the neighborhoods around any arbitrary data point.
+-  `Ɛ` - The radius of the neighborhoods around any arbitrary data point.
 -  `minPoints` - The minimum number of data points we want in a neighborhood to define a cluster.
 
 Using these aforementioned data points, DBSCAN classifies each data point into one of three categories:
 
-1. Core point:  
+1. **Core point**:  
 A data point, `p`, is considered as a core point if the neighborhood at the distance `Ɛ` has _at least_ `minPoints` number of data points in it.
-2. Border point:  
+2. **Border point**:  
 A data point, `p`, is considered as a border point if the neighborhood at the distance `Ɛ` has _less than_ `minPoints` number of data points in it, but `p` is **reachable** from at least one of the core points.
-3. Outliers:  
+3. **Outliers**:  
 A data point `p`, is an outlier if the neighborhood at the distance `Ɛ` has _less than_ `minPoints` number of data points in it and `p` is **not reachable** from any of the core points.
 
 The following image illustrates these three types of categories.
