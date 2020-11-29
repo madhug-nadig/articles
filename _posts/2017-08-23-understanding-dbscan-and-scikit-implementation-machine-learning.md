@@ -17,7 +17,7 @@ DBSCAN is an [unsupervised learning](https://en.wikipedia.org/wiki/Unsupervised_
 
 Unlike [previously covered K Means Clustering](http://madhugnadig.com/articles/machine-learning/2017/03/04/implementing-k-means-clustering-from-scratch-in-python.html) where we were only concerned with the distance metric between the data points, DBSCAN also looks into the spatial density of data points. Further, DBSCAN can effectively label outliers in the dataset based on this density metric - data points which fall in low density areas can be segregated as outliers. This enables the algorithm to be un-distracted by noise.  
 
-With DBSCAN, you don't have to specify a number of clusters to use it unlike k-means. All you need find a spatial distance metric and a distance value for what amount of distance is considered "close".
+With DBSCAN, you don't have to preemptively specify the number of clusters you want in the dataset, unlike k-means. All you need to provide is a value for minimum number of points in a given space and a distance value for what measure of distance is considered "close".
 
 ![DBSCAN]({{site.baseurl}}/images/dbscan.PNG)
 <span style = "color: #dfdfdf; font-size:0.6em">Image courtesy: <a href="https://github.com/NSHipster/DBSCAN">NSHipster Github Repo</a></span>
@@ -87,7 +87,7 @@ The following image illustrates these three types of categories.
 
 > In this diagram, minPts = 4. Point A and the other red points are core points, because the area surrounding these points in an ε radius contain at least 4 points (including the point itself). Because they are all reachable from one another, they form a single cluster. Points B and C are not core points, but are reachable from A (via other core points) and thus belong to the cluster as well. Point N is a noise point that is neither a core point nor directly-reachable.
 
-_Reachability_ is not a complimentary relation: by definition, only core points can reach non-core points. The opposite is not true, so a non-core point may be reachable, but nothing can be reached from it. You can reach a point `q` from point `p` **only** if `p` is a core point.  
+_Reach-ability_ is not a complimentary relation: by definition, only core points can reach non-core points. The opposite is not true, so a non-core point may be reachable, but nothing can be reached from it. You can reach a point `q` from point `p` **only** if `p` is a core point.  
 
 #### Core Points
 Since Ɛ is fixed - which means the volume is fixed - we essentially have a threshold on the _mass_. This forces a minimum density requirement on the cluster.
@@ -114,7 +114,7 @@ In the next post, I will be implementing the algorithm from scratch in Python, i
 Now, let's list of the steps we'd do to cluster a data set through DBSCAN.
 
 1. Sequentially pick points that have not been assigned to a cluster or named an outlier.  
-2. Compute its Ɛ neighborhood to see if it is a core point. If not assign it an outlier (for now).  
+2. Compute its Ɛ neighborhood to see if it is a core point. If not assign it as an outlier (for now).  
 3. If it is a core point, label it as a cluster (this works since we sequentially go though the points which are already _not_ part of a cluster). Add `Directly Density Reachable` neighbor points to its cluster.  
 4. Perform jumps from the neighborhood points to find all density reachable clusters (`Indirect Density Reachable` to the origin point). If there is any data point which is labeled as an outlier, change the status and assign it the current cluster - this points are our _border points_ explained above.  
 5. Repeat the above 4 steps until each point in the dataset has either been assigned a cluster or has been marked as an outlier.  
@@ -139,11 +139,112 @@ Further, when implementing this algorithm, one would also have to choose a dista
 
 ## When should you use DBSCAN?
 
--   When it is not apparent from the data set how many cluster might possibly exist in the dataset.
--   When you have an odd-looking dataset, where cluster tend to be arbitrarily shaped.
--   When the dataset has significant proportion of noise and outliers.
+-   When it is not apparent from the data set how many clusters might possibly exist.
+-   When you have an odd-shaped data set, where clusters tend to be arbitrarily shaped.
+-   When the data set has significant proportion of noise and outliers.
 -   When you don't want to normalize the data.
--   When you are a domain expert on the dataset and can accurately set the values for `Ɛ` and `minPoints`.
+-   When you are a domain expert on the data set and can accurately set the values for `Ɛ` and `minPoints`.
+
+# Implementing DBSCAN in `Scikit-Learn`:  
+
+Now that we have understood the algorithm, let’s go ahead and implement it out of box in Python. We can use Python's all-powerful `scikit-learn` library to implement DBSCAN.
+
+> DBSCAN - Density-Based Spatial Clustering of Applications with Noise. Perform DBSCAN clustering from vector array or distance matrix. Finds core samples of high density and expands clusters from them. Good for data which contains clusters of similar density.
+
+In this tutorial, I am going to focus on contrived clustering problems that can be solved using BDSCAN. One could also use `scikit-learn` library to solve a variety of clustering, density estimation and outlier detection problems. I will be using two toy datasets that make DBSCAN Standout - Two Concentric circles and 2 moons - these are oddly shaped data sets where DBSCAN would outperform other clustering methods like K-Means.
+
+In scikit-learn, we can use the `sklearn.cluster.DBSCAN` class to perform density based clustering on a dataset. The `scikit-learn` implimentation takes in a variety of input parameters that can be [found here](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.DBSCAN.html). The most interesting of them is the values of `eps` (which defaults to `0.5`) and `min_samples` (which defaults to 5). With the sklearn implementation, you can also provide option for distance metric (defaults to `Euclidean`), additional params for the metric, the type of clustering and so on.
+
+## Creating the Dataset
+
+As mentioned I will be creating two toy datasets from `scikit-learn` library. I will be using `make_circles` and `make_moons` from the dataset package:
+
+
+
+```
+from sklearn import cluster, datasets
+
+
+np.random.seed(0)
+
+# ============
+# Generate datasets. We choose the size big enough to see the scalability
+# of the algorithms, but not too big to avoid too long running times
+# ============
+n_samples = 1500
+noisy_circles = datasets.make_circles(n_samples=n_samples, factor=.5,
+                                      noise=.08)
+noisy_moons = datasets.make_moons(n_samples=n_samples, noise=.08)
+```
+
+## Fitting the data to the model
+
+Now that we have the datasets ready, we go ahead and fit the datasets into our model. For these examples I have chosen the value of `eps` as `0.2`. We will leave the rest of the params to their default value for the sake of simplicity.
+
+```
+eps = 0.2
+
+datasets = [
+    noisy_circles,
+    noisy_moons,
+]
+```
+
+Let's iterate through the datasets and normalize the dataset. I am going to use the [StandardScaler](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html) from the library to do so,  
+
+```
+for i_dataset, dataset in enumerate(datasets):
+
+    X, y = dataset
+
+    # normalize dataset
+    X = StandardScaler().fit_transform(X)
+
+```
+
+Now we can just initialize the class and fit the data:
+
+```
+    dbscan = cluster.DBSCAN(eps=eps)
+
+    dbscan.fit(X)
+```
+
+## Visualizing the clusters:
+
+Now that we have the model fitted, let's take in the predicted cluster values and visualize it in `matplotlib`.
+
+```
+  y_pred = dbscan.labels_.astype(np.int)
+
+  plt.subplot(len(datasets), 1, plot_num)
+  if i_dataset == 0:
+      plt.title('DBSCAN', size=18)
+
+  colors = np.array(list(islice(cycle(['#FE4A49', '#2AB7CA']), 3)))
+
+  # add black color for outliers (if any)
+  colors = np.append(colors, ["#000000"])
+
+  plt.scatter(X[:, 0], X[:, 1], s=10, color=colors[y_pred])
+
+  plt.xlim(-2.5, 2.5)
+  plt.ylim(-2.5, 2.5)
+  plt.xticks(())
+  plt.yticks(())
+  plot_num += 1
+
+plt.show()
+```
+
+With this we, have:
+
+![DBSCAN - Visualizing clusters]({{site.baseurl}}/images/dbscan_viz.png)
+
+As expected, DB is able to cluster the dataset in very sensible way. We didn't have to tell the algorithm how many clusters there might be, it just figured it out. If we zoom in a bit, we can also see the outlier (marked in black):
+
+
+![DBSCAN - Visualizing clusters]({{site.baseurl}}/images/dbscan_outliers.png)
 
 
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
