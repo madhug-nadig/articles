@@ -145,7 +145,7 @@ Further, when implementing this algorithm, one would also have to choose a dista
 -   When you don't want to normalize the data.
 -   When you are a domain expert on the data set and can accurately set the values for `Ɛ` and `minPoints`.
 
-# Implementing DBSCAN in `Scikit-Learn`:  
+# Implementing DBSCAN using Scikit-Learn:  
 
 Now that we have understood the algorithm, let’s go ahead and implement it out of box in Python. We can use Python's all-powerful `scikit-learn` library to implement DBSCAN.
 
@@ -158,8 +158,6 @@ In scikit-learn, we can use the `sklearn.cluster.DBSCAN` class to perform densit
 ## Creating the Dataset
 
 As mentioned I will be creating two toy datasets from `scikit-learn` library. I will be using `make_circles` and `make_moons` from the dataset package:
-
-
 
 ```
 from sklearn import cluster, datasets
