@@ -235,13 +235,13 @@ With this we, have:
 
 ![DBSCAN - Visualizing clusters]({{site.baseurl}}/images/dbscan_viz.png)
 
-As expected, DB is able to cluster the dataset in very sensible way. We didn't have to tell the algorithm how many clusters there might be, it just figured it out. If we zoom in a bit, we can also see the outlier (marked in black):
+As expected, DBSCAN is able to cluster the dataset in very sensible way. We didn't have to tell the algorithm how many clusters there might be, it just figured it out. If we zoom in a bit, we can also see the outliers (marked in black):
 
 
 ![DBSCAN - Visualizing clusters]({{site.baseurl}}/images/dbscan_outliers.png)
 
 
-A comprehensive analysis and visualization of various clustering algorithms on toy datasets can be found in [Sklearn's website](https://scikit-learn.org/stable/auto_examples/cluster/plot_cluster_comparison.html). I would recommend for the reader to have a look at that. 
+A comprehensive analysis and visualization of various clustering algorithms on toy datasets can be found in [Sklearn's website](https://scikit-learn.org/stable/auto_examples/cluster/plot_cluster_comparison.html). I would recommend for the reader to have a look at that.
 
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
