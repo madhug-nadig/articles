@@ -148,7 +148,7 @@ Let's define the `predict` function. The predict function take in the attributes
       pass
 
 
-Let's define the `test` function. The test function take in the a list of  attributes, ie. the test data set for our cross validate. The `test` function will use the model that will by created by the `fit` function and use `predict` to predict the classes of test data. We will calculate the accuracy of the algorithm.
+Let's define the `test` function. The test function takes in the a list of  attributes, ie. the test data set for our cross validate. The `test` function will use the model that will by created by the `fit` function and use `predict` to predict the classes of test data. We will calculate the accuracy of the algorithm.
 
     def test(self, attrs):
       pass
