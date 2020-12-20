@@ -30,7 +30,7 @@ In my previous blog post, [I had explained the theory behind DBSCAN and had impl
 (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
 
-![DBSCAN - Visualizing clusters]({{site.baseurl}}/images/dbscan.png)
+![DBSCAN - Visualizing clusters]({{site.baseurl}}/images/dbscan.PNG)
 
 ### Pseudocode for the DBSCAN algorithm:
 
@@ -57,10 +57,10 @@ For this implementation, I have chose a simple and contrived 2 dimensional data 
 
 The code that I used to generate the data set:
 
-  from sklearn import datasets
+    from sklearn import datasets
 
-  n_samples = 1500
-  noisy_circles = datasets.make_circles(n_samples=n_samples, factor=.5, noise=.08)
+    n_samples = 1500
+    noisy_circles = datasets.make_circles(n_samples=n_samples, factor=.5, noise=.08)
 
 I have saved a version of this into a csv file which can be found [here](https://github.com/madhug-nadig/Machine-Learning-Algorithms-from-Scratch/blob/master/data/concentric_circles.csv).
 
