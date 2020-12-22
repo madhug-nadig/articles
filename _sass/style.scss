@@ -28,16 +28,16 @@ body {
 
     }
 
-	h1{     
+	h1{
 		font-family: "Secular One","Lato", "Helvetica Neue", Helvetica, sans-serif;
 		font-weight: 700;
 		line-height:1;
 	}
-	
+
 	.headline{
 		font-family:"Alfa Slab One","Lato", "Helvetica Neue", Helvetica, sans-serif;
 	}
-	
+
     h2,h3,h4,h5,h6 {
          font-family: "Lato", "Helvetica Neue", Helvetica, sans-serif;
          font-weight: bold;
@@ -50,7 +50,7 @@ a {
     color: $brand-color;
     text-decoration: none;
     &:hover{
-     color: $text-color;   
+     color: $text-color;
     }
 }
 
@@ -78,6 +78,7 @@ figure {
 
 img {
     max-width: 100%;
+    text-align: center;
 }
 
 pre,
@@ -192,7 +193,7 @@ blockquote {
 		padding-left:10px;
 		padding-right:10px;
 		margin-bottom:10px;
-	}  
+	}
 
 }
 
@@ -269,7 +270,3 @@ footer {
         width: 300px;
     }
 }
-
-
-
-

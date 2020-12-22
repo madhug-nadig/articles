@@ -14,9 +14,7 @@ The main use cases for genetic algorithms are **optimization**, **Classification
 
 In biology, the organisms evolve to suit their environment better, in genetic algorithms, we define the environment (the end result) and we evolve a list of potential solutions until they are converge into an ideal fit to our predefined environment.  
 
-<div style="text-align:center">
 ![Antenna designed using Genetic Algorithms]({{site.baseurl}}/images/antenna.jpg)
-</div>
 
 <br />
 
@@ -56,9 +54,7 @@ Lets quickly go over and acquaint ourselves with some of the underlying biologic
 
 A gene pool is a collection of genetic information in any population. In biology, a gene pool represents the total genetic diversity of population. A gene is the unit information structure, a sequence of genes form a chromosome - which encapsulate all the information about the member - and a population consists of members.  
 
-<div style="text-align:center">
 ![Genetic Algorithms]({{site.baseurl}}/images/genetic.png)
-</div>
 
 
 In the application of genetic algorithms, we can abstract the population as a **list of potential solutions**. In genetic algorithms, each member of a population is a potential solution and would _evolve_ to reach an optimal solution. A gene can be abstracted to a single feature and a chromosome can be abstracted to a single data point with a bunch of features that has all the information to describe it.  
