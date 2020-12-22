@@ -12,10 +12,16 @@ Genetic algorithms are a class of machine learning algorithms which approximate 
 
 The main use cases for genetic algorithms are **optimization**, **Classification** and **Human Comparable Behaviors**. Genetic algorithms are essentially a way for of performing **biologically inspired optimized trial and error**.  
 
-In biology, the organisms evolve to suit their environment better, in genetic algorithms, we define the environment (the end result) and we evolve a list of potential solutions until they are converge into an ideal fit to our predefined environment.
+In biology, the organisms evolve to suit their environment better, in genetic algorithms, we define the environment (the end result) and we evolve a list of potential solutions until they are converge into an ideal fit to our predefined environment.  
 
+<div style="text-align:center">
 ![Antenna designed using Genetic Algorithms]({{site.baseurl}}/images/antenna.jpg)
-<span style = "color: #dfdfdf; font-size:0.6em">Image courtesy:Wikipedia</span>
+</div>
+
+<br />
+
+<span style = "color: #dfdfdf; font-size:0.6em">Image courtesy:Wikipedia</span>  
+
 
 > The 2006 NASA ST5 spacecraft antenna. This complicated shape was found by an evolutionary computer design program to create the best radiation pattern. It is known as an evolved antenna.  
 
@@ -46,11 +52,14 @@ Genetic algorithms are especially potent in time tabling problems, scheduling pr
 
 Lets quickly go over and acquaint ourselves with some of the underlying biological concepts that are abstracted in genetic algorithms.  
 
-## Biological Concepts and their abstraction
-
 ### Population and Gene Pool:
 
 A gene pool is a collection of genetic information in any population. In biology, a gene pool represents the total genetic diversity of population. A gene is the unit information structure, a sequence of genes form a chromosome - which encapsulate all the information about the member - and a population consists of members.  
+
+<div style="text-align:center">
+![Genetic Algorithms]({{site.baseurl}}/images/genetic.png)
+</div>
+
 
 In the application of genetic algorithms, we can abstract the population as a **list of potential solutions**. In genetic algorithms, each member of a population is a potential solution and would _evolve_ to reach an optimal solution. A gene can be abstracted to a single feature and a chromosome can be abstracted to a single data point with a bunch of features that has all the information to describe it.  
 
@@ -80,6 +89,17 @@ In genetic algorithms, the process of mutation inserts a sense of randomness to 
 
 Mutation also ensures to maintain diversity within the population and prevents premature convergence or over fitting.  
 
+### Termination
+
+Although in nature evolution keeps going on, we only want to run an algorithm a finite amount of time. For this, genetic algorithms usually have a termination condition. Once this condition is met, the algorithm stops recreating populations and will emit the last created generation as the solution.  
+
+Termination conditions usually fall into one of the three:
+
+1. The overall fitness of the population is above a certain, predefined threshold.  
+2. After many generations, there is no improvement seen in fitness.  
+3. A predefined absolute number of generations have been created.  
+
+
 # How Genetic Algorithms Work:
 
 In genetic algorithms, **we generate a random list of population, each member of which can be our potential optimal solution. Using processes like mutation and cross over, we will evolve this population to reach some level "optimality" based on our Selection criteria.** Each application of mutation and cross over creates a new generation of population and each new generation of population is more fit and optimal than the previous generation.  
@@ -97,7 +117,11 @@ There are 5 main steps in genetic algorithms:
 
 We keep performing steps 2 through 5 until we have reach the optimal composition of the members, at which point we emit the "chromosomes" (The values of the solution).
 
+In case of practical application, before we can create an initial population, first we would have to encode the problem, ie. find a way to represent the problem and the solution space as a sequence of characters.
+
 ## Solving using genetic algorithm:  
+
+I will solve a problem using genetic algorithm to illustrate how the algorithm works.
 
 
 ## When should you use Genetic Algorithms?
@@ -109,7 +133,7 @@ We keep performing steps 2 through 5 until we have reach the optimal composition
 -   When the problem to be solved can be approximated to a search in combinatorial space.  
 
 
-# Implementing Genetic Algorithms using Scikit-Learn:
+# Implementing Genetic Algorithms using Sklearn-genetic:
 
 Now that we have understood the algorithm, let’s go ahead and implement it out of box in Python. We can use Python's all-powerful `scikit-learn` library to implement DBSCAN.
 
@@ -167,43 +191,6 @@ Now we can just initialize the class and fit the data:
 
     dbscan.fit(X)
 ```
-
-## Visualizing the clusters:
-
-Now that we have the model fitted, let's take in the predicted cluster values and visualize it in `matplotlib`.
-
-```
-  y_pred = dbscan.labels_.astype(np.int)
-
-  plt.subplot(len(datasets), 1, plot_num)
-  if i_dataset == 0:
-      plt.title('DBSCAN', size=18)
-
-  colors = np.array(list(islice(cycle(['#FE4A49', '#2AB7CA']), 3)))
-
-  # add black color for outliers (if any)
-  colors = np.append(colors, ["#000000"])
-
-  plt.scatter(X[:, 0], X[:, 1], s=10, color=colors[y_pred])
-
-  plt.xlim(-2.5, 2.5)
-  plt.ylim(-2.5, 2.5)
-  plt.xticks(())
-  plt.yticks(())
-  plot_num += 1
-
-plt.show()
-```
-
-With this we, have:
-
-![DBSCAN - Visualizing clusters]({{site.baseurl}}/images/dbscan_viz.png)
-
-As expected, DBSCAN is able to cluster the dataset in very sensible way. We didn't have to tell the algorithm how many clusters there might be, it just figured it out. If we zoom in a bit, we can also see the outliers (marked in black):
-
-![DBSCAN - Visualizing clusters]({{site.baseurl}}/images/dbscan_outliers.png)
-
-A comprehensive analysis and visualization of various clustering algorithms on toy datasets can be found in [Sklearn's website](https://scikit-learn.org/stable/auto_examples/cluster/plot_cluster_comparison.html). I would recommend for the reader to have a look at that.
 
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
