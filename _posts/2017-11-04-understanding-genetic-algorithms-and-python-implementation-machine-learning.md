@@ -13,10 +13,7 @@ Genetic algorithms are a class of machine learning algorithms which approximate 
 The main use cases for genetic algorithms are **optimization**, **Classification** and **Human Comparable Behaviors**. Genetic algorithms are essentially a way for of performing **biologically inspired optimized trial and error**.  
 
 In biology, the organisms evolve to suit their environment better, in genetic algorithms, we define the environment (the end result) and we evolve a list of potential solutions until they are converge into an ideal fit to our predefined environment.  
-
 ![Antenna designed using Genetic Algorithms]({{site.baseurl}}/images/antenna.jpg)
-
-<br />
 
 <span style = "color: #dfdfdf; font-size:0.6em">Image courtesy:Wikipedia</span>  
 
@@ -53,9 +50,7 @@ Lets quickly go over and acquaint ourselves with some of the underlying biologic
 ### Population and Gene Pool:
 
 A gene pool is a collection of genetic information in any population. In biology, a gene pool represents the total genetic diversity of population. A gene is the unit information structure, a sequence of genes form a chromosome - which encapsulate all the information about the member - and a population consists of members.  
-
 ![Genetic Algorithms]({{site.baseurl}}/images/genetic.png)
-
 
 In the application of genetic algorithms, we can abstract the population as a **list of potential solutions**. In genetic algorithms, each member of a population is a potential solution and would _evolve_ to reach an optimal solution. A gene can be abstracted to a single feature and a chromosome can be abstracted to a single data point with a bunch of features that has all the information to describe it.  
 
