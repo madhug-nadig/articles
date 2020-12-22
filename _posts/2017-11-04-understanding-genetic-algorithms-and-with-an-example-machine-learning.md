@@ -58,7 +58,7 @@ In the application of genetic algorithms, we can abstract the population as a **
 
 ### Fitness
 
-Fitness involves the ability of populations or species to survive and reproduce in the environment in which they find themselves. The consequence of this survival and reproduction is that organisms contribute genes to the next generation. From the theory of evolution, only the fittest members of the species survive and pass on their genes to the new generation. This way, the generation are more likely to survive the environment.  
+Fitness involves the ability of populations or species to survive and reproduce in the environment in which they find themselves. The consequence of this survival and reproduction is that organisms contribute genes to the next generation. From the theory of evolution, only the fittest members of the species survive and pass on their genes to the new generation. This way, the new generation are more likely to survive the environment.  
 
 In the application of genetic algorithms, we abstract the notion of fitness into a **fitness function**, which gives a fitness score to each member of the population. The probability that a member will be selected for reproduction is based on its fitness score. In general, the fitness function evaluates how close a member of the population is in relation to the end state.   
 
@@ -107,7 +107,7 @@ There are 6 main steps in genetic algorithms:
 3. **Selection**: Selecting the most "fit" members of population for the next iteration.  
 4. **Crossover**: Reproduction of new generation of members based of the most fit members of the previous generations.  
 5. **Mutation**: Adding changes to the new members to maintain diversity and to expand the solution space.  
-6. **Termination**: Once a certain condition is met, the algorithm stop creating new generations and emits the solution.    
+6. **Termination**: Once a certain condition is met, the algorithm stops creating new generations and emits the solution.    
 
 We keep performing steps 2 through 5 until we have reach the optimal composition of the members, at which point we emit the "chromosomes" (The values of the solution).
 
@@ -162,7 +162,9 @@ f(a, b, c) == 0
 
 ### Initializing population
 
-Next, we initialize the population - here the size of the population has to be chosen, for the example we will go with a population size of 4. With larger populations, the algorithms explores more of the solution space for a solution - at the cost of computational power. The population size needs to be chosen meticulously, very large population sizes can slow down computation and in cases of relatively smaller solution spaces can result in many generations exploring the same solutions.   
+Next, we initialize the population - here the size of the population has to be chosen, for the example we will go with a population size of 4. With larger populations, the algorithms explores more of the solution space for a solution - at the cost of computational power.   
+
+The population size needs to be chosen meticulously, very large population sizes can slow down computation and in cases of relatively smaller solution spaces can result in many generations exploring the same solutions. Whereas, with a very small population, not enough of the solution space may be explored for an optimal solution.  
 
 For this example, we can randomly generate our population - usually in practice one could use a heuristic or an educated guess for initialization.  
 
@@ -201,7 +203,7 @@ f(2, 4, 5) = mod(2 + (2 × 4) + (3 × 5) - 15) = 9 <br />
 
 **Selecting members to create the next generations:**
 
-The members with the best fitness score [5,2,3] and [2,5,2] have same fitness, which randomly choose one of them - [5,2,3]. Out of the remaining two, [4,3,3] has better fitness, so that is chosen. We are not choosing the members with the same fitness in order to maintain diversity and to ensure we don't converge too early.  
+The members with the best fitness score [5,2,3] and [2,5,2] have same fitness, we randomly choose one of them - [5,2,3]. We are not choosing the members with the same fitness in order to maintain diversity and to ensure we don't converge too early. Out of the remaining two, [4,3,3] has better fitness, so that is chosen.
 
 **Performing Crossover**
 
@@ -218,7 +220,7 @@ We have 2 remaining members from the initial population, these 2 will be used to
 
 **Performing Mutation**
 
-After crossover, we have the following two: [5,3,3] and [4,2,3], we now mutate these two memebers to generate two more. We will have 4 members by the end of this process. For this case, I will perform simple insertion (addition of 1) and deletion (subtraction of 1) on random elements in our list.
+After crossover, we have the following two: [5,3,3] and [4,2,3], we now mutate these two members to generate two more. We will have 4 members by the end of this process. For this case, I will perform simple insertion (addition of 1) and deletion (subtraction of 1) on random elements in our list.
 
 Which will lead to:
 
