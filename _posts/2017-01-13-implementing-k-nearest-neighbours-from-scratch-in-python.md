@@ -17,6 +17,8 @@ This is what Wikipedia says about k-NN:
 
 The k-NN algorithm derives much of its power from the fact that it's _non-parametric_; this means that the algorithm has **no prior bias or a functional form**. It does not make any assumptions about the dataset in hand.
 
+![K Nearest Neighbours Vonoi]({{site.baseurl}}/images/parallel.gif)
+
 
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 <ins class="adsbygoogle"

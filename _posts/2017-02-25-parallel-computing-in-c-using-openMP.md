@@ -15,6 +15,8 @@ OpenMP is one of the most popular solutions to parallel computation in C/C++. Op
 
 Ease of use and flexibility are the amongst the main advantages of OpenMP. In OpenMP, you do not see how each and every thread is created, initialized, managed and terminated. You will not see a function declaration for the code each thread executes. You will not see how the threads are synchronized or how reduction will be performed to procure the final result. You will not see exactly how the data is divided between the threads or how the threads are scheduled. This, however, does *not* mean that you have no control. OpenMP has a wide array of compiler directives that allows you to decide each and every aspect of parallelization; how you want to split the data, static scheduling or dynamic scheduling, locks, nested locks, subroutines to set multiple levels of parallelism etc.
 
+![OpenMP]({{site.baseurl}}/images/parallel.gif)
+
 Another important advantage of OpenMP is that, it is very easy to convert a serial implementation into a parallel one. In many cases, serial code can be made to run in parallel without having to change the source code at all. This makes OpenMP a great option whilst converting a pre-written serial program into a parallel one. Further, it is still possible to run the program in serial, all the programmer has to do is to remove the OpenMP directives.
 
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
