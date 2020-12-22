@@ -58,7 +58,7 @@ In the application of genetic algorithms, we can abstract the population as a **
 
 ### Fitness
 
-Fitness involves the ability of populations or species to survive and reproduce in the environment in which they find themselves 6–9. The consequence of this survival and reproduction is that organisms contribute genes to the next generation. From the theory of evolution, only the fittest members of the species survive and pass on their genes to the new generation. This way, the generation are more likely to survive the environment.  
+Fitness involves the ability of populations or species to survive and reproduce in the environment in which they find themselves. The consequence of this survival and reproduction is that organisms contribute genes to the next generation. From the theory of evolution, only the fittest members of the species survive and pass on their genes to the new generation. This way, the generation are more likely to survive the environment.  
 
 In the application of genetic algorithms, we abstract the notion of fitness into a **fitness function**, which gives a fitness score to each member of the population. The probability that a member will be selected for reproduction is based on its fitness score. In general, the fitness function evaluates how close a member of the population is in relation to the end state.   
 
