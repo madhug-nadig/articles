@@ -172,9 +172,9 @@ Initial population:
 <div style="font-family: 'Sans Serif';text-align: center;font-size: 35px;">
 
 5, 2, 3 <br />
-4, 3, 3
-2, 5, 2
-2, 4, 5
+4, 3, 3 <br />
+2, 5, 2 <br />
+2, 4, 5 <br />
 
 </div>
 
@@ -184,34 +184,63 @@ With this initial population and the defined fitness function, we can start appl
 
 #### First Pass:
 
+Let's go ahead with the first pass and create a new generation of solutions:
+
 **Calculating Fitness:**
 
 <div style="font-family: 'Sans Serif';text-align: center;font-size: 27px;">
 
-f(5, 2, 3) = mod(5 + (2 × 2) + (3 × 3) - 15) = 3
-
-</div>
-<div style="font-family: 'Sans Serif';text-align: center;font-size: 27px;">
-
-f(4, 3, 3) = mod(4 + (2 × 3) + (3 × 3) - 15) = 4
-
-</div>
-
-<div style="font-family: 'Sans Serif';text-align: center;font-size: 27px;">
-
-f(2, 5, 2) = mod(2 + (2 × 5) + (3 × 2) - 15) = 3
+f(5, 2, 3) = mod(5 + (2 × 2) + (3 × 3) - 15) = 3  <br />
+f(4, 3, 3) = mod(4 + (2 × 3) + (3 × 3) - 15) = 4  <br />
+f(2, 5, 2) = mod(2 + (2 × 5) + (3 × 2) - 15) = 3  <br />
+f(2, 4, 5) = mod(2 + (2 × 4) + (3 × 5) - 15) = 9 <br />
 
 </div>
 
-<div style="font-family: 'Sans Serif';text-align: center;font-size: 27px;">
-
-f(2, 4, 5) = mod(2 + (2 × 4) + (3 × 5) - 15) = 10
-
-</div>
+<br />
 
 **Selecting members to create the next generations:**
 
+The members with the best fitness score [5,2,3] and [2,5,2] have same fitness, which randomly choose one of them - [5,2,3]. Out of the remaining two, [4,3,3] has better fitness, so that is chosen. We are not choosing the members with the same fitness in order to maintain diversity and to ensure we don't converge too early.  
 
+**Performing Crossover**
+
+We have 2 remaining members from the initial population, these 2 will be used to create the next generation. We will perform cross over to create two new off springs.  
+
+
+<div style="font-family: 'Sans Serif';text-align: center;font-size: 27px;">
+
+5 | 2 | 3  --- 5, 3, 3  <br />
+4 | 3 | 3  --- 4, 2, 3   <br />
+
+</div>
+
+
+**Performing Mutation**
+
+After crossover, we have the following two: [5,3,3] and [4,2,3], we now mutate these two memebers to generate two more. We will have 4 members by the end of this process. For this case, I will perform simple insertion (addition of 1) and deletion (subtraction of 1) on random elements in our list.
+
+Which will lead to:
+
+
+
+<div style="font-family: 'Sans Serif';text-align: center;font-size: 27px;">
+
+5, 3, 3 -> 4, 3, 3 <br />
+4, 2, 3 -> 4, 3, 2 <br />
+5, 3, 3 -> 5, 3, 1 <br />
+4, 3, 3 -> 3, 3, 3 <br />
+
+</div>
+
+This is the second generation of the population. The above 4 steps are iterated upon until we reach termination, which in this case happens for the 3rd generation where we get the value:
+
+<div style="font-family: 'Sans Serif';text-align: center;font-size: 35px;">
+
+4, 4, 1
+</div>
+
+The implementation of the remaining two generations is left as an exercise to the reader.  
 
 ## When should you use Genetic Algorithms?
 
@@ -222,7 +251,7 @@ f(2, 4, 5) = mod(2 + (2 × 4) + (3 × 5) - 15) = 10
 -   When the problem to be solved can be approximated to a search in combinatorial space.  
 
 
-In the next article, I will implement Genetic Algorithms from scratch.  
+In the next article, I will implement Genetic algorithm from scratch in Python.  
 
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
