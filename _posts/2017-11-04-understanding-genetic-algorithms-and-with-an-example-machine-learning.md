@@ -136,7 +136,7 @@ The first step would be encode this problem into a sequence. In this case, we ha
 
 Next, we need to decide on the fitness function. Since we are solving for a linear equation and we have our chromosomes representing the values for `a`, `b` and `c`, we can use the equation itself as the fitness function - by Substituting the values for `a`, `b` and `c` and returning how far it is from the expected result of 15.  
 
-<div style="font-family: "Sans Serif";text-align: center;font-size: 33px;">
+<div style="font-family: 'Sans Serif';text-align: center;font-size: 33px;">
 
 **Fitness Function-> f(a, b, c) = a + 2b + 3c - 15**
 
@@ -146,7 +146,7 @@ Next, we need to decide on the fitness function. Since we are solving for a line
 
 We have to decide the termination condition. For our example, the termination would have to happen once the equation is solved - once we find the values for `a`, `b` and `c` that solve the equation ie. when the fitness function returns 0.  
 
-<div style="font-family: "Sans Serif";text-align: center;font-size: 33px;">
+<div style="font-family: 'Sans Serif';text-align: center;font-size: 33px;">
 
 **Termination-> STOP when f(a, b, c) == 0**
 
