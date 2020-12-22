@@ -108,7 +108,7 @@ Border points are not core points but are "Density Reachable" by other core poin
 
 ## The Algorithm
 
-In the next post, I will be implementing the algorithm from scratch in Python, it is recommended to go through that for a more hands-on code based explanation.
+In the next post, I will be implementing [the algorithm from scratch in Python](http://madhugnadig.com/articles/machine-learning/2017/09/13/implementing-dbscan-from-scratch-in-python-machine-learning.html), it is recommended to go through that for a more hands-on code based explanation.
 
 Now, let's list of the steps we'd do to cluster a data set through DBSCAN.
 
