@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Understanding Genetic Algorithms and implementing it using a Python library"
+title: "Understanding Genetic Algorithms using an example"
 date: 2017-11-04 09:23:00 +0530
 description: Genetic algorithms are a class of machine learning algorithms which approximate the process of natural selection seen in nature. Genetic algorithms belong to a larger set Evolutionary algorithms, which take Charles Darwin's evolution theory as the center piece. Genetic algorithms are widely used to for solving variety of optimization algorithms in many different domains.  
 categories: Machine-Learning
@@ -13,6 +13,7 @@ Genetic algorithms are a class of machine learning algorithms which approximate 
 The main use cases for genetic algorithms are **optimization**, **Classification** and **Human Comparable Behaviors**. Genetic algorithms are essentially a way for of performing **biologically inspired optimized trial and error**.  
 
 In biology, the organisms evolve to suit their environment better, in genetic algorithms, we define the environment (the end result) and we evolve a list of potential solutions until they are converge into an ideal fit to our predefined environment.  
+
 ![Antenna designed using Genetic Algorithms]({{site.baseurl}}/images/antenna.jpg)
 
 <span style = "color: #dfdfdf; font-size:0.6em">Image courtesy:Wikipedia</span>  
@@ -50,6 +51,7 @@ Lets quickly go over and acquaint ourselves with some of the underlying biologic
 ### Population and Gene Pool:
 
 A gene pool is a collection of genetic information in any population. In biology, a gene pool represents the total genetic diversity of population. A gene is the unit information structure, a sequence of genes form a chromosome - which encapsulate all the information about the member - and a population consists of members.  
+
 ![Genetic Algorithms]({{site.baseurl}}/images/genetic.png)
 
 In the application of genetic algorithms, we can abstract the population as a **list of potential solutions**. In genetic algorithms, each member of a population is a potential solution and would _evolve_ to reach an optimal solution. A gene can be abstracted to a single feature and a chromosome can be abstracted to a single data point with a bunch of features that has all the information to describe it.  
@@ -98,13 +100,14 @@ In genetic algorithms, **we generate a random list of population, each member of
 
 ## Genetic Algorithm Lifecycle:
 
-There are 5 main steps in genetic algorithms:
+There are 6 main steps in genetic algorithms:
 
 1. **Initial population**: Usually randomly generated.  
 2. **Fitness function**: A metric to evaluate how fit an abritrary member of population is.  
 3. **Selection**: Selecting the most "fit" members of population for the next iteration.  
 4. **Crossover**: Reproduction of new generation of members based of the most fit members of the previous generations.  
 5. **Mutation**: Adding changes to the new members to maintain diversity and to expand the solution space.  
+6. **Termination**: Once a certain condition is met, the algorithm stop creating new generations and emits the solution.    
 
 We keep performing steps 2 through 5 until we have reach the optimal composition of the members, at which point we emit the "chromosomes" (The values of the solution).
 
@@ -112,7 +115,47 @@ In case of practical application, before we can create an initial population, fi
 
 ## Solving using genetic algorithm:  
 
-I will solve a problem using genetic algorithm to illustrate how the algorithm works.
+I will solve a problem using genetic algorithm to illustrate how the algorithm works.  
+
+### Problem
+
+Let's take the example of a simple linear equation:
+
+<div style="font-family: "Sans Serif";text-align: center;font-size: 33px;">
+**a + 2b + 3c = 15**
+</div>
+
+and solve it using a genetic algorithm.
+
+### Encoding
+
+The first step would be encode this problem into a sequence. In this case, we have it pretty simple. We can just encode for the values of `a`, `b` and `c`, the values we are solving for. So, our chromosomes would be a list of 3 values.
+
+
+### Fitness Function
+
+Next, we need to decide on the fitness function. Since we are solving for a linear equation and we have our chromosomes representing the values for `a`, `b` and `c`, we can use the equation itself as the fitness function - by Substituting the values for `a`, `b` and `c` and returning how far it is from the expected result of 15.  
+
+
+<div style="font-family: "Sans Serif";text-align: center;font-size: 33px;">
+**Fitness Function-> f(a, b, c) = a + 2b + 3c - 15**
+</div>
+
+### Termination Condition
+
+We have to decide the termination condition. For our example, the termination would have to happen once the equation is solved - once we find the values for `a`, `b` and `c` that solve the equation ie. when the fitness function returns 0.  
+
+
+<div style="font-family: "Sans Serif";text-align: center;font-size: 33px;">
+**Termination-> STOP when f(a, b, c) == 0**
+</div>
+
+### Initializing population
+
+
+
+####
+
 
 
 ## When should you use Genetic Algorithms?
@@ -124,64 +167,7 @@ I will solve a problem using genetic algorithm to illustrate how the algorithm w
 -   When the problem to be solved can be approximated to a search in combinatorial space.  
 
 
-# Implementing Genetic Algorithms using Sklearn-genetic:
-
-Now that we have understood the algorithm, let’s go ahead and implement it out of box in Python. We can use Python's all-powerful `scikit-learn` library to implement DBSCAN.
-
-> DBSCAN - Density-Based Spatial Clustering of Applications with Noise. Perform DBSCAN clustering from vector array or distance matrix. Finds core samples of high density and expands clusters from them. Good for data which contains clusters of similar density.
-
-In this tutorial, I am going to focus on contrived clustering problems that can be solved using BDSCAN. One could also use `scikit-learn` library to solve a variety of clustering, density estimation and outlier detection problems. I will be using two toy datasets that make DBSCAN Standout - Two Concentric circles and 2 moons - these are oddly shaped data sets where DBSCAN would outperform other clustering methods like K-Means.
-
-In scikit-learn, we can use the `sklearn.cluster.DBSCAN` class to perform density based clustering on a dataset. The `scikit-learn` implimentation takes in a variety of input parameters that can be [found here](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.DBSCAN.html). The most interesting of them is the values of `eps` (which defaults to `0.5`) and `min_samples` (which defaults to 5). With the sklearn implementation, you can also provide option for distance metric (defaults to `Euclidean`), additional params for the metric, the type of clustering and so on.
-
-## Creating the Dataset
-
-As mentioned I will be creating two toy datasets from `scikit-learn` library. I will be using `make_circles` and `make_moons` from the dataset package:
-
-```
-from sklearn import cluster, datasets
-
-
-np.random.seed(0)
-
-n_samples = 1500
-noisy_circles = datasets.make_circles(n_samples=n_samples, factor=.5,
-                                      noise=.08)
-noisy_moons = datasets.make_moons(n_samples=n_samples, noise=.08)
-```
-
-## Fitting the data to the model
-
-Now that we have the datasets ready, we go ahead and fit the datasets into our model. For these examples I have chosen the value of `eps` as `0.2`. We will leave the rest of the params to their default value for the sake of simplicity.
-
-```
-eps = 0.2
-
-datasets = [
-    noisy_circles,
-    noisy_moons,
-]
-```
-
-Let's iterate through the datasets and normalize the dataset. I am going to use the [StandardScaler](https://scikit-learn.org/stable/modules/generated/sklearn.preprocessing.StandardScaler.html) from the library to do so,
-
-```
-for i_dataset, dataset in enumerate(datasets):
-
-    X, y = dataset
-
-    # normalize dataset
-    X = StandardScaler().fit_transform(X)
-
-```
-
-Now we can just initialize the class and fit the data:
-
-```
-    dbscan = cluster.DBSCAN(eps=eps)
-
-    dbscan.fit(X)
-```
+In the next article, I will implement Genetic Algorithms from scratch.  
 
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
