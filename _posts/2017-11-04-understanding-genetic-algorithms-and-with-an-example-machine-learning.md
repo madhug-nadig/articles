@@ -145,6 +145,8 @@ f(a, b, c) = mod(a + 2b + 3c - 15)
 
 </div>
 
+<br />
+
 
 ### Termination Condition
 
@@ -156,11 +158,58 @@ f(a, b, c) == 0
 
 </div>
 
+<br />
 
 ### Initializing population
 
+Next, we initialize the population - here the size of the population has to be chosen, for the example we will go with a population size of 4. With larger populations, the algorithms explores more of the solution space for a solution - at the cost of computational power. The population size needs to be chosen meticulously, very large population sizes can slow down computation and in cases of relatively smaller solution spaces can result in many generations exploring the same solutions.   
 
-### Creating new generations until termination
+For this example, we can randomly generate our population - usually in practice one could use a heuristic or an educated guess for initialization.  
+
+Initial population:
+
+
+<div style="font-family: 'Sans Serif';text-align: center;font-size: 35px;">
+
+5, 2, 3 <br />
+4, 3, 3
+2, 5, 2
+2, 4, 5
+
+</div>
+
+### Solving for the solution
+
+With this initial population and the defined fitness function, we can start applying biological operators to our population and start creating new generations.  
+
+#### First Pass:
+
+**Calculating Fitness:**
+
+<div style="font-family: 'Sans Serif';text-align: center;font-size: 27px;">
+
+f(5, 2, 3) = mod(5 + (2 × 2) + (3 × 3) - 15) = 3
+
+</div>
+<div style="font-family: 'Sans Serif';text-align: center;font-size: 27px;">
+
+f(4, 3, 3) = mod(4 + (2 × 3) + (3 × 3) - 15) = 4
+
+</div>
+
+<div style="font-family: 'Sans Serif';text-align: center;font-size: 27px;">
+
+f(2, 5, 2) = mod(2 + (2 × 5) + (3 × 2) - 15) = 3
+
+</div>
+
+<div style="font-family: 'Sans Serif';text-align: center;font-size: 27px;">
+
+f(2, 4, 5) = mod(2 + (2 × 4) + (3 × 5) - 15) = 10
+
+</div>
+
+**Selecting members to create the next generations:**
 
 
 
