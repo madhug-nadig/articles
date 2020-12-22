@@ -121,9 +121,12 @@ I will solve a problem using genetic algorithm to illustrate how the algorithm w
 
 Let's take the example of a simple linear equation:
 
-<div style="font-family: "Sans Serif";text-align: center;font-size: 33px;">
-**a + 2b + 3c = 15**
+<div style="font-family: 'Sans Serif';text-align: center;font-size: 33px;">
+
+a + 2b + 3c = 15
+
 </div>
+
 
 and solve it using a genetic algorithm.
 
@@ -134,23 +137,25 @@ The first step would be encode this problem into a sequence. In this case, we ha
 
 ### Fitness Function
 
-Next, we need to decide on the fitness function. Since we are solving for a linear equation and we have our chromosomes representing the values for `a`, `b` and `c`, we can use the equation itself as the fitness function - by Substituting the values for `a`, `b` and `c` and returning how far it is from the expected result of 15.  
+Next, we need to decide on the fitness function. Since we are solving for a linear equation and we have our chromosomes representing the values for `a`, `b` and `c`, we can use the equation itself as the fitness function - by Substituting the values for `a`, `b` and `c` and returning how far it is from the expected result of 15.  So we have the Fitness Function:
 
 <div style="font-family: 'Sans Serif';text-align: center;font-size: 33px;">
 
-**Fitness Function-> f(a, b, c) = a + 2b + 3c - 15**
+f(a, b, c) = mod(a + 2b + 3c - 15)
 
 </div>
+
 
 ### Termination Condition
 
-We have to decide the termination condition. For our example, the termination would have to happen once the equation is solved - once we find the values for `a`, `b` and `c` that solve the equation ie. when the fitness function returns 0.  
+We have to decide the termination condition. For our example, the termination would have to happen once the equation is solved - once we find the values for `a`, `b` and `c` that solve the equation ie. when the fitness function returns 0. The termination condition:   
 
-<div style="font-family: 'Sans Serif';text-align: center;font-size: 33px;">
+<div style="font-family: 'Sans Serif';text-align: center;font-size: 35px;">
 
-**Termination-> STOP when f(a, b, c) == 0**
+f(a, b, c) == 0
 
 </div>
+
 
 ### Initializing population
 
