@@ -253,7 +253,7 @@ The implementation of the remaining two generations is left as an exercise to th
 -   When the problem to be solved can be approximated to a search in combinatorial space.  
 
 
-In the next article, I will implement Genetic algorithm from scratch in Python.  
+[In the next article, I will implement Genetic algorithm from scratch in Python.](http://madhugnadig.com/articles/machine-learning/2017/11/23/implementing-genetic-algorithms-from-scratch-in-python-machine-learning.html)  
 
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
