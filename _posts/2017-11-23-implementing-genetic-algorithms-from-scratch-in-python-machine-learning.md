@@ -20,7 +20,8 @@ In this article, I will implement the algorithm from scratch in python and apply
 <span style = "color: #dfdfdf; font-size:0.6em">Image courtesy:Wikipedia</span>  
 
 
-> Objects in a simulated environment were allowed to evolve into learning swimming - an experiment by Karl Sims at Thinking Machines in the last 1980s.    
+> Objects in a simulated environment were allowed to evolve into learning swimming - an experiment by Karl Sims at Thinking Machines in the late 1980s.   
+
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 <ins class="adsbygoogle"
@@ -37,7 +38,7 @@ In this article, I will implement the algorithm from scratch in python and apply
 
 ### How Genetic Algorithms work
 
-In the [previous post, I have explained the concepts of genetic algorithms and how they work with an example](http://madhugnadig.com/articles/machine-learning/2017/11/04/understanding-genetic-algorithms-and-with-an-example-machine-learning.html), it is recommended for the reader to go through the post before and getting familiar with the concept before hands-on implementation.  
+In the [previous post, I have explained the concepts of genetic algorithms and how they work with an example](http://madhugnadig.com/articles/machine-learning/2017/11/04/understanding-genetic-algorithms-and-with-an-example-machine-learning.html), it is recommended for the reader to go through the post and get familiar with the concept before hands-on implementation.  
 
 # Implementing Genetic Algorithm From Scratch
 
@@ -73,13 +74,17 @@ STOP
 
 This implementation is based on [a notebook from Joo Korstanje](https://jooskorstanje.com/Genetic-Algorithm-from-scratch.html), it is recommended to check that note book out too.
 
-For this example, let's solve a time tabling problem - let's say that we have an IaaS company with a services that runs [Cron](https://en.wikipedia.org/wiki/Cron) jobs at specific times. Let's saw we have around 20 server racks with 12 servers each. The servers all have equal computation power and the rack operates as an individual unit.  
+For this example, let's solve a time tabling problem - let's say that we have an [IaaS](https://en.wikipedia.org/wiki/Infrastructure_as_a_service) company with a service that runs [Cron](https://en.wikipedia.org/wiki/Cron) jobs at specific times. Let's say we have 20 server racks with 12 servers each. The servers all have equal computation power and the rack operates as an individual unit.  
 
-We have the schedule of when the jobs have to run over a period of 5 days and how much compute power they take. A server cannot run more than one job at a time. We will find an optimal schedule for running these tasks by distributing load on our servers.   s
+![Genetic algorithms application - Server Rack Example]({{site.baseurl}}/images/server_rack.png)
+> Server rack that needs scheduling.   
+
+
+We have the schedule of when the jobs have to run over a period of 5 days and how much compute power they take. A server cannot run more than one job at a time. We will find an optimal schedule for running these tasks by distributing load on our servers.  
 
 ### Handling Data and Encoding:
 
-We have a data set that has a list of scheduled jobs along with the required computation capacity (value of 2 implies we need 2 servers, for example) for each job. The [data set](https://github.com/madhug-nadig/Machine-Learning-Algorithms-from-Scratch/blob/master/data/cron_jobs_schedule.csv) has the schema `<job_id, hour, day, capaity>`, We will use `pandas` to read the csv file, in our main:  
+We have a data set that has a list of scheduled jobs along with the required computation capacity (value of 2 implies we need 2 servers, for example) for each job. The [data set](https://github.com/madhug-nadig/Machine-Learning-Algorithms-from-Scratch/blob/master/data/cron_jobs_schedule.csv) has the schema `<job_id, hour, day, capacity>`, We will use `pandas` to read the csv file, in our main:  
 
 ```
     # Reading from the data file
@@ -90,7 +95,7 @@ We have a data set that has a list of scheduled jobs along with the required com
 
 #### Encoding:
 
-Before we can apply genetic algorithm to our problem, we first have to encode it in a way that can be solve using it. Generally we have to encode the problem, the goal and the data into some form of discrete numeric representation. In this example, I will aggregate the jobs and will create an array of which contains the capacity needed on a per-hour basis for the 5 days. The structure will look something like this:   
+Before we can apply genetic algorithm, we first have to encode it. Generally we have to encode the problem, the goal and the data into some form of discrete numeric representation. In this example, I will aggregate the jobs and will create an array of which contains the capacity needed on a per-hour basis for the 5 days. The structure will look something like this:   
 
 ```
 CRON SCHEDULE DATA STRUCTURE
@@ -106,7 +111,7 @@ CRON SCHEDULE DATA STRUCTURE
 
 In this above 2D array, the 5 rows represent 5 days and the 24 elements within each row represent 24 hours in a day. So, the value at 1st row and 13th index of `6` implies that, for the hour 13 of the first day, we need a capacity of at least 6 servers in order to be able to run the crob job.  
 
-I will convert out data set into a structure shown above, so in main function:
+I will convert the data set into a structure shown above, so in main function:
 ```
     required_hourly_cron_capacity = [
         [0 for _ in range(24)] for _ in range(5)]
@@ -246,9 +251,11 @@ Now, we can iteratively call the above function to generate population of any si
 ### Fitness Function:
 
 
-Creating a heuristic to find the fitness of any solution is crucial to any implementation of genetic algorithms. In this example, any solution that is most cost efficient would be the most fit solution. So, cost efficiency can be used as a core heuristic whilst developing our fitness function. The cost can be calculated as per how much the solution deviates from the required hourly cron capacity. If there are more servers than required then we are running in over capacity and this will incur costs; on the other hand if we are running less servers than required, we are in under capacity and the job may not complete.
+Creating a heuristic to find the fitness of any solution is crucial to any implementation of genetic algorithms. In this example, any solution that is most cost efficient would be the most fit solution. So, cost efficiency can be used as a core heuristic whilst developing our fitness function.  
 
-Deviation can be easily calculated by finding the difference between the required capacity with the capacity created by the solution. If the deviation is positive, then we have over capacity, if negative we have under capacity.  
+The cost can be calculated as per how much the solution deviates from the required hourly cron capacity. If there are more servers than required then we are running in over capacity and this will incur costs; on the other hand if we are running less servers than required, we are in under capacity and the job may not complete.
+
+Deviation can be easily calculated by finding the difference between the required capacity with the capacity created by the solution. If the deviation is positive, then we have over capacity; if negative, we have under capacity.  
 
 ```
     def calculate_fitness(self, deployed_hourly_cron_capacity, required_hourly_cron_capacity):
@@ -257,7 +264,9 @@ Deviation can be easily calculated by finding the difference between the require
         undercapacity = abs(deviation[deviation < 0].sum())
 ```
 
-We need to associate a quantitative or weighted cost to _both_ over and under capacity - if we only penalize over capacity, then no jobs running at all would be an optimal solution; on the other hand, if we penalize only under capacity, we might end up running all the servers all the time which wastes resources. For this case, since we assumed to be running an IaaS service, we can set the cost of under capacity much higher than over capacity. For this case, we can add the weight of `0.5` for over capacity and `2` for under capacity, under capacity is 4 time more expensive than over capacity - so the algorithm is more incentivized to ensure that all the jobs are able to run.  
+We need to associate a quantitative or weighted cost to _both_ over and under capacity - if we only penalize over capacity, then no jobs running at all would be an optimal solution; on the other hand, if we penalize only under capacity, we might end up running all the servers all the time - which wastes resources.  
+
+For this case, since we assumed to be running an IaaS service, we can set the cost of under capacity much higher than over capacity - since ensuring the service is always up and running properly is the top priority. We can add the weight of `0.5` for over capacity and `2` for under capacity - under capacity is 4 time more expensive than over capacity. The algorithm is more incentivized to ensure that all the jobs are able to run.  
 
 ```
         overcapacity_cost = 1
@@ -268,11 +277,11 @@ We need to associate a quantitative or weighted cost to _both_ over and under ca
 ```
 
 
-### Biological Operator: Crossover:
+### Biological Operator - Crossover:
 
 Next, we look into the biological operator - Cross over. Here, we try to abstract the process of reproduction - by creating a new generation of population based of the most fit members of the previous generation.
 
-The Crossover function takes in the population and the an attribute for the number of required offspring based on the current population:
+The Crossover function takes in the population and an attribute for the number of required offspring based on the current population:
 
 ```
   def crossover(self, population, n_offspring):
@@ -330,13 +339,13 @@ The full function:
         return offspring
 ```
 
-### Biological Operator: Mutation:
+### Biological Operator - Mutation:
 
 With mutation, there is an effort to add some randomness to expand the solution space. Since with crossover, the existing attributes are recombined each time, an agent of randomness would expand the solution space to beyond what is captured by the previous population.  
 
 For this implementation of mutation, a simple implementation that adds random values at random elements can be implemented.
 
-A function to perform mutation to one solution (member of the population):
+A function to perform mutation on one solution (member of the population):
 
 ```
     def mutate_parent(self, parent, n_mutations):
@@ -381,7 +390,7 @@ Any solution that assigns more than 12 servers to a rack is invalid:
 
 ### Selection
 
-In each iteration of a genetic algorithm, only the sub-set of the population is selected to carry forward features for the future generations. The fitness metric is utilized to make that choice on which members of the population.  
+In each iteration of a genetic algorithm, only the sub-set of the population is selected to carry forward features for the future generations. The fitness metric is utilized to make that choice on which members of the population get to propagate their features.  
 
 Let's implement the selection function. The selection function takes in `population`, `required_hourly_cron_capacity` and `n_best` (How many memebers of the population are to be selected).
 
@@ -417,11 +426,13 @@ Next, we iteratively go over each member of the population and find the fitness 
 
 ### Bringing it all together
 
-Now that the core functions are implemented, the `run` function can be implemented that will orchestrate the entire algorithm. The `run` function will also be the entry point of running our genetic algorithm. In this function, we essentially implement the pseudocode added in one of the sections above.
+Now that the core functions are implemented, the `run` function can be implemented that will orchestrate the entire algorithm. The `run` function will also be the entry point to run our genetic algorithm. In this function, we essentially implement the pseudocode added in one of the sections above.
 
 #### Termination Condition:
 
-Before implementing the `run` function, the termination condition has to be set that represents the point at which we are satisfied with the result. In this case, we have a few options options:  
+Before implementing the `run` function, the termination condition has to be set. The termination condition represents the point at which we are satisfied with the result and stop the algorithm.  
+
+In this case, we have a few options to choose from:  
 
 1. Terminate once the cost goes below a certain value.  
 2. Terminate once a pre-defined number of generations have been created.  
@@ -480,8 +491,7 @@ The complement main function:
           required_hourly_cron_capacity[record[1]][record[2]] += record[3]
 
       genetic_algorithm = CustomGeneticAlgorithm()
-      optimal_schedule = genetic_algorithm.run(
-          required_hourly_cron_capacity, n_iterations=200)
+      optimal_schedule = genetic_algorithm.run(required_hourly_cron_capacity, n_iterations=100)
       print('\nOptimal Server Schedule: \n', optimal_schedule)
 
 ```
@@ -592,7 +602,20 @@ Current generation's optimal schedule has cost: 61.0
 
 ```
 
-The algorithm converges at the cost of `61`. 
+The algorithm converges at the cost of `61`.
+
+This is the schedule generated by the algorithm:
+
+```
+  [[ 1  2  2  3  4  4  5  8  8  7  4  3  4  6  8  8 10  6  6  6  8  7  9  7]
+   [ 0  7  9  8  8  6  6  8  7  3  3  3  5  7  8  7  8  8  6  6  7  7  8  5]
+   [ 0  1  4  5  8  7  6  8 10  4  4  4  5  7  8  5  6  6  6  4  4  5  6  5]
+   [ 6  6  8  8  9  8  6  8  7  4  5  7  7  9  8  6  6  6  6  5  8  6  8  5]
+   [ 2  2  2  2  4  5  7  8  6  4  3  5  4  8  8  8  6  4  6  5  4  4  8  8]]
+```
+
+That's it for now, if you have any comments, please leave then below.
+
 
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
@@ -611,6 +634,5 @@ The algorithm converges at the cost of `61`.
 	<span>Still have questions? Find me on <a href='https://www.codementor.io/madhugnadig' target ="_blank" > Codementor </a></span>
 </div>
 
-That's it for now, if you have any comments, please leave then below.
 
 <br /><br />
