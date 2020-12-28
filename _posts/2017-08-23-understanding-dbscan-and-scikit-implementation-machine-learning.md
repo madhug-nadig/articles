@@ -151,7 +151,7 @@ Now that we have understood the algorithm, let’s go ahead and implement it out
 
 In this tutorial, I am going to focus on contrived clustering problems that can be solved using BDSCAN. One could also use `scikit-learn` library to solve a variety of clustering, density estimation and outlier detection problems. I will be using two toy datasets that make DBSCAN Standout - Two Concentric circles and 2 moons - these are oddly shaped data sets where DBSCAN would outperform other clustering methods like K-Means.
 
-In scikit-learn, we can use the `sklearn.cluster.DBSCAN` class to perform density based clustering on a dataset. The `scikit-learn` implimentation takes in a variety of input parameters that can be [found here](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.DBSCAN.html). The most interesting of them is the values of `eps` (which defaults to `0.5`) and `min_samples` (which defaults to 5). With the sklearn implementation, you can also provide option for distance metric (defaults to `Euclidean`), additional params for the metric, the type of clustering and so on.
+In scikit-learn, we can use the `sklearn.cluster.DBSCAN` class to perform density based clustering on a dataset. The `scikit-learn` implementation takes in a variety of input parameters that can be [found here](https://scikit-learn.org/stable/modules/generated/sklearn.cluster.DBSCAN.html). The most interesting of them is the values of `eps` (which defaults to `0.5`) and `min_samples` (which defaults to 5). With the sklearn implementation, you can also provide option for distance metric (defaults to `Euclidean`), additional params for the metric, the type of clustering and so on.
 
 ## Creating the Dataset
 
