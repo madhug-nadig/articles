@@ -2,14 +2,14 @@
 layout: post
 title: "Understanding Random Forests and implementing it in Python scikit-learn"
 date: 2017-12-04 08:15:00 +0530
-description: Random Forests are a class of ensemble machine learning algorithms for classification, regression and analysis. Random forests run efficiently on large data sets and are know for their unwavering accuracy. Random forests are one of the most used algorithms in practice and work very well even when large portions of data set are missing or corrupted.  
+description: Random Forests are a class of ensemble machine learning algorithms for classification, regression and analysis. Random forests run efficiently on large data sets and are known for their unwavering accuracy. In this article, I will explain the basics on random forests along with an example implementation using Python Scikit-learn 
 categories: Machine-Learning
 ---
 
 
 # What are Random Forests?
 
-Random Forests are a class of [ensemble machine learning algorithms](https://en.wikipedia.org/wiki/Ensemble_learning) for classification, regression and analysis. Random forests run efficiently on large data sets and are know for their unwavering accuracy. Random forests are one of the most used algorithms in practice and work very well even when large portions of data set are missing or corrupted.  
+Random Forests are a class of [ensemble machine learning algorithms](https://en.wikipedia.org/wiki/Ensemble_learning) for classification, regression and analysis. Random forests run efficiently on large data sets and are knows for their unwavering accuracy. Random forests are one of the most used algorithms in practice and work very well even when large portions of data set are missing or corrupted.  
 
 > Random forests are frequently used as "blackbox" models, as they generate reasonable predictions across a wide range of data while requiring little configuration in packages such as scikit-learn.  
 
@@ -27,7 +27,7 @@ Each individual decision tree withing a random forest operates independently and
 
 So in essence, a random forest is **a crowd of independent, uncorrelated decision trees that operate as a unit**. The large number of trees utilizing many models is expected to outperform any single individual model. The independence of the trees ensure that the features in the data set are modeled is various ways for the same information - thus expanding the solution space in which the algorithm tries to make the prediction.  
 
-Having multiple models reduces the error rate as the individual model errors and over-fitting are normalized across all the decision tree models generated. While some trees may be wrong, many other trees will be right, so as a group the trees are able to move in the correct direction when they operated as a unit.  
+Having multiple models reduces the error rate as the individual model errors and over-fitting are normalized across all the decision tree models generated. While some trees may be wrong, many other trees will be right, so as a group the trees are able to move in the correct direction when they operate as a unit.  
 
 <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
@@ -64,7 +64,7 @@ At step 2, unlike decision tree learning, we are not trying to optimize for info
 
 ### Feature Randomness:
 
-Instead of searching for the most important feature while splitting a node, we _search for the best (or random) feature among a random subset of features_. This results in a wide diversity that generally results in a better model.
+Instead of searching for the most important feature while splitting a node, we _search for the best (or random) feature among a random subset of features_. This results in a wider diversity that most often result in a better predictions.
 
 For `M` features in the data set, we take in `m` random features `m` < `M`. At the root nodes of each of the trees generated, we split the data based on this random subset of features.  
 
@@ -105,7 +105,7 @@ Now that we have understood the algorithm, let’s go ahead and implement it out
 
 I've used the "Chronic Kidney Diseases" dataset from the UCI ML repository. We will be predicting the presence of chronic kidney disease based on many input parameters. The _predict class_ is binary: **"chronic"** or **"not chronic"**.  
 
-The dataset will be divided into _'test'_ and _'training'_ samples for **[cross validation](https://en.wikipedia.org/wiki/Cross-validation_(statistics))**. The training set will be used to 'teach' the algorithm about the dataset, ie. to build a model; which, in the case of k-NN algorithm happens during active runtime during prediction. The test set will be used for evaluation of the results.  
+The dataset will be divided into _'test'_ and _'training'_ samples for **[cross validation](https://en.wikipedia.org/wiki/Cross-validation_(statistics))**. The training set will be used to 'teach' the algorithm about the dataset, ie. to build a model.  
 
 In scikit-learn, we can use the `sklearn.ensemble.RandomForestClassifier` class to perform classification on a dataset. The `scikit-learn` implementation takes in a variety of input parameters that can be [found here](https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html). The most interesting of them is the values of `n_estimators` (the number of trees in the model) and `criterion` (to specificy the metric for splitting). With the sklearn implementation, you can also provide option for `min_samples_split` (to specify how may values are needed for a split).  
 
@@ -123,7 +123,7 @@ The first thing to do is to read the csv file. To deal with the csv data data, w
     df = pd.read_csv(r".\data\chronic_kidney_disease.csv") #Reading from the data file
 ```
 
-The first thing is to convert the non-numerical data elements into numerical formats. In this dataset, all the non-numerical elements are of Boolean type. This makes it easy to convert them to numbers. I've assigned the numbers '4' and '2' to positive and negative Boolean attributes respectively.
+Then non-numerical data elements have to be converted into numerical formats. In this dataset, all the non-numerical elements are of Boolean type. This makes it easy to convert them to numbers. I've assigned the numbers '4' and '2' to positive and negative Boolean attributes respectively.
 
 ```
     def mod_data(df):
@@ -166,7 +166,7 @@ In `main.py`:
 
 ### Normalizing Dataset:
 
-Before calculating distance, it is very important to **Normalize** the dataset - to perform **[feature scaling](https://en.wikipedia.org/wiki/Feature_scaling)**. Since the distance measure is directly dependent on the _magnitude_ of the parameters, the features with higher average values will get more preference whilst decision making; for example, in the dataset in our case, the feature '_age_' might get more preference since its values are higher than that of other features. Not normalizing the data prior to distance calculation may reduce the accuracy.
+It is very important to **Normalize** the dataset - to perform **[feature scaling](https://en.wikipedia.org/wiki/Feature_scaling)**. Since the trees are directly sensitive to the _magnitude_ of the parameters. Not normalizing the data prior to distance calculation may reduce the accuracy.
 
 I will be using sci-kit learn's `preprocessing` to scale the data.
 
@@ -188,38 +188,36 @@ Next, we have split the data into test and train - by using `test_train_split` f
 
 ```
         #Split data into training and test for cross validation
-
         X = df.loc[:, df.columns != 24]
         y = df[24]
 
         # Split dataset into training set and test set
-        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)  # 70% training and 30% test
+        # 70% training and 30% test
+        X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3)
 ```
 
 
 
-## Fitting the data to the model
+## Training the model with the training data
 
 Now that we have the data set ready, we go ahead and fit the data set into our model. For this example, I will run the algorithm with all default features - just to show how well Random Forest works right out of the box.
 
 ```
     clf = RandomForestClassifier(n_estimators=100)
     clf.fit(X_train, y_train)
-
 ```
 
 The test set can now be predicted:
 
 ```    
     y_pred = clf.predict(X_test)
-
 ```
 
 That's it.
 
 ## Measuring Accuracy:
 
-Now that we have the model fitted, let's measure the accuracy on the test class. For this I will use `metrics` module:
+Now that we have the model fitted, let's measure the accuracy on the test set. For this, I will use `metrics` module:
 
 ```
   print("Accuracy:", metrics.accuracy_score(y_test, y_pred)*100)
@@ -231,7 +229,7 @@ With this, we get:
   Accuracy: 98.33333333333333
 ```
 
-which is an extremely good value, especially for using the algorithm as a black-block without any parameter estimations. The previously implemented K-Nearest Neighbours only had [an accuracy of **88.75**](http://madhugnadig.com/articles/machine-learning/2017/01/13/implementing-k-nearest-neighbours-from-scratch-in-python.html#testingevaluation-)
+which is an extremely good value, especially for using the algorithm as a black-box without any parameter estimations. The previously implemented K-Nearest Neighbours only had [an accuracy of **88.75**](http://madhugnadig.com/articles/machine-learning/2017/01/13/implementing-k-nearest-neighbours-from-scratch-in-python.html#testingevaluation-)
 
 That's it for now, if you have any comments, please leave then below.
 
