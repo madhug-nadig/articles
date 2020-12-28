@@ -10,6 +10,8 @@ categories: Machine-Learning
 
 K Means Clustering is one of the most popular Machine Learning algorithms for cluster analysis in data mining. K-means clustering aims to partition n observations into k clusters in which each observation belongs to the cluster with the nearest mean, serving as a [prototype](https://en.wikipedia.org/wiki/Prototype) of the cluster.
 
+[Full code here](https://github.com/madhug-nadig/Machine-Learning-Algorithms-from-Scratch)
+
 K Means algorithm is an [unsupervised learning](https://en.wikipedia.org/wiki/Unsupervised_learning) algorithm, ie. it needs no training data, it performs the computation on the actual dataset. This should be apparent from the fact that in K Means, we are just trying to group similar data points into clusters, there is no prediction involved.
 
 The K Means algorithm is easy to understand and to implement. It works well in a large number of cases and is a powerful tool to have in the closet.
