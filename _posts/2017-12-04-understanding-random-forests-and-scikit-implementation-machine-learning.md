@@ -2,7 +2,7 @@
 layout: post
 title: "Understanding Random Forests and implementing it in Python scikit-learn"
 date: 2017-12-04 08:15:00 +0530
-description: Random Forests are a class of ensemble machine learning algorithms for classification, regression and analysis. Random forests run efficiently on large data sets and are known for their unwavering accuracy. In this article, I will explain the basics on random forests along with an example implementation using Python Scikit-learn 
+description: Random Forests are a class of ensemble machine learning algorithms for classification, regression and analysis. Random forests run efficiently on large data sets and are known for their unwavering accuracy. In this article, I will explain the basics on random forests along with an example implementation using Python Scikit-learn
 categories: Machine-Learning
 ---
 
@@ -23,7 +23,7 @@ Random Forests build on top of [previously covered Decision tree learning](http:
 
 > In machine learning, ensemble methods use multiple learning algorithms to obtain better predictive performance than could be obtained from any of the constituent learning algorithms alone.  
 
-Each individual decision tree withing a random forest operates independently and builds it own model for the data set. For any prediction, each tree will independently predict the class, random forest will then decide on the class based on the most predicted (voted) class. There are many ways in which a random forest may assign votes to individual trees. The simplest way is to have one vote for each trees generated. The algorithm could also add weighted votes to each decision tree based on a meta-heuristic.  
+Each individual decision tree within a random forest operates independently and builds its own model for the data set. For any prediction, each tree will independently predict the class, random forest will then decide on the class based on the most predicted (voted) class. There are many ways in which a random forest may assign votes to individual trees. The simplest way is to have one vote for each trees generated. The algorithm could also add weighted votes to each decision tree based on a meta-heuristic.  
 
 So in essence, a random forest is **a crowd of independent, uncorrelated decision trees that operate as a unit**. The large number of trees utilizing many models is expected to outperform any single individual model. The independence of the trees ensure that the features in the data set are modeled is various ways for the same information - thus expanding the solution space in which the algorithm tries to make the prediction.  
 
