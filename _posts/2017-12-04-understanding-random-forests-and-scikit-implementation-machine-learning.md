@@ -19,7 +19,7 @@ Random Forests are a class of [ensemble machine learning algorithms](https://en.
 
 Random forests are mostly used as a [supervised learning](https://en.wikipedia.org/wiki/Supervised_learning) algorithm, ie. training the algorithm on a test data set. The concept can also be extended to work in a [Unsupervised learning](https://en.wikipedia.org/wiki/Unsupervised_learning) environment. For this article, I will focus on the application of random forests to supervised classification problem.  
 
-Random Forests build on top of [previously covered Decision tree learning](http://madhugnadig.com/articles/machine-learning/2017/03/04/implementing-k-means-clustering-from-scratch-in-python.html). The method uses a large number of individual decision trees that operate as an ensemble.  
+Random Forests build on top of [previously covered Decision tree learning](http://madhugnadig.com/articles/machine-learning/2017/04/23/understanding-decision-trees-learning-a-primer.html). The method uses a large number of individual decision trees that operate as an ensemble.  
 
 > In machine learning, ensemble methods use multiple learning algorithms to obtain better predictive performance than could be obtained from any of the constituent learning algorithms alone.  
 

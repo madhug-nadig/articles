@@ -47,6 +47,8 @@ Though, not the most efficient method, OpenMP provides one of the easiest parall
 
 # Implementation
 
+[Full code here](https://github.com/madhug-nadig/Parallel-Processing)
+
 ## Linear Search
 
 For our first example, let's look at linear search.

@@ -339,3 +339,20 @@ The resultant plot:
 We have two clear cluster (red and blue), the algorithm splits the concentric circles into separate clusters. We can also see some outliers marked in black.  
 
 That's it for now; if you have any comments, please leave them below.  
+
+<script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+
+<ins class="adsbygoogle"
+     style="display:block; text-align:center;"
+     data-ad-layout="in-article"
+     data-ad-format="fluid"
+     data-ad-client="ca-pub-3120660330925914"
+     data-ad-slot="1624596889"></ins>
+
+<script>
+     (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
+
+<div class = "announcement" id = "announcement">
+	<span>Still have questions? Find me on <a href='https://www.codementor.io/madhugnadig' target ="_blank" > Codementor </a></span>
+</div>
